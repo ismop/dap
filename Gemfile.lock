@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/barelyknown/activerecord-postgis-adapter.git
+  revision: d9ae73154e0ec3a357549ec3dc048b15ee1703fd
+  branch: rails-4-1
+  specs:
+    activerecord-postgis-adapter (0.6.5.nonrelease)
+      rgeo-activerecord (~> 0.5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -99,6 +107,13 @@ GEM
     rake (10.3.2)
     rdoc (4.1.1)
       json (~> 1.4)
+    rgeo (0.3.20)
+    rgeo-activerecord (0.5.0)
+      activerecord (>= 3.0.3)
+      arel (>= 2.0.6)
+      rgeo (>= 0.3.20)
+    rgeo-geojson (0.2.3)
+      rgeo (>= 0.3.7)
     rspec-core (3.0.0)
       rspec-support (~> 3.0.0)
     rspec-expectations (3.0.0)
@@ -127,9 +142,6 @@ GEM
     shoulda-matchers (2.5.0)
       activesupport (>= 3.0.0)
     slop (3.5.0)
-    spring (1.1.3)
-    spring-commands-rspec (1.0.2)
-      spring (>= 0.9.1)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -157,6 +169,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-postgis-adapter!
   better_errors
   binding_of_caller
   coffee-rails (~> 4.0.0)
@@ -170,11 +183,11 @@ DEPENDENCIES
   puma
   quiet_assets
   rails (= 4.1.1)
+  rgeo
+  rgeo-geojson
   rspec-rails
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   shoulda-matchers
-  spring
-  spring-commands-rspec
   turbolinks
   uglifier (>= 1.3.0)
