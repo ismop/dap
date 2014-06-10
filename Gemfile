@@ -31,7 +31,23 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+# ISMOP extensions below this line
+
+# RGeo is a geospatial data library for Ruby. It provides an implementation of OGC's Simple Features Specification,
+# used by most standard spatial/geographic data storage systems such as PostGIS.
+# A number of add-ons are also available to help with location-based applications such as Ruby On Rails.
+gem 'rgeo'
+
+# rgeo extensions for geoJSON API
+gem 'rgeo-geojson'
+
+# The activerecord-postgis-adapter is the database adapter that will be using instead of the normal postgresql adapter.
+gem 'activerecord-postgis-adapter', github: 'barelyknown/activerecord-postgis-adapter', branch: 'rails-4-1'
+# gem 'activerecord-postgis-adapter'
+
+
 group :development do
+  # Avoid writing crap to logfiles in devmode
   gem 'quiet_assets'
 
   # Better error page
@@ -40,21 +56,23 @@ group :development do
 end
 
 group :development, :test do
+  # pry console (replaces standard console; provides autocompletion etc.)
   gem 'pry-rails'
 
-  gem 'rspec-rails'
-
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-commands-rspec'
+  # gem 'spring'
+  # gem 'spring-commands-rspec'
 end
 
 group :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
-
   gem 'factory_girl'
+
+  # Used to generate lorems etc. in factories
   gem 'ffaker'
+
+  # Used by rspec
   gem 'database_cleaner'
 end
 
