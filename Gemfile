@@ -25,13 +25,21 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
+
+# ActiveRecord stuff
+gem "active_model_serializers"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-# ISMOP extensions below this line
+# User management
+gem 'devise', '~>3.2'
+gem 'cancan'
+gem 'role_model'
+gem 'omniauth'
 
 # RGeo is a geospatial data library for Ruby. It provides an implementation of OGC's Simple Features Specification,
 # used by most standard spatial/geographic data storage systems such as PostGIS.
@@ -43,8 +51,6 @@ gem 'rgeo-geojson'
 
 # The activerecord-postgis-adapter is the database adapter that will be using instead of the normal postgresql adapter.
 gem 'activerecord-postgis-adapter', github: 'barelyknown/activerecord-postgis-adapter', branch: 'rails-4-1'
-# gem 'activerecord-postgis-adapter'
-
 
 group :development do
   # Avoid writing crap to logfiles in devmode
@@ -60,11 +66,15 @@ group :development, :test do
   gem 'pry-rails'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  # gem 'spring'
-  # gem 'spring-commands-rspec'
+  gem 'spring'
+  gem 'spring-commands-rspec'
+
+  gem 'guard-rspec', require: false
+  gem 'guard-spring'
 end
 
 group :test do
+  gem 'minitest'
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'factory_girl'

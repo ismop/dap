@@ -11,12 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140401100017) do
+ActiveRecord::Schema.define(version: 20140616114041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
-  enable_extension "postgis_topology"
 
   create_table "levees", force: true do |t|
     t.string   "name",                                                                                                 default: "unnamed levee", null: false
@@ -25,5 +24,31 @@ ActiveRecord::Schema.define(version: 20140401100017) do
     t.spatial  "shape",                   limit: {:srid=>4326, :type=>"multi_point", :has_z=>true, :geographic=>true}
     t.datetime "threat_level_updated_at",                                                                              default: "now()",         null: false
   end
+
+  create_table "measurement_types", force: true do |t|
+    t.string   "name",       default: "unnamed measurement", null: false
+    t.string   "unit",       default: "unnamed unit",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "authentication_token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end
