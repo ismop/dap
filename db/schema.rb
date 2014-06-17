@@ -11,11 +11,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140616114041) do
+ActiveRecord::Schema.define(version: 20140617114828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "activity_states", force: true do |t|
+    t.string   "name",       default: "unnamed activity", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "edge_nodes", force: true do |t|
+    t.string   "custom_id",                                                                   default: "unknown ID",            null: false
+    t.spatial  "placement",          limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.string   "manufacturer",                                                                default: "unknown manufacturer",  null: false
+    t.string   "model",                                                                       default: "unknown model",         null: false
+    t.string   "serial_number",                                                               default: "unknown serial number", null: false
+    t.string   "firmware_version",                                                            default: "unknown version",       null: false
+    t.date     "manufacture_date"
+    t.date     "purchase_date"
+    t.date     "warranty_date"
+    t.date     "deployment_date"
+    t.datetime "last_state_change"
+    t.integer  "energy_consumption",                                                          default: 0,                       null: false
+    t.integer  "activity_state_id"
+    t.integer  "interface_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "edge_nodes", ["activity_state_id"], :name => "index_edge_nodes_on_activity_state_id"
+  add_index "edge_nodes", ["custom_id"], :name => "index_edge_nodes_on_custom_id", :unique => true
+  add_index "edge_nodes", ["interface_type_id"], :name => "index_edge_nodes_on_interface_type_id"
+  add_index "edge_nodes", ["last_state_change"], :name => "index_edge_nodes_on_last_state_change"
+
+  create_table "interface_types", force: true do |t|
+    t.string   "name",       default: "unnamed interface type", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "levees", force: true do |t|
     t.string   "name",                                                                                                 default: "unnamed levee", null: false
@@ -25,6 +61,34 @@ ActiveRecord::Schema.define(version: 20140616114041) do
     t.datetime "threat_level_updated_at",                                                                              default: "now()",         null: false
   end
 
+  create_table "measurement_nodes", force: true do |t|
+    t.string   "custom_id",                                                                                 default: "unknown ID",            null: false
+    t.spatial  "placement",          limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
+    t.integer  "battery_state"
+    t.integer  "battery_capacity"
+    t.string   "manufacturer",                                                                              default: "unknown manufacturer",  null: false
+    t.string   "model",                                                                                     default: "unknown model",         null: false
+    t.string   "serial_number",                                                                             default: "unknown serial number", null: false
+    t.string   "firmware_version",                                                                          default: "unknown version",       null: false
+    t.date     "manufacture_date"
+    t.date     "purchase_date"
+    t.date     "warranty_date"
+    t.date     "deployment_date"
+    t.datetime "last_state_change"
+    t.integer  "energy_consumption",                                                                        default: 0,                       null: false
+    t.integer  "edge_node_id"
+    t.integer  "activity_state_id"
+    t.integer  "power_type_id"
+    t.integer  "interface_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "measurement_nodes", ["activity_state_id"], :name => "index_measurement_nodes_on_activity_state_id"
+  add_index "measurement_nodes", ["custom_id"], :name => "index_measurement_nodes_on_custom_id", :unique => true
+  add_index "measurement_nodes", ["interface_type_id"], :name => "index_measurement_nodes_on_interface_type_id"
+  add_index "measurement_nodes", ["last_state_change"], :name => "index_measurement_nodes_on_last_state_change"
+
   create_table "measurement_types", force: true do |t|
     t.string   "name",       default: "unnamed measurement", null: false
     t.string   "unit",       default: "unnamed unit",        null: false
@@ -32,8 +96,76 @@ ActiveRecord::Schema.define(version: 20140616114041) do
     t.datetime "updated_at"
   end
 
+  create_table "measurements", force: true do |t|
+    t.string   "custom_id",      default: "", null: false
+    t.float    "value",                       null: false
+    t.datetime "timestamp",                   null: false
+    t.string   "source_address"
+    t.integer  "sensor_id"
+    t.integer  "timeline_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "measurements", ["custom_id"], :name => "index_measurements_on_custom_id"
+  add_index "measurements", ["sensor_id"], :name => "index_measurements_on_sensor_id"
+  add_index "measurements", ["timeline_id"], :name => "index_measurements_on_timeline_id"
+  add_index "measurements", ["timestamp"], :name => "index_measurements_on_timestamp"
+
+  create_table "power_types", force: true do |t|
+    t.string   "name",       default: "unnamed power type", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sensors", force: true do |t|
+    t.string   "custom_id",                                                                                  default: "unknown ID",            null: false
+    t.spatial  "placement",           limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
+    t.float    "x_orientation",                                                                              default: 0.0,                     null: false
+    t.float    "y_orientation",                                                                              default: 0.0,                     null: false
+    t.float    "z_orientation",                                                                              default: 0.0,                     null: false
+    t.integer  "battery_state"
+    t.integer  "battery_capacity"
+    t.string   "manufacturer",                                                                               default: "unknown manufacturer",  null: false
+    t.string   "model",                                                                                      default: "unknown model",         null: false
+    t.string   "serial_number",                                                                              default: "unknown serial number", null: false
+    t.string   "firmware_version",                                                                           default: "unknown version",       null: false
+    t.date     "manufacture_date"
+    t.date     "purchase_date"
+    t.date     "warranty_date"
+    t.date     "deployment_date"
+    t.datetime "last_state_change"
+    t.integer  "energy_consumption",                                                                         default: 0,                       null: false
+    t.float    "precision",                                                                                  default: 0.0,                     null: false
+    t.integer  "measurement_node_id"
+    t.integer  "activity_state_id"
+    t.integer  "power_type_id"
+    t.integer  "interface_type_id"
+    t.integer  "measurement_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sensors", ["activity_state_id"], :name => "index_sensors_on_activity_state_id"
+  add_index "sensors", ["custom_id"], :name => "index_sensors_on_custom_id", :unique => true
+  add_index "sensors", ["interface_type_id"], :name => "index_sensors_on_interface_type_id"
+  add_index "sensors", ["last_state_change"], :name => "index_sensors_on_last_state_change"
+  add_index "sensors", ["power_type_id"], :name => "index_sensors_on_power_type_id"
+
+  create_table "timelines", force: true do |t|
+    t.string   "name",             default: "unnamed timeline", null: false
+    t.string   "measurement_type", default: "actual",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "sensor_id"
+  end
+
+  add_index "timelines", ["measurement_type"], :name => "index_timelines_on_measurement_type"
+  add_index "timelines", ["sensor_id"], :name => "index_timelines_on_sensor_id"
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
+    t.string   "login",                               null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"

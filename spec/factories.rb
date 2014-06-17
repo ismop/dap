@@ -10,6 +10,7 @@ FactoryGirl.define do
 
   factory :user do
     email { Faker::Internet.email }
+    login { rand_str }
     password '12345678'
     password_confirmation { password }
     authentication_token { rand_str }
