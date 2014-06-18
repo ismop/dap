@@ -52,6 +52,9 @@ gem 'rgeo-geojson'
 # The activerecord-postgis-adapter is the database adapter that will be using instead of the normal postgresql adapter.
 gem 'activerecord-postgis-adapter', github: 'barelyknown/activerecord-postgis-adapter', branch: 'rails-4-1'
 
+# Cross-Origin Resource Scharing for external UIs
+gem 'rack-cors', :require => 'rack/cors'
+
 group :development do
   # Avoid writing crap to logfiles in devmode
   gem 'quiet_assets'
