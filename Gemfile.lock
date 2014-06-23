@@ -44,6 +44,8 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.1.1.0)
+      sass (~> 3.2)
     builder (3.2.2)
     cancan (1.6.10)
     celluloid (0.15.2)
@@ -71,6 +73,8 @@ GEM
       activesupport (>= 3.0.0)
     ffaker (1.24.0)
     ffi (1.9.3)
+    font-awesome-rails (4.0.3.1)
+      railties (>= 3.2, < 5.0)
     formatador (0.2.5)
     guard (2.6.1)
       formatador (>= 0.2.4)
@@ -84,6 +88,13 @@ GEM
     guard-spring (0.0.4)
       guard
       spring
+    haml (4.0.5)
+      tilt
+    haml-rails (0.5.3)
+      actionpack (>= 4.0.1)
+      activesupport (>= 4.0.1)
+      haml (>= 3.1, < 5.0)
+      railties (>= 4.0.1)
     hashie (2.0.5)
     hike (1.2.3)
     i18n (0.6.9)
@@ -224,14 +235,17 @@ DEPENDENCIES
   activerecord-postgis-adapter!
   better_errors
   binding_of_caller
+  bootstrap-sass (~> 3.1)
   cancan
   coffee-rails (~> 4.0.0)
   database_cleaner
   devise (~> 3.2)
   factory_girl
   ffaker
+  font-awesome-rails
   guard-rspec
   guard-spring
+  haml-rails
   jbuilder (~> 2.0)
   jquery-rails
   minitest

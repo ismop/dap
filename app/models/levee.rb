@@ -10,8 +10,8 @@ class Levee < ActiveRecord::Base
   private
 
   def update_threat_date
-    if threat_level_changed?
+    #if threat_level_changed?
       self.threat_level_updated_at = Time.now
-    end
+    #end
   end
 end

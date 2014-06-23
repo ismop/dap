@@ -3,6 +3,8 @@ module Api
     protect_from_forgery with: :null_session
     check_authorization
 
+    include Filterable
+
     rescue_from CanCan::AccessDenied do |exception|
       if current_user.nil?
         render json: {message: '401 Unauthorized'}, status: :unauthorized

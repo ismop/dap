@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20140617114828) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
 
   create_table "activity_states", force: true do |t|
     t.string   "name",       default: "unnamed activity", null: false
@@ -97,9 +98,8 @@ ActiveRecord::Schema.define(version: 20140617114828) do
   end
 
   create_table "measurements", force: true do |t|
-    t.string   "custom_id",      default: "", null: false
-    t.float    "value",                       null: false
-    t.datetime "timestamp",                   null: false
+    t.float    "value",          null: false
+    t.datetime "timestamp",      null: false
     t.string   "source_address"
     t.integer  "sensor_id"
     t.integer  "timeline_id"
@@ -107,7 +107,6 @@ ActiveRecord::Schema.define(version: 20140617114828) do
     t.datetime "updated_at"
   end
 
-  add_index "measurements", ["custom_id"], :name => "index_measurements_on_custom_id"
   add_index "measurements", ["sensor_id"], :name => "index_measurements_on_sensor_id"
   add_index "measurements", ["timeline_id"], :name => "index_measurements_on_timeline_id"
   add_index "measurements", ["timestamp"], :name => "index_measurements_on_timestamp"

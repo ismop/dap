@@ -58,10 +58,16 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :levees, only: [:index, :show, :update]
+      resources :measurements, only: [:index, :show, :update, :create]
+      resources :sensors, only: [:index, :show, :update, :create]
+      resources :measurement_nodes, only: [:index, :show, :update, :create]
+      resources :edge_nodes, only: [:index, :show, :update, :create]
+      resources :timelines, only: [:index, :show, :update, :create]
     end
   end
 
-
-
+  get 'help' => 'help#index'
+  get 'help/api' => 'help#api'
+  get 'help/api/:category'  => 'help#api', as: 'help_api_file'
 
 end

@@ -14,9 +14,6 @@ module Api
 
       def update
         @levee.update_attributes!(levee_params)
-
-        puts levee_params.inspect
-
         render json: @levee, serializer: LeveeSerializer
       end
 
