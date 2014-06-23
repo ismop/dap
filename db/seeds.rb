@@ -7,6 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 User.create(login: 'admin', email: 'admin@localhost.pl', password: 'airtraffic123', password_confirmation: 'airtraffic123', authentication_token: 'secret')
+User.create(login: 'flume_sink', email: 'someone@somewhere.edu', password: 'dappiffication', password_confirmation: 'dappiffication', authentication_token: 'secret')
 
 # Dictionary bootstrap: measurement types
 MeasurementType.create(name: 'Temperatura', unit: 'C')
