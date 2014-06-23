@@ -30,6 +30,10 @@ gem 'haml-rails'
 gem 'bootstrap-sass', '~>3.1'
 gem 'font-awesome-rails'
 
+# rendering documentation
+gem 'redcarpet'
+gem 'github-markup', require: 'github/markup'
+
 # ActiveRecord stuff
 gem "active_model_serializers"
 

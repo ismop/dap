@@ -76,6 +76,7 @@ GEM
     font-awesome-rails (4.0.3.1)
       railties (>= 3.2, < 5.0)
     formatador (0.2.5)
+    github-markup (1.0.2)
     guard (2.6.1)
       formatador (>= 0.2.4)
       listen (~> 2.7)
@@ -158,6 +159,7 @@ GEM
       ffi (>= 0.5.0)
     rdoc (4.1.1)
       json (~> 1.4)
+    redcarpet (3.1.1)
     rgeo (0.3.20)
     rgeo-activerecord (0.5.0)
       activerecord (>= 3.0.3)
@@ -243,6 +245,7 @@ DEPENDENCIES
   factory_girl
   ffaker
   font-awesome-rails
+  github-markup
   guard-rspec
   guard-spring
   haml-rails
@@ -256,6 +259,7 @@ DEPENDENCIES
   quiet_assets
   rack-cors
   rails (= 4.1.1)
+  redcarpet
   rgeo
   rgeo-geojson
   role_model
