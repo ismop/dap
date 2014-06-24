@@ -1,6 +1,6 @@
 class EdgeNodeSerializer < ActiveModel::Serializer
   embed :ids
-  attributes :custom_id, :manufacturer, :model, :serial_number, :firmware_version, :manufacture_date, :purchase_date, :warranty_date, :deployment_date, :last_state_change, :energy_consumption
+  attributes :id, :custom_id, :manufacturer, :model, :serial_number, :firmware_version, :manufacture_date, :purchase_date, :warranty_date, :deployment_date, :last_state_change, :energy_consumption
 
   attributes :placement
   attributes :activity_state, :interface_type

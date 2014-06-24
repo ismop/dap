@@ -38,6 +38,7 @@ describe Api::V1::SensorsController do
       it 'returns the selected sensor' do
         get api("/sensors/#{s1.id}", user)
 
+        expect(s_response).to include 'id'
         expect(s_response).to include 'custom_id'
         expect(s_response['custom_id']).to eq 'foo'
       end
