@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140617114828) do
+ActiveRecord::Schema.define(version: 20140909200013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,19 @@ ActiveRecord::Schema.define(version: 20140617114828) do
   add_index "edge_nodes", ["custom_id"], :name => "index_edge_nodes_on_custom_id", :unique => true
   add_index "edge_nodes", ["interface_type_id"], :name => "index_edge_nodes_on_interface_type_id"
   add_index "edge_nodes", ["last_state_change"], :name => "index_edge_nodes_on_last_state_change"
+
+  create_table "experiments", force: true do |t|
+    t.string   "name",                                                                  default: "Unnamed experiment", null: false
+    t.datetime "start_date",                                                                                           null: false
+    t.datetime "end_date"
+    t.string   "status",                                                                default: "unknown",            null: false
+    t.spatial  "selection",  limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "experiments", ["end_date"], :name => "index_experiments_on_end_date"
+  add_index "experiments", ["start_date"], :name => "index_experiments_on_start_date"
 
   create_table "interface_types", force: true do |t|
     t.string   "name",       default: "unnamed interface type", null: false
@@ -117,6 +130,28 @@ ActiveRecord::Schema.define(version: 20140617114828) do
     t.datetime "updated_at"
   end
 
+  create_table "profile_sets", id: false, force: true do |t|
+    t.integer "experiment_id"
+    t.integer "profile_id"
+  end
+
+  add_index "profile_sets", ["experiment_id", "profile_id"], :name => "index_profile_sets_on_experiment_id_and_profile_id"
+  add_index "profile_sets", ["experiment_id"], :name => "index_profile_sets_on_experiment_id"
+  add_index "profile_sets", ["profile_id"], :name => "index_profile_sets_on_profile_id"
+
+  create_table "profiles", force: true do |t|
+    t.string   "name",       default: "Unnamed profile", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "results", force: true do |t|
+    t.float   "similarity"
+    t.integer "experiment_id"
+    t.integer "profile_id"
+    t.integer "timeline_id"
+  end
+
   create_table "sensors", force: true do |t|
     t.string   "custom_id",                                                                                  default: "unknown ID",            null: false
     t.spatial  "placement",           limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
@@ -143,6 +178,7 @@ ActiveRecord::Schema.define(version: 20140617114828) do
     t.integer  "measurement_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "profile_id"
   end
 
   add_index "sensors", ["activity_state_id"], :name => "index_sensors_on_activity_state_id"

@@ -17,6 +17,24 @@ FactoryGirl.define do
     shape { 'MULTIPOINT(49.981348 19.678777 211.21, 49.98191 19.678662 211.14, 49.981919 19.678856 215.70, 49.981928 19.679069 211.10, 49.981371 19.679169 210.84, 49.981357 19.678973 215.84)' }
   end
 
+  factory :experiment do
+    name { rand_str }
+    start_date { rand(2..5).hours.ago }
+    end_date { rand(0..1).hours.ago }
+    status { ["unknown", "started", "finished", "error"].sample }
+    selection { 'POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))' }
+
+    profiles { [create(:profile), create(:profile)] }
+  end
+
+  factory :result do
+    similarity { rand(0.0..100.0) }
+
+    profile
+    experiment
+    timeline
+  end
+
   factory :user do
     email { Faker::Internet.email }
     login { rand_str }
@@ -82,6 +100,10 @@ FactoryGirl.define do
     interface_type
   end
 
+  factory :profile do
+    name { Faker::Lorem.words(2).join('_') }
+  end
+
   factory :sensor do
     custom_id { rand_str(10) }
     placement { rand_point(true) }
@@ -105,6 +127,7 @@ FactoryGirl.define do
     precision { rand(0.0..99.99) }
 
     measurement_node
+    profile
     activity_state
     power_type
     interface_type

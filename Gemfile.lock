@@ -86,9 +86,6 @@ GEM
     guard-rspec (4.2.10)
       guard (~> 2.1)
       rspec (>= 2.14, < 4.0)
-    guard-spring (0.0.4)
-      guard
-      spring
     haml (4.0.5)
       tilt
     haml-rails (0.5.3)
@@ -200,9 +197,6 @@ GEM
     shoulda-matchers (2.5.0)
       activesupport (>= 3.0.0)
     slop (3.5.0)
-    spring (1.1.3)
-    spring-commands-rspec (1.0.2)
-      spring (>= 0.9.1)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -247,7 +241,6 @@ DEPENDENCIES
   font-awesome-rails
   github-markup
   guard-rspec
-  guard-spring
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails
@@ -267,7 +260,5 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   shoulda-matchers
-  spring
-  spring-commands-rspec
   turbolinks
   uglifier (>= 1.3.0)

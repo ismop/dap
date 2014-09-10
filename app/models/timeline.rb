@@ -4,6 +4,7 @@ class Timeline < ActiveRecord::Base
   validates :measurement_type, inclusion: {in: ["actual", "simulated", "forecast"]}
 
   has_many :measurements, dependent: :destroy
+  has_many :results, dependent: :nullify
   belongs_to :sensor
 
 end

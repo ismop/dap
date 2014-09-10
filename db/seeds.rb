@@ -61,10 +61,22 @@ s3 = Sensor.create(custom_id: 'sensor_3', placement: 'POINT(49.981919 19.678856 
 s4 = Sensor.create(custom_id: 'sensor_4', placement: 'POINT(49.981500 19.678866 215.70)', x_orientation: 90, y_orientation: 0, z_orientation: 180, battery_state: 67, battery_capacity: 100, manufacturer: 'Siemens AG', model: 'Mark I temperature sensor', serial_number: 'TS-32482381', firmware_version: '20140610', manufacture_date: '2014-03-12', purchase_date: '2014-06-08', warranty_date: '2016-12-31', deployment_date: '2014-06-01', last_state_change: '2014-06-01 12:00', energy_consumption: 2, precision: 0.1, measurement_node: MeasurementNode.first, activity_state: ActivityState.first, power_type: PowerType.second, interface_type: InterfaceType.third, measurement_type: MeasurementType.first)
 
 # Timelines
-Timeline.create(name: 'Sensor 1 timeline', measurement_type: 'actual', sensor: s1)
-Timeline.create(name: 'Sensor 2 timeline', measurement_type: 'actual', sensor: s2)
-Timeline.create(name: 'Sensor 3 timeline', measurement_type: 'actual', sensor: s3)
-Timeline.create(name: 'Sensor 4 timeline', measurement_type: 'actual', sensor: s4)
+t1 = Timeline.create(name: 'Sensor 1 timeline', measurement_type: 'actual', sensor: s1)
+t2 = Timeline.create(name: 'Sensor 2 timeline', measurement_type: 'actual', sensor: s2)
+t3 = Timeline.create(name: 'Sensor 3 timeline', measurement_type: 'actual', sensor: s3)
+t4 = Timeline.create(name: 'Sensor 4 timeline', measurement_type: 'actual', sensor: s4)
 
+# Profiles
+p1 = Profile.create(name: 'Profile 1', sensors: [s1, s2])
+p2 = Profile.create(name: 'Profile 2', sensors: [s3, s4])
+
+# Experiments
+e1 = Experiment.create(name: 'Experiment 1', selection: 'POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))', start_date: '2014-09-09 20:15', end_date: '2014-09-09 20:20', profiles: [p1, p2] )
+
+# Results
+Result.create(similarity: 2.5, experiment: e1, profile: p1, timeline: t1)
+Result.create(similarity: 3.5, experiment: e1, profile: p1, timeline: t2)
+Result.create(similarity: 7.0, experiment: e1, profile: p2, timeline: t3)
+Result.create(similarity: 9.9, experiment: e1, profile: p2, timeline: t4)
 
 #mtypes = MeasurementType.create([])
