@@ -9,7 +9,7 @@ module Api
       end
 
       def show
-        respond_with @profiles
+        respond_with @profile
       end
 
       def update

@@ -4,17 +4,31 @@ module Api
       load_and_authorize_resource :result
       respond_to :json
 
+      def create
+        result = Result.create(result_params)
+        if !params['result']['profile_id'].blank?
+          result.profile = Profile.find(params['result']['profile_id'].to_i)
+        end
+        if !params['result']['timeline_id'].blank?
+          result.timeline = Timeline.find(params['result']['timeline_id'].to_i)
+        end
+        if !params['result']['experiment_id'].blank?
+          result.experiment = Experiment.find(params['result']['experiment_id'].to_i)
+        end
+
+        result.save!
+        render json: result, serializer: ResultSerializer
+      end
+
       def index
         respond_with @results.order(:id)
       end
 
       def show
-        respond_with @results
+        respond_with @result
       end
 
       def update
-        puts "Updating with #{params}"
-        puts "Updating with #{result_params}"
         @result.update_attributes!(result_params)
         render json: @result, serializer: ResultSerializer
       end
@@ -22,7 +36,7 @@ module Api
       private
 
       def result_params
-        params.require(:result).permit(:similarity)
+        params.require(:result).permit(:similarity, :experiment_id, :profile_id, :timeline_id)
       end
     end
   end

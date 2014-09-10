@@ -32,6 +32,36 @@ describe Api::V1::ResultsController do
     end
   end
 
+  describe 'POST /results' do
+    context 'when authenticated as user' do
+
+      let!(:p1) { create(:profile) }
+      let!(:e1) { create(:experiment) }
+      let!(:t1) { create(:timeline) }
+
+      let(:create_json) do {result: {
+        similarity: 37.3,
+        profile_id: p1.id,
+        timeline_id: t1.id,
+        experiment_id: e1.id
+      }} end
+
+      it 'creates a new result' do
+        expect(Result.count).to eq 0
+        post api("/results", user), create_json
+        expect(response.status).to eq 200
+        expect(Experiment.count).to eq 1
+        new_r = Result.last
+        expect(new_r.id).to_not be_nil
+        expect(new_r['similarity']).to eq 37.3
+        expect(new_r.profile).to eq p1
+        expect(new_r.timeline).to eq t1
+        expect(new_r.experiment).to eq e1
+      end
+
+    end
+  end
+
   describe 'PUT /results/{id}' do
 
     let!(:r1) { create(:result)}

@@ -10,7 +10,7 @@ class Ability
       can [:read], MeasurementNode
       can [:read], EdgeNode
       can [:read, :create, :update], Timeline
-      can [:read, :create, :update], Experiment
+      can [:create, :read, :update, :destroy], Experiment
       can [:read, :create, :update], Result
     end
   end

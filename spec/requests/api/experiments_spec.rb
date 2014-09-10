@@ -7,7 +7,7 @@ describe Api::V1::ExperimentsController do
   let(:user) { create(:user) }
   let!(:e1) { create(:experiment) }
 
-  describe 'Get /experiments' do
+  describe 'GET /experiments' do
     context 'when unauthenticated' do
       it 'returns 401 Unauthorized error' do
         get api("/experiments")
@@ -33,6 +33,35 @@ describe Api::V1::ExperimentsController do
         expect(exps_response[0]['selection']['coordinates'][0].size).to eq 5 # Four nodes in outer ring; polygon wraps on itself
         expect(exps_response[0]['selection']['coordinates'][0]).to include [49.981348,19.678777] # One of the outer nodes
       end
+    end
+  end
+
+  describe 'POST /experiments' do
+    context 'when authenticated as user' do
+
+      let!(:p1) { create(:profile) }
+      let!(:p2) { create(:profile) }
+
+      let(:create_json) do {experiment: {
+        name: "My new experiment",
+        status: "started",
+        start_date: "2014-09-10 15:15",
+        end_date: nil,
+        selection: "POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))",
+        profile_ids: [p1.id, p2.id]
+      }} end
+
+      it 'creates a new experiment' do
+        expect(Experiment.count).to eq 1
+        post api("/experiments", user), create_json
+        expect(response.status).to eq 200
+        expect(Experiment.count).to eq 2
+        new_e = Experiment.last
+        expect(new_e.id).to_not be_nil
+        expect(new_e['status']).to eq "started"
+        expect(new_e.profiles).to eq [p1, p2]
+      end
+
     end
   end
 

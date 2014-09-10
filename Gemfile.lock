@@ -47,7 +47,7 @@ GEM
     bootstrap-sass (3.1.1.0)
       sass (~> 3.2)
     builder (3.2.2)
-    cancan (1.6.10)
+    cancancan (1.9.2)
     celluloid (0.15.2)
       timers (~> 1.1.0)
     coderay (1.1.0)
@@ -59,6 +59,8 @@ GEM
       execjs
     coffee-script-source (1.7.0)
     database_cleaner (1.2.0)
+    date_validator (0.7.0)
+      activemodel (>= 3)
     debug_inspector (0.0.2)
     devise (3.2.4)
       bcrypt (~> 3.0)
@@ -232,9 +234,10 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-sass (~> 3.1)
-  cancan
+  cancancan
   coffee-rails (~> 4.0.0)
   database_cleaner
+  date_validator
   devise (~> 3.2)
   factory_girl
   ffaker

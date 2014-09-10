@@ -45,7 +45,7 @@ gem "active_model_serializers"
 
 # User management
 gem 'devise', '~>3.2'
-gem 'cancan'
+gem 'cancancan'
 gem 'role_model'
 gem 'omniauth'
 
@@ -62,6 +62,9 @@ gem 'activerecord-postgis-adapter', github: 'barelyknown/activerecord-postgis-ad
 
 # Cross-Origin Resource Scharing for external UIs
 gem 'rack-cors', :require => 'rack/cors'
+
+# Date validation
+gem 'date_validator'
 
 group :development do
   # Avoid writing crap to logfiles in devmode
