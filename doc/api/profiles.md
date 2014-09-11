@@ -10,9 +10,10 @@ POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))
 ```
 
 The above definition corresponds to a square-shaped feature originating at 0 deg N, 0 deg E, and with a span of 10 degrees. A properly declared polygon:
-  - must have a nonzero internal area,
-  - may not have a boundary which intersects itself
-  - must be a closed loop (i.e. its boundary must terminate at its origin)
+
++ must have a nonzero internal area,
++ may not have a boundary which intersects itself
++ must be a closed loop (i.e. its boundary must terminate at its origin)
 
 The polygon specification must be URL-encoded in the usual manner (see sample below). A profile is assumed to be belong to the specified polygon if it includes at least one sensor which is located inside the polygon's boundary. Empty (sensorless) profiles are not considered to belong to any polygon.
 
