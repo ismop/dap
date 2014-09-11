@@ -17,7 +17,7 @@ module Api
           end
         end
         experiment.save!
-        render json: experiment, serializer: ExperimentSerializer
+        render json: experiment, serializer: ExperimentSerializer, status: :created
       end
 
       def index
@@ -36,7 +36,7 @@ module Api
       private
 
       def experiment_params
-        params.require(:experiment).permit(:name, :status, :selection, :start_date, :end_date, :profile_ids)
+        params.require(:experiment).permit(:name, :status, :status_message, :selection, :start_date, :end_date, :profile_ids)
       end
     end
   end

@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 20140909200013) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
-  enable_extension "postgis_topology"
 
   create_table "activity_states", force: true do |t|
     t.string   "name",       default: "unnamed activity", null: false
@@ -49,11 +48,12 @@ ActiveRecord::Schema.define(version: 20140909200013) do
   add_index "edge_nodes", ["last_state_change"], :name => "index_edge_nodes_on_last_state_change"
 
   create_table "experiments", force: true do |t|
-    t.string   "name",                                                                  default: "Unnamed experiment", null: false
-    t.datetime "start_date",                                                                                           null: false
+    t.string   "name",                                                                      default: "Unnamed experiment", null: false
+    t.datetime "start_date",                                                                                               null: false
     t.datetime "end_date"
-    t.string   "status",                                                                default: "unknown",            null: false
-    t.spatial  "selection",  limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
+    t.string   "status",                                                                    default: "unknown",            null: false
+    t.string   "status_message",                                                            default: ""
+    t.spatial  "selection",      limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
     t.datetime "created_at"
     t.datetime "updated_at"
   end

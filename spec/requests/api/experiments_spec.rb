@@ -45,6 +45,7 @@ describe Api::V1::ExperimentsController do
       let(:create_json) do {experiment: {
         name: "My new experiment",
         status: "started",
+        status_message: "Experiment in progress",
         start_date: "2014-09-10 15:15",
         end_date: nil,
         selection: "POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))",
@@ -54,7 +55,7 @@ describe Api::V1::ExperimentsController do
       it 'creates a new experiment' do
         expect(Experiment.count).to eq 1
         post api("/experiments", user), create_json
-        expect(response.status).to eq 200
+        expect(response.status).to eq 201
         expect(Experiment.count).to eq 2
         new_e = Experiment.last
         expect(new_e.id).to_not be_nil
@@ -72,6 +73,7 @@ describe Api::V1::ExperimentsController do
 
     let(:longer_update_json) do {experiment: {
         status: "finished",
+        status_message: "Experiment finished successfully.",
         start_date: "2014-09-10 11:30",
         end_date: "2014-09-10 12:15"
     }} end
@@ -104,6 +106,7 @@ describe Api::V1::ExperimentsController do
       updated_e = Experiment.find(e1.id)
       expect(updated_e.id).to_not be_nil
       expect(updated_e.status).to eq "finished"
+      expect(updated_e.status_message).to eq "Experiment finished successfully."
       expect(updated_e.start_date). to eq "2014-09-10 11:30"
       expect(updated_e.end_date). to eq "2014-09-10 12:15"
     end
