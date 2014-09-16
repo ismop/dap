@@ -3,7 +3,7 @@ def rand_str(l = 4)
 end
 
 def rand_point(z = false)
-  pt = "POINT("+rand(0.0..89.99).to_s+" "+rand(-179.99..179.99).to_s
+  pt = "POINT("+rand(0.0..89.99).to_s+" "+rand(0.0..89.99).to_s.to_s
   if z
     pt += (" "+rand(-500..500).to_s)
   end
@@ -32,7 +32,7 @@ FactoryGirl.define do
 
     profile
     experiment
-    timeline
+    scenario
   end
 
   factory :user do
@@ -140,6 +140,11 @@ FactoryGirl.define do
     measurement_type 'actual'
   end
 
+  factory :scenario do
+    file_name { Faker::Lorem.words(3).join(' ') }
+    payload { Faker::Lorem.words(10).join(' ') }
+  end
+
   factory :measurement do
     value { rand(-99.99..99.99) }
     timestamp { rand(1..24).hours.ago }
@@ -148,7 +153,6 @@ FactoryGirl.define do
     sensor
     timeline { sensor.timelines.first }
   end
-
 
 
 end

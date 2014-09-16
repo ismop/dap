@@ -11,8 +11,8 @@ describe Api::V1::ResultsController do
       let!(:e1) { create(:experiment) }
       let!(:p1) { create(:profile)}
       let!(:p2) { create(:profile)}
-      let!(:s1) { create(:sensor, profile: p1) } # Will automatically create 1 timeline
-      let!(:s2) { create(:sensor, profile: p2) } # Will automatically create 1 timeline
+      let!(:s1) { create(:sensor, profile: p1) } # Will automatically create 1 scenario
+      let!(:s2) { create(:sensor, profile: p2) } # Will automatically create 1 scenario
       let!(:r1) { create(:result, experiment: e1)}
       let!(:r2) { create(:result, experiment: e1)}
 
@@ -37,12 +37,12 @@ describe Api::V1::ResultsController do
 
       let!(:p1) { create(:profile) }
       let!(:e1) { create(:experiment) }
-      let!(:t1) { create(:timeline) }
+      let!(:s1) { create(:scenario) }
 
       let(:create_json) do {result: {
         similarity: 37.3,
         profile_id: p1.id,
-        timeline_id: t1.id,
+        scenario_id: s1.id,
         experiment_id: e1.id
       }} end
 
@@ -55,7 +55,7 @@ describe Api::V1::ResultsController do
         expect(new_r.id).to_not be_nil
         expect(new_r['similarity']).to eq 37.3
         expect(new_r.profile).to eq p1
-        expect(new_r.timeline).to eq t1
+        expect(new_r.scenario).to eq s1
         expect(new_r.experiment).to eq e1
       end
 

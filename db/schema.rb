@@ -11,11 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909200013) do
+ActiveRecord::Schema.define(version: 20140916084809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
 
   create_table "activity_states", force: true do |t|
     t.string   "name",       default: "unnamed activity", null: false
@@ -149,7 +150,14 @@ ActiveRecord::Schema.define(version: 20140909200013) do
     t.float   "similarity"
     t.integer "experiment_id"
     t.integer "profile_id"
-    t.integer "timeline_id"
+    t.integer "scenario_id"
+  end
+
+  add_index "results", ["scenario_id"], :name => "index_results_on_scenario_id"
+
+  create_table "scenarios", force: true do |t|
+    t.string "file_name"
+    t.binary "payload",   null: false
   end
 
   create_table "sensors", force: true do |t|

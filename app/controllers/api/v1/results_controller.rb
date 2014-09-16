@@ -9,8 +9,8 @@ module Api
         if !params['result']['profile_id'].blank?
           result.profile = Profile.find(params['result']['profile_id'].to_i)
         end
-        if !params['result']['timeline_id'].blank?
-          result.timeline = Timeline.find(params['result']['timeline_id'].to_i)
+        if !params['result']['scenario_id'].blank?
+          result.scenario = Scenario.find(params['result']['scenario_id'].to_i)
         end
         if !params['result']['experiment_id'].blank?
           result.experiment = Experiment.find(params['result']['experiment_id'].to_i)
@@ -36,7 +36,7 @@ module Api
       private
 
       def result_params
-        params.require(:result).permit(:similarity, :experiment_id, :profile_id, :timeline_id)
+        params.require(:result).permit(:similarity, :experiment_id, :profile_id, :scenario_id)
       end
     end
   end

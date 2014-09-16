@@ -4,6 +4,6 @@ class Result < ActiveRecord::Base
 
   belongs_to :experiment
   belongs_to :profile
-  belongs_to :timeline
+  belongs_to :scenario
 
 end

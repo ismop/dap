@@ -21,10 +21,10 @@ describe Api::V1::ProfilesController do
       end
 
       # Create four sensors with easy-to-manipulate geographical placement
-      let!(:s1) { create(:sensor, placement: "POINT (5 5)")}
-      let!(:s2) { create(:sensor, placement: "POINT (5 15)")}
-      let!(:s3) { create(:sensor, placement: "POINT (15 5)")}
-      let!(:s4) { create(:sensor, placement: "POINT (15 15)")}
+      let!(:s1) { create(:sensor, placement: "POINT (5 5 5)")}
+      let!(:s2) { create(:sensor, placement: "POINT (5 15 5)")}
+      let!(:s3) { create(:sensor, placement: "POINT (15 5 5)")}
+      let!(:s4) { create(:sensor, placement: "POINT (15 15 5)")}
 
       # Group these sensors into two profiles
       let!(:p1) { create(:profile, sensors: [s1, s2]) }
