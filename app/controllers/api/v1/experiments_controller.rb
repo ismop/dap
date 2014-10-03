@@ -21,7 +21,7 @@ module Api
       end
 
       def index
-        respond_with @experiments.order(:id)
+        respond_with @experiments.where(filter).order(:id)
       end
 
       def show
@@ -40,4 +40,4 @@ module Api
       end
     end
   end
-end
+  end

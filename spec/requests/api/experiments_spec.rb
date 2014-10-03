@@ -33,6 +33,25 @@ describe Api::V1::ExperimentsController do
         expect(exps_response[0]['selection']['coordinates'][0].size).to eq 5 # Four nodes in outer ring; polygon wraps on itself
         expect(exps_response[0]['selection']['coordinates'][0]).to include [49.981348,19.678777] # One of the outer nodes
       end
+
+      it 'returns only selected experiments' do
+        get api("/experiments?id=#{e1.id}", user)
+        expect(exps_response).to be_an Array
+        expect(exps_response.size).to eq 1
+        expect(exps_response[0]).to include 'selection'
+        expect(exps_response[0]['selection']).to include 'coordinates'
+        expect(exps_response[0]['selection']['coordinates']).to be_an Array
+        expect(exps_response[0]['selection']['coordinates'].size).to eq 1 # Polygon definition without inner ring
+        expect(exps_response[0]['selection']['coordinates'][0].size).to eq 5 # Four nodes in outer ring; polygon wraps on itself
+        expect(exps_response[0]['selection']['coordinates'][0]).to include [49.981348,19.678777] # One of the outer nodes
+      end
+
+      it 'returns only selected experiments' do
+        get api("/experiments?id=#{e1.id+100}", user)
+        expect(exps_response).to be_an Array
+        expect(exps_response.size).to eq 0
+      end
+
     end
   end
 
