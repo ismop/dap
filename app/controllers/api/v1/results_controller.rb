@@ -21,7 +21,7 @@ module Api
       end
 
       def index
-        respond_with @results.order(:id)
+        respond_with @results.where(filter).order(:id)
       end
 
       def show
