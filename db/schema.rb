@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140916084809) do
+ActiveRecord::Schema.define(version: 20141015082926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,9 +141,10 @@ ActiveRecord::Schema.define(version: 20140916084809) do
   add_index "profile_sets", ["profile_id"], :name => "index_profile_sets_on_profile_id"
 
   create_table "profiles", force: true do |t|
-    t.string   "name",       default: "Unnamed profile", null: false
+    t.string   "name",                                                                      default: "Unnamed profile", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.spatial  "shape",      limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
   end
 
   create_table "results", force: true do |t|
