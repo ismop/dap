@@ -10,15 +10,14 @@ class Importer
   def levee
     levees = []
     @json.each_value do |levee|
-      shape = levee["polygon"].map do |point|
+      polygon = levee["polygon"].map do |point|
         RGeo::Cartesian.factory.point(point[0], point[1])
       end
-
-
       points =[]
       levee["points"].each do |point|
         points << RGeo::Cartesian.factory.point(point[0], point[1])
       end
+      shape = RGeo::Cartesian.factory.multi_point(polygon)
       levees << [shape, points]
     end
     levees
