@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::ProfilesController do
+describe Api::V1::ProfilesController, focus: true do
 
   include ApiHelpers
 
@@ -20,20 +20,24 @@ describe Api::V1::ProfilesController do
         expect(response.status).to eq 200
       end
 
-      # Create four sensors with easy-to-manipulate geographical placement
-      let!(:s1) { create(:sensor, placement: "POINT (5 5 5)")}
-      let!(:s2) { create(:sensor, placement: "POINT (5 15 5)")}
-      let!(:s3) { create(:sensor, placement: "POINT (15 5 5)")}
-      let!(:s4) { create(:sensor, placement: "POINT (15 15 5)")}
-
+      let!(:levee) { create(:levee) }
       # Group these sensors into two profiles
-      let!(:p1) { create(:profile, sensors: [s1, s2]) }
-      let!(:p2) { create(:profile, sensors: [s3, s4]) }
+      let!(:p1) { create(:profile, levee: levee) }
+      let!(:p2) { create(:profile, levee: levee) }
+
+      # Create four sensors with easy-to-manipulate geographical placement
+      let!(:s1) { create(:sensor, profile: p1, placement: "POINT (5 5 5)")}
+      let!(:s2) { create(:sensor, profile: p1, placement: "POINT (5 15 5)")}
+      let!(:s3) { create(:sensor, profile: p2, placement: "POINT (15 5 5)")}
+      let!(:s4) { create(:sensor, profile: p2, placement: "POINT (15 15 5)")}
+
 
       it 'returns all profiles' do
         get api('/profiles', user)
         expect(ps_response).to be_an Array
-        expect(ps_response.size).to eq 6
+        expect(ps_response.size).to eq 2
+        expect(ps_response.first["sensor_ids"]).to include(s1.id, s2.id)
+        expect(ps_response.second["sensor_ids"]).to include(s3.id, s4.id)
       end
 
       it 'returns only 1 profile' do
