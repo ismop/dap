@@ -26,8 +26,8 @@ class Importer
         sensor.battery_capacity = 100
         sensor.manufacturer = "Sample manufacturer"
         sensor.model = "Sample model"
-        sensor.serial_number = "12345678"
-        sensor.firmware_version = "12345678"
+        sensor.serial_number = id
+        sensor.firmware_version = id
         sensor.manufacture_date = @date - 1.year
         sensor.purchase_date = @date
         sensor.warranty_date = @date + 3.years
@@ -68,7 +68,6 @@ class Importer
     end
     levees
   end
-
 
 
 end 
