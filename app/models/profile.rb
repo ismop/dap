@@ -1,11 +1,11 @@
 class Profile < ActiveRecord::Base
 
-  validates_presence_of :name
+  has_many :sensors, dependent: :destroy
+  has_many :results, dependent: :destroy
 
-  has_many :sensors
-  has_many :results
-  has_many :profile_sets
+  belongs_to :levee
 
+  belongs_to :profile_set
   has_and_belongs_to_many :experiments, join_table: 'profile_sets'
 
 end

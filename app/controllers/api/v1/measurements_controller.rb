@@ -21,7 +21,7 @@ module Api
         query = query.where(timestamp: time_from..time_to)
 
         if params.keys.include? "sensor_id"
-          query = query.where(sensor_id: params[:sensor_id])
+          query = query.includes(:timeline).references(:timelines).where(:timelines => { sensor_id: params[:sensor_id] })
         end
 
         if params.keys.include? "timeline_id"

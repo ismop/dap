@@ -18,9 +18,9 @@ describe Api::V1::TimelinesController do
     context 'when authenticated as user' do
 
       let!(:s) { create(:sensor) } # Will automatically create 1 timeline
-      let!(:t2) { create(:timeline, sensor: s, measurement_type: "simulated") }
-      let!(:t3) { create(:timeline, sensor: s, measurement_type: "simulated") }
-      let!(:t4) { create(:timeline, sensor: s, measurement_type: "forecast") }
+      let!(:t2) { create(:timeline, sensor: s) }
+      let!(:t3) { create(:timeline, sensor: s) }
+      let!(:t4) { create(:timeline, sensor: s) }
 
       it 'returns 200 and all timelines on success' do
         get api('/timelines', user)
@@ -35,13 +35,12 @@ describe Api::V1::TimelinesController do
 
     context 'when authenticated as user' do
       let!(:s) { create(:sensor) }
-      let!(:t2) { create(:timeline, sensor: s, measurement_type: "simulated") }
+      let!(:t2) { create(:timeline, sensor: s) }
 
       it 'returns the selected timeline' do
         get api("/timelines/#{s.timelines.first.id}", user)
 
-        expect(t_response).to include 'measurement_type'
-        expect(t_response['measurement_type']).to eq 'actual'
+        expect(t_response["id"]).to eq s.timelines.first.id
       end
     end
   end

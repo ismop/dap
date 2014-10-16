@@ -30,11 +30,6 @@ describe Api::V1::LeveesController do
         get api('/levees', user)
         expect(ls_response).to be_an Array
         expect(ls_response.size).to eq 2
-        expect(ls_response[0]).to include 'shape'
-        expect(ls_response[0]['shape']).to include 'coordinates'
-        expect(ls_response[0]['shape']['coordinates']).to be_an Array
-        expect(ls_response[0]['shape']['coordinates'].size).to eq 6
-        expect(ls_response[0]['shape']['coordinates']).to include [49.98191,19.678662,211.14]
       end
     end
   end
@@ -55,14 +50,6 @@ describe Api::V1::LeveesController do
         expect(response.status).to eq 200
       end
 
-      it 'returns a chosen levee section' do
-        get api("/levees/#{l1.id}", user)
-        expect(l_response).to include 'shape'
-        expect(l_response['shape']).to include 'coordinates'
-        expect(l_response['shape']['coordinates']).to be_an Array
-        expect(l_response['shape']['coordinates'].size).to eq 6
-        expect(l_response['shape']['coordinates']).to include [49.98191,19.678662,211.14]
-      end
     end
   end
 

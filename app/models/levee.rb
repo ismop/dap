@@ -7,6 +7,8 @@ class Levee < ActiveRecord::Base
 
   self.rgeo_factory_generator = RGeo::Geos.factory_generator
 
+  has_many :profiles, dependent: :destroy
+
   private
 
   def update_threat_date
