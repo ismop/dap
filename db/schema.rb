@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141016102303) do
+ActiveRecord::Schema.define(version: 20141016152255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(version: 20141016102303) do
   end
 
   create_table "contexts", force: true do |t|
-    t.string "name",                          null: false
-    t.string "type", default: "measurements", null: false
+    t.string "name",                                  null: false
+    t.string "context_type", default: "measurements", null: false
   end
 
   create_table "edge_nodes", force: true do |t|
@@ -131,23 +131,28 @@ ActiveRecord::Schema.define(version: 20141016102303) do
     t.datetime "updated_at"
   end
 
-  create_table "profile_sets", id: false, force: true do |t|
+  create_table "profile_selections", id: false, force: true do |t|
     t.integer "experiment_id"
     t.integer "profile_id"
   end
 
-  add_index "profile_sets", ["experiment_id", "profile_id"], :name => "index_profile_sets_on_experiment_id_and_profile_id"
-  add_index "profile_sets", ["experiment_id"], :name => "index_profile_sets_on_experiment_id"
-  add_index "profile_sets", ["profile_id"], :name => "index_profile_sets_on_profile_id"
+  add_index "profile_selections", ["experiment_id", "profile_id"], :name => "index_profile_selections_on_experiment_id_and_profile_id"
+  add_index "profile_selections", ["experiment_id"], :name => "index_profile_selections_on_experiment_id"
+  add_index "profile_selections", ["profile_id"], :name => "index_profile_selections_on_profile_id"
+
+  create_table "profile_types", force: true do |t|
+  end
 
   create_table "profiles", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "shape",      limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
+    t.spatial  "shape",           limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
     t.integer  "levee_id"
+    t.integer  "profile_type_id"
   end
 
   add_index "profiles", ["levee_id"], :name => "index_profiles_on_levee_id"
+  add_index "profiles", ["profile_type_id"], :name => "index_profiles_on_profile_type_id"
 
   create_table "results", force: true do |t|
     t.float   "similarity"
@@ -160,13 +165,13 @@ ActiveRecord::Schema.define(version: 20141016102303) do
 
   create_table "scenarios", force: true do |t|
     t.string  "file_name"
-    t.binary  "payload",        null: false
+    t.binary  "payload",         null: false
     t.integer "context_id"
-    t.integer "profile_set_id"
+    t.integer "profile_type_id"
   end
 
   add_index "scenarios", ["context_id"], :name => "index_scenarios_on_context_id"
-  add_index "scenarios", ["profile_set_id"], :name => "index_scenarios_on_profile_set_id"
+  add_index "scenarios", ["profile_type_id"], :name => "index_scenarios_on_profile_type_id"
 
   create_table "sensors", force: true do |t|
     t.string   "custom_id",                                                                                  default: "unknown ID",            null: false

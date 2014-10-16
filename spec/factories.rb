@@ -141,7 +141,7 @@ FactoryGirl.define do
   end
 
   factory :context do
-    type 'tests'
+    context_type 'tests'
     name 'test context'
   end
 

@@ -8,7 +8,8 @@ class Experiment < ActiveRecord::Base
   self.rgeo_factory_generator = RGeo::Geos.factory_generator
 
   has_many :results, dependent: :destroy
-  has_many :profile_sets
-  has_and_belongs_to_many :profiles, join_table: 'profile_sets'
+
+  has_many :profile_selections, dependent: :destroy
+  has_and_belongs_to_many :profiles, join_table: 'profile_selections'
 
 end

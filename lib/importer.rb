@@ -4,10 +4,10 @@ class Importer
 
   class ModelAdapter
 
-    def build_profile(shape)
+    def build_profile(shape, levee)
       Profile.new do |profile|
-        profile.name = "Unnamed profile"
         profile.shape = shape
+        profile.levee = levee
       end.tap { |p| p.save }
     end
 
@@ -53,21 +53,26 @@ class Importer
     @model_adapter = model_adapter
   end
 
-  def levee
-    levees = []
-    @json.each_value do |levee|
-      polygon = levee["polygon"].map do |point|
-        RGeo::Cartesian.factory.point(point[0], point[1])
+  def import
+    Levee.Conttransaction do
+      levee = Levee.new do |levee|
+        levee.name = "test levee"
       end
-      profile = @model_adapter.build_profile(RGeo::Cartesian.factory.multi_point(polygon))
-      sensors =[]
-      levee["points"].each do |point|
-        sensors << @model_adapter.build_sensor(RGeo::Cartesian.factory.point(point[0], point[1]), profile)
+      levee.save
+      levees = []
+      @json.each_value do |profile|
+        polygon = profile["polygon"].map do |point|
+          RGeo::Cartesian.factory.point(point[0], point[1])
+        end
+        new_profile = @model_adapter.build_profile(RGeo::Cartesian.factory.multi_point(polygon), levee)
+        sensors =[]
+        profile["points"].each do |point|
+          sensors << @model_adapter.build_sensor(RGeo::Cartesian.factory.point(point[0], point[1]), new_profile )
+        end
+        levees << [new_profile , sensors]
       end
-      levees << [profile, sensors]
+      levees
     end
-    levees
   end
-
 
 end 

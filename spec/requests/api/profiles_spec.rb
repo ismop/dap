@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::ProfilesController, focus: true do
+describe Api::V1::ProfilesController do
 
   include ApiHelpers
 
