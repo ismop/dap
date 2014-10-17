@@ -1,56 +1,83 @@
+require 'csv'
+
 class MeasurementGenerator
 
-  def self.from_data(data, scenario_name = "undefined")
+  class Feed
 
-    upload_time = Time.now
+    def initialize(paths)
+      @paths = paths
+      @path_index = 0
+      @data_index = 1
+      @current_data = CSV.read(next_path)
+    end
+
+    def next_row
+      @data_index +=1
+      if @data_index == @current_data.length
+        @current_data = CSV.read(next_path)
+        @data_index = 1
+      end
+      @current_data[@data_index]
+    end
+
+    def next_path
+      current_path = @paths[@path_index]
+      @path_index +=1
+      @path_index = 0 if @path_index == @paths.length
+      current_path
+    end
+
+  end
+
+  def self.from_dir(dir)
+    paths = []
+    Dir.foreach(dir) do |name|
+      path = File.join(dir,name)
+      paths << path unless File.directory?(path)
+    end
+    MeasurementGenerator.new(Feed.new(paths))
+  end
+
+  attr_accessor :feed
+
+  def initialize(feed)
+    @feed = feed
+  end
+
+  def generate(levee, context, months = 6)
+    time = Time.now
 
     ActiveRecord::Base.transaction do
+      levee.profiles.each do |profile|
 
-      timeline_length = data.size
-      timelines = data[0].size
+        data_row = @feed.next_row
+        raise "wrong number of parameters in scenario" if profile.sensors.count != data_row.length
 
-      (0..timelines-1).each do |i|
-
-        sensor_id = data[0][i]
-        sensor = Sensor.find(sensor_id) rescue raise("No such sensor '#{sensor_id}'")
-
-        timeline = Timeline.new do |t|
-          t.sensor = sensor
-          t.name = "fake measurement"
-          t.measurement_type = "simulated"
-        end
-        timeline.save
-
-        (1..timeline_length-1).each do |j|
-          value = data[j][i]
-          Measurement.new do |m|
-            m.value = value
-            m.timeline = timeline
-            m.sensor = sensor
-            m.timestamp = upload_time + (15 * (j-1)).minutes.to_i
-          end.save
+        timelines = []
+        param_index = 0
+        profile.sensors.each do |sensor|
+          timelines[param_index] = Timeline.new do |t|
+            t.sensor = sensor
+            t.context = context
+          end
+          timelines[param_index].save
+          param_index += 1
         end
 
+        (1..months*30*24*60/15).each do |i|
+          param_index = 0
+          profile.sensors.each do
+            m = Measurement.new do |m|
+              m.value = data_row[param_index].to_f
+              m.timestamp = time + (i*15).minutes
+              m.timeline = timelines[param_index]
+            end
+            m.save
+            param_index += 1
+          end
+        end
       end
+      true
     end
   end
-
-  def self.from_file(file_name)
-    self.from_data(Load.file(file_name), File.basename(file_name))
-  end
-
-end
-
-class Load
-
-  def self.file(name)
-    matrix = []
-    i = 0
-    CSV.foreach(name) do |row|
-      matrix << row.map { |cell| (i>0 ? cell.to_f : cell) }
-      i+=1
-    end
-    matrix
-  end
-
 end

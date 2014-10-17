@@ -1,6 +1,6 @@
 require 'csv'
 
-class ScenarioUploader
+class ScenarioImporter
 
   def initialize(scenarios)
     @scenarios = scenarios
@@ -12,19 +12,10 @@ class ScenarioUploader
       path = File.join(dir,name)
       scenarios << self.from_file(path) unless File.directory?(path)
     end
-    ScenarioUploader.new(scenarios)
+    ScenarioImporter.new(scenarios)
   end
 
-  def self.from_file(name)
-    payload = File.read(name)
-    raise "Invalid scenario" unless payload.size>0
-    Scenario.new do |s|
-      s.file_name = File.basename(name)
-      s.payload = payload
-    end
-  end
-
-  def save(profile_type = nil)
+  def save(profile_type)
     ActiveRecord::Base.transaction do
       context = Context.new do |c|
         c.context_type = "tests"
@@ -37,6 +28,17 @@ class ScenarioUploader
         s.save
       end
     end if @scenarios
+  end
+
+  private
+
+  def self.from_file(name)
+    payload = File.read(name)
+    raise "Invalid scenario" unless payload.size>0
+    Scenario.new do |s|
+      s.file_name = File.basename(name)
+      s.payload = payload
+    end
   end
 
 end
