@@ -1,13 +1,21 @@
 require 'json'
 
-class Importer
+class LeveeImporter
 
   class ModelAdapter
 
-    def build_profile(shape, levee)
+    def build_levee(levee_name)
+      Levee.new do |levee|
+        levee.name = levee_name
+      end.tap { |l| l.save }
+    end
+
+
+    def build_profile(shape, levee, profile_type)
       Profile.new do |profile|
         profile.shape = shape
         profile.levee = levee
+        profile.profile_type = profile_type
       end.tap { |p| p.save }
     end
 
@@ -42,7 +50,6 @@ class Importer
         sensor.measurement_type_id = 1
         sensor.profile_id = profile.id
       end.tap { |s| s.save }
-
     end
 
   end
@@ -53,18 +60,16 @@ class Importer
     @model_adapter = model_adapter
   end
 
-  def import
-    Levee.Conttransaction do
-      levee = Levee.new do |levee|
-        levee.name = "test levee"
-      end
-      levee.save
+  def import(profile_type = nil, levee_name = "Unnamed Levee #{Time.now}")
+    profile_type ||= ProfileType.new.tap{ |p| p.save }
+    ActiveRecord::Base.transaction do
+      levee = @model_adapter.build_levee(levee_name)
       levees = []
       @json.each_value do |profile|
         polygon = profile["polygon"].map do |point|
           RGeo::Cartesian.factory.point(point[0], point[1])
         end
-        new_profile = @model_adapter.build_profile(RGeo::Cartesian.factory.multi_point(polygon), levee)
+        new_profile = @model_adapter.build_profile(RGeo::Cartesian.factory.multi_point(polygon), levee, profile_type)
         sensors =[]
         profile["points"].each do |point|
           sensors << @model_adapter.build_sensor(RGeo::Cartesian.factory.point(point[0], point[1]), new_profile )

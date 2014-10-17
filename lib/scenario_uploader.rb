@@ -24,8 +24,8 @@ class ScenarioUploader
     end
   end
 
-  def save
-    Scenario.transaction do
+  def save(profile_type = nil)
+    ActiveRecord::Base.transaction do
       context = Context.new do |c|
         c.context_type = "tests"
         c.name = "Test context #{Time.now}"
@@ -33,6 +33,7 @@ class ScenarioUploader
       context.save
       @scenarios.each do |s|
         s.context = context
+        s.profile_type = profile_type
         s.save
       end
     end if @scenarios
