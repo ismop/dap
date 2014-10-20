@@ -44,8 +44,8 @@ class MeasurementGenerator
     @feed = feed
   end
 
-  def generate(levee, context, months = 6)
-    time = Time.now
+  def generate(levee, context, months = 1)
+    time = Time.now - 2.weeks
 
     ActiveRecord::Base.transaction do
       levee.profiles.each do |profile|
