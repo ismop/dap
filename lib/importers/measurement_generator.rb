@@ -38,10 +38,15 @@ class MeasurementGenerator
     @feed = Feed.new(paths)
   end
 
-  def generate(levee, context = Context.create { |c| c.name = "Generated data #{Time.now}" }, months = 1)
-    time = Time.now - 2.weeks
+  # Used in order to generate measurements for all sensors of the given Levee
+  # based on scenarios loaded from files.Please note that number of columns
+  # in scenario file has to be equal to number of sensors per profile.
+  def generate(levee, context = nil, months = 1)
+    start_time = Time.now - 2.weeks
 
     ActiveRecord::Base.transaction do
+      context ||= Context.create { |c| c.name = "Generated data #{Time.now}" }
+
       levee.profiles.each do |profile|
 
         data_row = @feed.next_row
@@ -64,7 +69,7 @@ class MeasurementGenerator
           profile.sensors.each do
             measurements << Measurement.new do |m|
               m.value = data_row[param_index].to_f
-              m.timestamp = time + (i*15).minutes
+              m.timestamp = start_time + (i*15).minutes
               m.timeline = timelines[param_index]
             end
             param_index += 1

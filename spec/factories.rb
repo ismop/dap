@@ -153,6 +153,7 @@ FactoryGirl.define do
   factory :scenario do
     file_name { Faker::Lorem.words(3).join(' ') }
     payload { Faker::Lorem.words(10).join(' ') }
+    profile_type { create(:profile_type) }
   end
 
   factory :measurement do

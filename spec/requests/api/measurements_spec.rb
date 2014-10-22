@@ -97,7 +97,7 @@ describe Api::V1::MeasurementsController do
 
     end
 
-    context 'filter measurements by context ID', focus: true do
+    context 'filter measurements by context ID' do
 
       let!(:c1) { create(:context) }
       let!(:c2) { create(:context) }
@@ -115,17 +115,11 @@ describe Api::V1::MeasurementsController do
 
       it 'returns measurements for selected sensor' do
         get api("/measurements?context_id=#{m11.timeline.context_id}", user)
-
-        puts "#{m11.timeline.context_id}"
-        puts "#{m12.timeline.context_id}"
-        puts "#{m2.timeline.context_id}"
-
-        puts "#{ms_response}"
         expect(ms_response.length).to eq 2
       end
 
       it 'combine filter params' do
-        get api("/measurements?sensor_id=#{s2.id}", user)
+        get api("/measurements?context_id=#{m11.timeline.context_id}&sensor_id=#{s2.id}", user)
         expect(ms_response.length).to eq 1
       end
 
