@@ -29,19 +29,13 @@ class MeasurementGenerator
 
   end
 
-  def self.from_dir(dir)
+  def initialize(dir)
     paths = []
     Dir.foreach(dir) do |name|
       path = File.join(dir,name)
       paths << path unless File.directory?(path)
     end
-    MeasurementGenerator.new(Feed.new(paths))
-  end
-
-  attr_accessor :feed
-
-  def initialize(feed)
-    @feed = feed
+    @feed = Feed.new(paths)
   end
 
   def generate(levee, context = Context.create { |c| c.name = "Generated data #{Time.now}" }, months = 1)
