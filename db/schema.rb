@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141016152255) do
+ActiveRecord::Schema.define(version: 20141022114408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(version: 20141016152255) do
   end
 
   create_table "contexts", force: true do |t|
-    t.string "name",                                  null: false
-    t.string "context_type", default: "measurements", null: false
+    t.string "name",                           null: false
+    t.string "context_type", default: "tests", null: false
   end
 
   create_table "edge_nodes", force: true do |t|

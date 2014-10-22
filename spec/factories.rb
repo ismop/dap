@@ -101,8 +101,13 @@ FactoryGirl.define do
 
   factory :profile do
     levee { create(:levee) }
+    profile_type { create(:profile_type) }
     shape { 'MULTIPOINT(49.981348 19.678777, 49.98191 19.678662, 49.981919 19.678856, 49.981928 19.679069)' }
     sensors {[]}
+  end
+
+  factory :profile_type do
+
   end
 
   factory :sensor do

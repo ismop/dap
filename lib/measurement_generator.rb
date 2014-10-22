@@ -44,7 +44,7 @@ class MeasurementGenerator
     @feed = feed
   end
 
-  def generate(levee, context, months = 1)
+  def generate(levee, context = Context.create { |c| c.name = "Generated data #{Time.now}" }, months = 1)
     time = Time.now - 2.weeks
 
     ActiveRecord::Base.transaction do
@@ -60,22 +60,24 @@ class MeasurementGenerator
             t.sensor = sensor
             t.context = context
           end
-          timelines[param_index].save
           param_index += 1
         end
+        Timeline.import timelines
 
+        measurements = []
         (1..months*30*24*60/15).each do |i|
           param_index = 0
           profile.sensors.each do
-            m = Measurement.new do |m|
+            measurements << Measurement.new do |m|
               m.value = data_row[param_index].to_f
               m.timestamp = time + (i*15).minutes
               m.timeline = timelines[param_index]
             end
-            m.save
             param_index += 1
           end
         end
+        Measurement.import measurements
+
       end
       true
     end

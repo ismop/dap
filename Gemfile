@@ -57,6 +57,9 @@ gem 'rgeo'
 # rgeo extensions for geoJSON API
 gem 'rgeo-geojson'
 
+# Activerecord-import is a library for bulk inserting data using ActiveRecord.
+gem 'activerecord-import', '~> 0.6.0'
+
 # The activerecord-postgis-adapter is the database adapter that will be using instead of the normal postgresql adapter.
 gem 'activerecord-postgis-adapter', github: 'barelyknown/activerecord-postgis-adapter', branch: 'rails-4-1'
 

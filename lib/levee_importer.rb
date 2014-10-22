@@ -59,7 +59,7 @@ class LeveeImporter
     @model_adapter = model_adapter
   end
 
-  def import(profile_type, levee_name = "Unnamed Levee #{Time.now}")
+  def import(profile_type = ProfileType.create, levee_name = "Unnamed Levee #{Time.now}")
     ActiveRecord::Base.transaction do
       levee = @model_adapter.build_levee(levee_name)
       levees = []
