@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141022114408) do
+ActiveRecord::Schema.define(version: 20141022143730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,6 +149,8 @@ ActiveRecord::Schema.define(version: 20141022114408) do
     t.spatial  "shape",           limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
     t.integer  "levee_id"
     t.integer  "profile_type_id"
+    t.string   "emergency_level",                                                                default: "none", null: false
+    t.string   "threat_level",                                                                   default: "none", null: false
   end
 
   add_index "profiles", ["levee_id"], :name => "index_profiles_on_levee_id"
