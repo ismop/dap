@@ -55,13 +55,12 @@ class MeasurementGenerator
         timelines = []
         param_index = 0
         profile.sensors.each do |sensor|
-          timelines[param_index] = Timeline.new do |t|
+          timelines[param_index] = Timeline.create do |t|
             t.sensor = sensor
             t.context = context
           end
           param_index += 1
         end
-        Timeline.import timelines
 
         measurements = []
         (1..months*30*24*60/15).each do |i|
