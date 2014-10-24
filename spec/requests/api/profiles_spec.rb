@@ -32,7 +32,7 @@ describe Api::V1::ProfilesController do
       let!(:s4) { create(:sensor, profile: p2, placement: "POINT (15 15 5)")}
 
 
-      it 'returns all profiles' do
+      it 'returns all profiles', focus: true do
         get api('/profiles', user)
         expect(ps_response).to be_an Array
         expect(ps_response.size).to eq 2

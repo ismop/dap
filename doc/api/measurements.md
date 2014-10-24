@@ -22,8 +22,8 @@ This will return all measurements which fall between 23 June 2014 15:50:40 UTC+0
       "timestamp": the exact date and time of this measurement
       "source_address": information on this measurement's source (for future use)
       "timeline_id": ID of the timeline to which this measurement belongs
-      "sensor_id": ID of the sensor to which this measurement belongs
     }, {
+
       ...
     }
   ]
@@ -48,7 +48,6 @@ Parameters:
     "timestamp": the exact date and time of this measurement
     "source_address": information on this measurement's source (for future use)
     "timeline_id": ID of the timeline to which this measurement belongs
-    "sensor_id": ID of the sensor to which this measurement belongs
   }
 }
 ```

@@ -27,11 +27,13 @@ GET /profiles?selection=POLYGON%20((0%200,%200%2010,%2010%2010,%2010%200,%200%20
   "profiles": [
     {
       "id": a numerical unique id (e.g. 1),
-      "name": some human-readable name of the profile,
+      "shape": the geometry of the profile given in the GeoJSON notation
+      "threat_level": one of "none", "heightened", "severe" - to be set by the Levee operations monitoring system,
       "experiment_ids": identifiers of experiments which include the target profile,
       "sensor_ids": identifiers of sensors which belong to the target profile.
     }, {
-      ...
+    {
+     ...
     }
   ]
 }
@@ -52,10 +54,11 @@ Parameters:
 ```json
 {
   "profile": {
-      "id": a numerical unique id (e.g. 1),
-      "name": some human-readable name of the profile,
-      "experiment_ids": identifiers of experiments which include the target profile,
-      "sensor_ids": identifiers of sensors which belong to the target profile.
+     "id": a numerical unique id (e.g. 1),
+     "shape": the geometry of the profile given in the GeoJSON notation
+     "threat_level": one of "none", "heightened", "severe" - to be set by the Levee operations monitoring system,
+     "experiment_ids": identifiers of experiments which include the target profile,
+     "sensor_ids": identifiers of sensors which belong to the target profile.
   }
 }
 ```
