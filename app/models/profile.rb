@@ -1,7 +1,6 @@
 class Profile < ActiveRecord::Base
 
   validates_presence_of :profile_type
-  validates :emergency_level, inclusion: {in: ["none", "heightened", "severe"]}
   validates :threat_level, inclusion: {in: ["none", "heightened", "severe"]}
 
   has_many :sensors, dependent: :destroy
