@@ -26,10 +26,15 @@ module Api
       render_error exception.record
     end
 
+    rescue_from ActionController::BadRequest do |exception|
+      render json: {message: exception.to_s}, status: :bad_request
+    end
+
     protected
     def render_error(model_obj)
       render json: model_obj.errors, status: :unprocessable_entity
     end
 
   end
+
 end
