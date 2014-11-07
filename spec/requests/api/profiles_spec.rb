@@ -53,6 +53,13 @@ describe Api::V1::ProfilesController do
         expect(ps_response.size).to eq 2
         expect(ps_response.collect{|p| p['id']}.sort).to eq [p1.id, p2.id].sort
       end
+
+
+      it 'returns 400 after unparseable input', focus: true do
+        get api("/profiles?selection=#{URI::encode('POLYGON ((0 0, 0 20, 20 20, 20 0, 0 0))')}2", user)
+        expect(response.status).to eq 400
+      end
+
     end
   end
 

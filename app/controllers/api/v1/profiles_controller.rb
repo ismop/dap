@@ -8,8 +8,13 @@ module Api
         selected_profiles = @profiles.where(filter)
         if !params['selection'].blank?
           # Parse the selection parameter into an RGeo feature
-          wkt_parser = RGeo::WKRep::WKTParser.new
-          selection = wkt_parser.parse(params['selection'])
+          begin
+            wkt_parser = RGeo::WKRep::WKTParser.new
+            selection = wkt_parser.parse(params['selection'])
+          rescue Exception => e
+            raise ActionController::BadRequest.new('profiles', e)
+          end
+
           if selection.blank?
             selected_profiles = [] # Or throw an exception instead? (400 Bad Request + message)
           else
@@ -36,5 +41,6 @@ module Api
         params.require(:profile).permit(:all)
       end
     end
+
   end
 end
