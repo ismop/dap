@@ -55,7 +55,7 @@ describe Api::V1::ProfilesController do
       end
 
 
-      it 'returns 400 after unparseable input', focus: true do
+      it 'returns 400 after unparseable input' do
         get api("/profiles?selection=#{URI::encode('POLYGON ((0 0, 0 20, 20 20, 20 0, 0 0))')}2", user)
         expect(response.status).to eq 400
       end
