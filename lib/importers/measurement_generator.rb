@@ -2,6 +2,8 @@ require 'csv'
 
 class MeasurementGenerator
 
+  attr_accessor :feed
+
   class Feed
 
     def initialize(paths)
@@ -73,6 +75,7 @@ class MeasurementGenerator
             end
             param_index += 1
           end
+          data_row = @feed.next_row
         end
         Measurement.import measurements
 
