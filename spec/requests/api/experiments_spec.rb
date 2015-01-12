@@ -7,6 +7,7 @@ describe Api::V1::ExperimentsController do
   let(:user) { create(:user) }
   let!(:e1) { create(:experiment) }
 
+
   describe 'GET /experiments' do
     context 'when unauthenticated' do
       it 'returns 401 Unauthorized error' do
@@ -16,9 +17,8 @@ describe Api::V1::ExperimentsController do
     end
 
     context 'when authenticated as user' do
-      it 'returns 200 on success' do
+      it 'returns 200 on success'   do
         get api('/experiments', user)
-        #puts response.body
         expect(response.status).to eq 200
       end
 
