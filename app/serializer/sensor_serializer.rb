@@ -24,7 +24,7 @@ class SensorSerializer < ActiveModel::Serializer
   end
 
   def measurement_type_name
-    object.measurement_type.nil? ? nil : object.measurement_type_name.name
+    object.measurement_type.nil? ? nil : object.measurement_type.name
   end
 
   def measurement_type_unit
