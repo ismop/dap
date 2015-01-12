@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141024161112) do
+ActiveRecord::Schema.define(version: 20150112122456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,7 +149,6 @@ ActiveRecord::Schema.define(version: 20141024161112) do
     t.spatial  "shape",           limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
     t.integer  "levee_id"
     t.integer  "profile_type_id"
-    t.string   "threat_level",                                                                   default: "none", null: false
   end
 
   add_index "profiles", ["levee_id"], :name => "index_profiles_on_levee_id"
@@ -166,9 +165,10 @@ ActiveRecord::Schema.define(version: 20141024161112) do
 
   create_table "scenarios", force: true do |t|
     t.string  "file_name"
-    t.binary  "payload",         null: false
+    t.binary  "payload",                          null: false
     t.integer "context_id"
     t.integer "profile_type_id"
+    t.string  "threat_level",    default: "none"
   end
 
   add_index "scenarios", ["context_id"], :name => "index_scenarios_on_context_id"

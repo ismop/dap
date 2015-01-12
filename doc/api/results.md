@@ -1,7 +1,7 @@
 ## List results
 
 Get a list of all results present in the registry. You need to authorize yourself with an administrator account (a token).
-Each result belongs to a profile, a timeline and an experiment.
+Each result belongs to a profile, a scenario and an experiment.
 
 ```
 GET /results
@@ -17,7 +17,7 @@ No parameters are required.
       "similarity": the smiliarity value which constitutes the payload of the result object (Float).
       "profile_id": identifier of the profile to which this result applies,
       "experiment_id": identifier of the experiment which generated this result,
-      "timeline_id": identifier of the timeline to which this result applies.
+      "scenario_id": identifier of the scenario to which this result applies.
     }, {
       ...
     }
@@ -44,12 +44,12 @@ Parameters:
     "similarity": the smiliarity value which constitutes the payload of the result object (Float),
     "profile_id": identifier of the profile to which this result applies,
     "experiment_id": identifier of the experiment which generated this result,
-    "timeline_id": identifier of the timeline to which this result applies.
+    "scenario_id": identifier of the scenario to which this result applies.
   }
 }
 ```
 
-Allows you to register a new result. You need to supply the similarity value (a float number) as well as the identifiers of this result's assigned profile, experiment and timeline.
+Allows you to register a new result. You need to supply the similarity value (a float number) as well as the identifiers of this result's assigned profile, experiment and scenario.
 
 You need to authorize yourself with an administrator account (a token).
 
@@ -62,7 +62,7 @@ Parameters:
 + `similarity` (required) - the similarity value which constitutes the payload of the result object (Float),
 + `profile_id` (required) - the ID of the profile to which this result applies,
 + `experiment_id` (required) - the ID of the experiment which generated this result,
-+ `timeline_id` (required) - the ID of the timeline to which this result applies.
++ `scenario_id` (required) - the ID of the scenario to which this result applies.
 
 The operation return the JSON representation of the newly created result
 
