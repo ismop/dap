@@ -28,7 +28,6 @@ GET /profiles?selection=POLYGON%20((0%200,%200%2010,%2010%2010,%2010%200,%200%20
     {
       "id": a numerical unique id (e.g. 1),
       "shape": the geometry of the profile given in the GeoJSON notation
-      "experiment_ids": identifiers of experiments which include the target profile,
       "sensor_ids": identifiers of sensors which belong to the target profile.
     }, {
     {
@@ -55,7 +54,6 @@ Parameters:
   "profile": {
      "id": a numerical unique id (e.g. 1),
      "shape": the geometry of the profile given in the GeoJSON notation
-     "experiment_ids": identifiers of experiments which include the target profile,
      "sensor_ids": identifiers of sensors which belong to the target profile.
   }
 }
