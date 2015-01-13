@@ -46,11 +46,10 @@ class MeasurementGenerator
   def generate(levee, context = nil, months = 1)
     start_time = Time.now - 2.weeks
 
-    ActiveRecord::Base.transaction do
-      context ||= Context.create { |c| c.name = "Generated data #{Time.now}" }
+    context ||= Context.create { |c| c.name = "Generated data #{Time.now}" }
 
-      levee.profiles.each do |profile|
-
+    levee.profiles.each do |profile|
+      ActiveRecord::Base.transaction do
         data_row = @feed.next_row
         raise "wrong number of parameters in scenario" if profile.sensors.count != data_row.length
 
@@ -78,9 +77,8 @@ class MeasurementGenerator
           data_row = @feed.next_row
         end
         Measurement.import measurements
-
       end
-      true
     end
+    true
   end
 end
