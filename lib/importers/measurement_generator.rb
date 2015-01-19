@@ -51,7 +51,7 @@ class MeasurementGenerator
     levee.profiles.each do |profile|
       ActiveRecord::Base.transaction do
         data_row = @feed.next_row
-        raise "wrong number of parameters in scenario" if profile.sensors.count != data_row.length
+        raise "wrong number of parameters in scenario" if profile.sensors.count > data_row.length
 
         timelines = []
         param_index = 0
