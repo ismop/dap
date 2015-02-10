@@ -7,6 +7,7 @@ describe Api::V1::ExperimentsController do
   let(:user) { create(:user) }
   let!(:e1) { create(:experiment) }
 
+
   describe 'GET /experiments' do
     context 'when unauthenticated' do
       it 'returns 401 Unauthorized error' do
@@ -18,7 +19,6 @@ describe Api::V1::ExperimentsController do
     context 'when authenticated as user' do
       it 'returns 200 on success' do
         get api('/experiments', user)
-        #puts response.body
         expect(response.status).to eq 200
       end
 
@@ -53,6 +53,23 @@ describe Api::V1::ExperimentsController do
       end
 
     end
+
+    context 'when result set' do
+      let!(:result) { create(:result) }
+      let!(:e2) { create(:experiment, results: [result]) }
+      it 'returns only selected experiments' do
+        get api("/experiments?id=#{e1.id}", user)
+        expect(exps_response[0]).to include 'results'
+        expect(exps_response[0]['results'].size).to eq 0
+      end
+      it 'returns only selected experiments with proper results' do
+        get api("/experiments?id=#{e2.id}", user)
+        expect(exps_response[0]).to include 'results'
+        expect(exps_response[0]['results'].size).to eq 1
+        expect(exps_response[0]['results'].first['id']).to eq result.id
+      end
+    end
+
   end
 
   describe 'POST /experiments' do

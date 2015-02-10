@@ -12,23 +12,23 @@ class SensorSerializer < ActiveModel::Serializer
   end
 
   def activity_state
-    object.activity_state.name
+    object.activity_state.nil? ? nil : object.activity_state.name
   end
 
   def power_type
-    object.power_type.name
+    object.power_type.nil? ? nil : object.power_type.name
   end
 
   def interface_type
-    object.interface_type.name
+    object.interface_type.nil? ? nil : object.interface_type.name
   end
 
   def measurement_type_name
-    object.measurement_type.name
+    object.measurement_type.nil? ? nil : object.measurement_type.name
   end
 
   def measurement_type_unit
-    object.measurement_type.unit
+    object.measurement_type.nil? ? nil : object.measurement_type.unit
   end
 
   def timeline_ids

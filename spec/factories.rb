@@ -14,7 +14,6 @@ end
 FactoryGirl.define do
   factory :levee do
     name { rand_str }
-    shape { 'MULTIPOINT(49.981348 19.678777 211.21, 49.98191 19.678662 211.14, 49.981919 19.678856 215.70, 49.981928 19.679069 211.10, 49.981371 19.679169 210.84, 49.981357 19.678973 215.84)' }
   end
 
   factory :experiment do
@@ -101,7 +100,14 @@ FactoryGirl.define do
   end
 
   factory :profile do
-    name { Faker::Lorem.words(2).join('_') }
+    levee { create(:levee) }
+    profile_type { create(:profile_type) }
+    shape { 'MULTIPOINT(49.981348 19.678777, 49.98191 19.678662, 49.981919 19.678856, 49.981928 19.679069)' }
+    sensors {[]}
+  end
+
+  factory :profile_type do
+
   end
 
   factory :sensor do
@@ -136,21 +142,24 @@ FactoryGirl.define do
   end
 
   factory :timeline do
-    name { Faker::Lorem.words(3).join(' ') }
-    measurement_type 'actual'
+    self.context { create(:context) }
+  end
+
+  factory :context do
+    context_type 'tests'
+    name 'test context'
   end
 
   factory :scenario do
     file_name { Faker::Lorem.words(3).join(' ') }
     payload { Faker::Lorem.words(10).join(' ') }
+    profile_type { create(:profile_type) }
   end
 
   factory :measurement do
     value { rand(-99.99..99.99) }
     timestamp { rand(1..24).hours.ago }
     source_address { rand_str(10) }
-
-    sensor
     timeline { sensor.timelines.first }
   end
 

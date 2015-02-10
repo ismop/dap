@@ -5,7 +5,7 @@ module Api
       respond_to :json
 
       def index
-        selected_profiles = @profiles.where(filter)
+        selected_profiles = @profiles.includes(:sensors).where(filter)
         if !params['selection'].blank?
           # Parse the selection parameter into an RGeo feature
           begin

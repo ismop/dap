@@ -12,9 +12,8 @@ No parameters are required, although it is possible to filter by selected attrib
   "timelines": [
     {
       "id": numerically unique id (e.g. 1),
-      "name": user-defined name of this timeline,
-      "measurement_type": type of this timeline. Valid options: "actual" (actual sensor readings), "simulated" (simulated sensor readings), "forecast" (predicted sensor readings)
       "sensor_id": ID of the sensor represented by this timeline.
+      "context_id": ID of the context the timeline is connected with.
     }, {
       ...
     }
@@ -36,9 +35,8 @@ Parameters:
 {
   "timeline": {
       "id": numerically unique id (e.g. 1),
-      "name": user-defined name of this timeline,
-      "measurement_type": type of this timeline. Valid options: "actual" (actual sensor readings), "simulated" (simulated sensor readings), "forecast" (predicted sensor readings)
-      "sensor_id": ID of the sensor represented by this timeline.
+       "sensor_id": ID of the sensor represented by this timeline.
+       "context_id": ID of the context the timeline is connected with.
   }
 }
 ```

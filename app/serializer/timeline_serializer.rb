@@ -1,4 +1,4 @@
 class TimelineSerializer < ActiveModel::Serializer
   embed :ids
-  attributes :id, :name, :measurement_type, :sensor_id
+  attributes :id, :sensor_id, :context_id
 end

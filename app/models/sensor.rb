@@ -26,7 +26,6 @@ class Sensor < ActiveRecord::Base
   belongs_to :power_type
 
   has_many :timelines, dependent: :destroy
-  has_many :measurements, dependent: :destroy
 
   self.rgeo_factory_generator = RGeo::Geos.factory_generator
 

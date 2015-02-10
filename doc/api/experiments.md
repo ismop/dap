@@ -24,7 +24,7 @@ contains at least one sensor falling within the target polygon will be included 
       "end_date": end of the experiment (timestamp),
       "status": current experiment status. Permitted values are: "unknown", "started", "finished", "error"
       "profile_ids": identifiers of profiles which are covered by this experiment,
-      "result_ids": identifiers of all results registered for this experiment
+      "results": all results registered for this experiment
     }, {
       ...
     }
@@ -54,7 +54,7 @@ Parameters:
     "end_date": end of the experiment (timestamp),
     "status": current experiment status. Permitted values are: "unknown", "started", "finished", "error"
     "profile_ids": identifiers of profiles which are covered by this experiment,
-    "result_ids": identifiers of all results registered for this experiment
+    "results": all results registered for this experiment
   }
 }
 ```

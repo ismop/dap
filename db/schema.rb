@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141015082926) do
+ActiveRecord::Schema.define(version: 20150112122456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,11 @@ ActiveRecord::Schema.define(version: 20141015082926) do
     t.string   "name",       default: "unnamed activity", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "contexts", force: true do |t|
+    t.string "name",                           null: false
+    t.string "context_type", default: "tests", null: false
   end
 
   create_table "edge_nodes", force: true do |t|
@@ -69,11 +74,10 @@ ActiveRecord::Schema.define(version: 20141015082926) do
   end
 
   create_table "levees", force: true do |t|
-    t.string   "name",                                                                                                 default: "unnamed levee", null: false
-    t.string   "emergency_level",                                                                                      default: "none",          null: false
-    t.string   "threat_level",                                                                                         default: "none",          null: false
-    t.spatial  "shape",                   limit: {:srid=>4326, :type=>"multi_point", :has_z=>true, :geographic=>true}
-    t.datetime "threat_level_updated_at",                                                                              default: "now()",         null: false
+    t.string   "name",                    default: "unnamed levee", null: false
+    t.string   "emergency_level",         default: "none",          null: false
+    t.string   "threat_level",            default: "none",          null: false
+    t.datetime "threat_level_updated_at", default: "now()",         null: false
   end
 
   create_table "measurement_nodes", force: true do |t|
@@ -115,13 +119,9 @@ ActiveRecord::Schema.define(version: 20141015082926) do
     t.float    "value",          null: false
     t.datetime "timestamp",      null: false
     t.string   "source_address"
-    t.integer  "sensor_id"
     t.integer  "timeline_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
-  add_index "measurements", ["sensor_id"], :name => "index_measurements_on_sensor_id"
   add_index "measurements", ["timeline_id"], :name => "index_measurements_on_timeline_id"
   add_index "measurements", ["timestamp"], :name => "index_measurements_on_timestamp"
 
@@ -131,21 +131,28 @@ ActiveRecord::Schema.define(version: 20141015082926) do
     t.datetime "updated_at"
   end
 
-  create_table "profile_sets", id: false, force: true do |t|
+  create_table "profile_selections", id: false, force: true do |t|
     t.integer "experiment_id"
     t.integer "profile_id"
   end
 
-  add_index "profile_sets", ["experiment_id", "profile_id"], :name => "index_profile_sets_on_experiment_id_and_profile_id"
-  add_index "profile_sets", ["experiment_id"], :name => "index_profile_sets_on_experiment_id"
-  add_index "profile_sets", ["profile_id"], :name => "index_profile_sets_on_profile_id"
+  add_index "profile_selections", ["experiment_id", "profile_id"], :name => "index_profile_selections_on_experiment_id_and_profile_id"
+  add_index "profile_selections", ["experiment_id"], :name => "index_profile_selections_on_experiment_id"
+  add_index "profile_selections", ["profile_id"], :name => "index_profile_selections_on_profile_id"
+
+  create_table "profile_types", force: true do |t|
+  end
 
   create_table "profiles", force: true do |t|
-    t.string   "name",                                                                      default: "Unnamed profile", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "shape",      limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
+    t.spatial  "shape",           limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
+    t.integer  "levee_id"
+    t.integer  "profile_type_id"
   end
+
+  add_index "profiles", ["levee_id"], :name => "index_profiles_on_levee_id"
+  add_index "profiles", ["profile_type_id"], :name => "index_profiles_on_profile_type_id"
 
   create_table "results", force: true do |t|
     t.float   "similarity"
@@ -157,9 +164,15 @@ ActiveRecord::Schema.define(version: 20141015082926) do
   add_index "results", ["scenario_id"], :name => "index_results_on_scenario_id"
 
   create_table "scenarios", force: true do |t|
-    t.string "file_name"
-    t.binary "payload",   null: false
+    t.string  "file_name"
+    t.binary  "payload",                          null: false
+    t.integer "context_id"
+    t.integer "profile_type_id"
+    t.string  "threat_level",    default: "none"
   end
+
+  add_index "scenarios", ["context_id"], :name => "index_scenarios_on_context_id"
+  add_index "scenarios", ["profile_type_id"], :name => "index_scenarios_on_profile_type_id"
 
   create_table "sensors", force: true do |t|
     t.string   "custom_id",                                                                                  default: "unknown ID",            null: false
@@ -197,14 +210,11 @@ ActiveRecord::Schema.define(version: 20141015082926) do
   add_index "sensors", ["power_type_id"], :name => "index_sensors_on_power_type_id"
 
   create_table "timelines", force: true do |t|
-    t.string   "name",             default: "unnamed timeline", null: false
-    t.string   "measurement_type", default: "actual",           null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "sensor_id"
+    t.integer "sensor_id"
+    t.integer "context_id"
   end
 
-  add_index "timelines", ["measurement_type"], :name => "index_timelines_on_measurement_type"
+  add_index "timelines", ["context_id"], :name => "index_timelines_on_context_id"
   add_index "timelines", ["sensor_id"], :name => "index_timelines_on_sensor_id"
 
   create_table "users", force: true do |t|
