@@ -26,10 +26,10 @@ describe Api::V1::ProfilesController do
       let!(:p2) { create(:profile, levee: levee) }
 
       # Create four sensors with easy-to-manipulate geographical placement
-      let!(:s1) { create(:sensor, profile: p1, placement: "POINT (5 5 5)")}
-      let!(:s2) { create(:sensor, profile: p1, placement: "POINT (5 15 5)")}
-      let!(:s3) { create(:sensor, profile: p2, placement: "POINT (15 5 5)")}
-      let!(:s4) { create(:sensor, profile: p2, placement: "POINT (15 15 5)")}
+      let!(:s1) { create(:sensor, profile: p1, placement: "POINT (5 6 7)")}
+      let!(:s2) { create(:sensor, profile: p1, placement: "POINT (8 9 10)")}
+      let!(:s3) { create(:sensor, profile: p2, placement: "POINT (10 11 12)")}
+      let!(:s4) { create(:sensor, profile: p2, placement: "POINT (13 14 15)")}
 
 
       it 'returns all profiles' do
@@ -56,7 +56,7 @@ describe Api::V1::ProfilesController do
 
 
       it 'returns 400 after unparseable input' do
-        get api("/profiles?selection=#{URI::encode('POLYGON ((0 0, 0 20, 20 20, 20 0, 0 0))')}2", user)
+        get api("/profiles?selection=#{URI::encode('POLYGON ((0 0, 0 20, 20 20, 20 0, 0 0))')}231", user)
         expect(response.status).to eq 400
       end
 
