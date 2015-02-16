@@ -53,20 +53,6 @@ ActiveRecord::Schema.define(version: 20150112122456) do
   add_index "edge_nodes", ["interface_type_id"], :name => "index_edge_nodes_on_interface_type_id"
   add_index "edge_nodes", ["last_state_change"], :name => "index_edge_nodes_on_last_state_change"
 
-  create_table "experiments", force: true do |t|
-    t.string   "name",                                                                      default: "Unnamed experiment", null: false
-    t.datetime "start_date",                                                                                               null: false
-    t.datetime "end_date"
-    t.string   "status",                                                                    default: "unknown",            null: false
-    t.string   "status_message",                                                            default: ""
-    t.spatial  "selection",      limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "experiments", ["end_date"], :name => "index_experiments_on_end_date"
-  add_index "experiments", ["start_date"], :name => "index_experiments_on_start_date"
-
   create_table "interface_types", force: true do |t|
     t.string   "name",       default: "unnamed interface type", null: false
     t.datetime "created_at"
@@ -133,7 +119,7 @@ ActiveRecord::Schema.define(version: 20150112122456) do
 
   create_table "results", force: true do |t|
     t.float   "similarity"
-    t.integer "experiment_id"
+    t.integer "threat_assessment_id"
     t.integer "section_id"
     t.integer "scenario_id"
   end
@@ -152,13 +138,13 @@ ActiveRecord::Schema.define(version: 20150112122456) do
   add_index "scenarios", ["section_type_id"], :name => "index_scenarios_on_section_type_id"
 
   create_table "section_selections", id: false, force: true do |t|
-    t.integer "experiment_id"
+    t.integer "threat_assessment_id"
     t.integer "section_id"
   end
 
-  add_index "section_selections", ["experiment_id", "section_id"], :name => "index_section_selections_on_experiment_id_and_section_id"
-  add_index "section_selections", ["experiment_id"], :name => "index_section_selections_on_experiment_id"
   add_index "section_selections", ["section_id"], :name => "index_section_selections_on_section_id"
+  add_index "section_selections", ["threat_assessment_id", "section_id"], :name => "index_section_selections_on_threat_assessment_id_and_section_id"
+  add_index "section_selections", ["threat_assessment_id"], :name => "index_section_selections_on_threat_assessment_id"
 
   create_table "section_types", force: true do |t|
   end
@@ -208,6 +194,20 @@ ActiveRecord::Schema.define(version: 20150112122456) do
   add_index "sensors", ["interface_type_id"], :name => "index_sensors_on_interface_type_id"
   add_index "sensors", ["last_state_change"], :name => "index_sensors_on_last_state_change"
   add_index "sensors", ["power_type_id"], :name => "index_sensors_on_power_type_id"
+
+  create_table "threat_assessments", force: true do |t|
+    t.string   "name",                                                                      default: "Unnamed threat assessment", null: false
+    t.datetime "start_date",                                                                                                      null: false
+    t.datetime "end_date"
+    t.string   "status",                                                                    default: "unknown",                   null: false
+    t.string   "status_message",                                                            default: ""
+    t.spatial  "selection",      limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "threat_assessments", ["end_date"], :name => "index_threat_assessments_on_end_date"
+  add_index "threat_assessments", ["start_date"], :name => "index_threat_assessments_on_start_date"
 
   create_table "timelines", force: true do |t|
     t.integer "sensor_id"

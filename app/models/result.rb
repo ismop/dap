@@ -2,7 +2,7 @@ class Result < ActiveRecord::Base
 
   validates_numericality_of :similarity
 
-  belongs_to :experiment
+  belongs_to :threat_assessment
   belongs_to :section
   belongs_to :scenario
 

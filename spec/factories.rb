@@ -16,7 +16,7 @@ FactoryGirl.define do
     name { rand_str }
   end
 
-  factory :experiment do
+  factory :threat_assessment do
     name { rand_str }
     start_date { rand(2..5).hours.ago }
     end_date { rand(0..1).hours.ago }
@@ -30,7 +30,7 @@ FactoryGirl.define do
     similarity { rand(0.0..100.0) }
 
     section
-    experiment
+    threat_assessment
     scenario
   end
 

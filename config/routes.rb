@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :levees, only: [:index, :show, :update]
-      resources :experiments, only: [:index, :show, :update, :create]
+      resources :threat_assessments, only: [:index, :show, :update, :create]
       resources :results, only: [:index, :show, :update, :create]
       resources :measurements, only: [:index, :show, :update, :create]
       resources :sensors, only: [:index, :show, :update, :create]

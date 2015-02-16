@@ -1,4 +1,4 @@
-class Experiment < ActiveRecord::Base
+class ThreatAssessment < ActiveRecord::Base
 
   validates_presence_of :name
   validates :status, inclusion: {in: ["unknown", "started", "finished", "error"]}

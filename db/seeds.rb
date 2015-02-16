@@ -70,13 +70,13 @@ t4 = Timeline.create(name: 'Sensor 4 timeline', measurement_type: 'actual', sens
 p1 = Section.create(name: 'Section 1', sensors: [s1, s2])
 p2 = Section.create(name: 'Section 2', sensors: [s3, s4])
 
-# Experiments
-e1 = Experiment.create(name: 'Experiment 1', selection: 'POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))', start_date: '2014-09-09 20:15', end_date: '2014-09-09 20:20', sections: [p1, p2] )
+# ThreatAssessment
+e1 = ThreatAssessment.create(name: 'Threat assessment 1', selection: 'POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))', start_date: '2014-09-09 20:15', end_date: '2014-09-09 20:20', sections: [p1, p2] )
 
 # Results
-Result.create(similarity: 2.5, experiment: e1, section: p1, timeline: t1)
-Result.create(similarity: 3.5, experiment: e1, section: p1, timeline: t2)
-Result.create(similarity: 7.0, experiment: e1, section: p2, timeline: t3)
-Result.create(similarity: 9.9, experiment: e1, section: p2, timeline: t4)
+Result.create(similarity: 2.5, threat_assessment: e1, section: p1, timeline: t1)
+Result.create(similarity: 3.5, threat_assessment: e1, section: p1, timeline: t2)
+Result.create(similarity: 7.0, threat_assessment: e1, section: p2, timeline: t3)
+Result.create(similarity: 9.9, threat_assessment: e1, section: p2, timeline: t4)
 
 #mtypes = MeasurementType.create([])

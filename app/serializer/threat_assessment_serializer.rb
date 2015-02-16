@@ -1,4 +1,4 @@
-class ExperimentSerializer < ActiveModel::Serializer
+class ThreatAssessmentSerializer < ActiveModel::Serializer
 
   attributes :id, :name, :status, :start_date, :end_date, :selection, :section_ids
 

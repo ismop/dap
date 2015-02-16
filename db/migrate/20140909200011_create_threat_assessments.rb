@@ -1,7 +1,7 @@
-class CreateExperiments < ActiveRecord::Migration
+class CreateThreatAssessments < ActiveRecord::Migration
   def change
-    create_table :experiments do |t|
-      t.string :name,                    null:false, default: "Unnamed experiment"
+    create_table :threat_assessments do |t|
+      t.string :name,                    null:false, default: "Unnamed threat assessment"
       t.timestamp :start_date,           null:false
       t.timestamp :end_date,             null:true
       t.string :status,                  null:false, default: "unknown"
@@ -12,8 +12,8 @@ class CreateExperiments < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :experiments, :start_date, unique: false
-    add_index :experiments, :end_date, unique: false
+    add_index :threat_assessments, :start_date, unique: false
+    add_index :threat_assessments, :end_date, unique: false
 
   end
 end

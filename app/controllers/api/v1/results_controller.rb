@@ -12,8 +12,8 @@ module Api
         if !params['result']['scenario_id'].blank?
           result.scenario = Scenario.find(params['result']['scenario_id'].to_i)
         end
-        if !params['result']['experiment_id'].blank?
-          result.experiment = Experiment.find(params['result']['experiment_id'].to_i)
+        if !params['result']['threat_assessment_id'].blank?
+          result.threat_assessment = ThreatAssessment.find(params['result']['threat_assessment_id'].to_i)
         end
 
         result.save!
@@ -36,7 +36,7 @@ module Api
       private
 
       def result_params
-        params.require(:result).permit(:similarity, :experiment_id, :section_id, :scenario_id)
+        params.require(:result).permit(:similarity, :threat_assessment_id, :section_id, :scenario_id)
       end
     end
   end

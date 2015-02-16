@@ -3,7 +3,7 @@ class CreateResults < ActiveRecord::Migration
     create_table :results do |t|
       t.float :similarity,                    null:true
 
-      t.references :experiment
+      t.references :threat_assessment
       t.references :section
       t.references :timeline
 

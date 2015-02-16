@@ -8,7 +8,7 @@ class Section < ActiveRecord::Base
   belongs_to :levee
   belongs_to :section_type
 
-  has_and_belongs_to_many :experiments, join_table: 'section_selections'
+  has_and_belongs_to_many :threat_assessments, join_table: 'section_selections'
 
   def profile_shape
     if sensors.count < 2
