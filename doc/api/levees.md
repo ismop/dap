@@ -7,11 +7,7 @@ the system. You need to authorize yourself with an administrator account (a toke
 GET /levees
 ```
 
-No parameters are required. The /shape/ parameter is given in a notation called GeoJSON, that uses JSON document
-to denote geographical data. More information at http://geojson.org/geojson-spec.html. Currently, we use the
-MultiPoint geometric type to describe all the points in 3D space which define the shape of the Levee. The 2D
-coordinates are given in the popular WGS 84 system, with longitude and latitude represented in degrees of the
-spherical coordinates. The elevation, the third element of each point, is given in meter above the sea level.
+No parameters are required.
 
 ```json
 {
@@ -21,8 +17,7 @@ spherical coordinates. The elevation, the third element of each point, is given 
       "name": some human-readable name of the Levee,
       "emergency_level": one of "none", "heightened", "severe" - to be set by the human operator,
       "threat_level": one of "none", "heightened", "severe" - to be set by the Levee operations monitoring system,
-      "threat_level_updated_at": a timestamp when the most recent threat_level change took place,
-      "shape": the geometry of the Levee given in the GeoJSON notation
+      "threat_level_updated_at": a timestamp when the most recent threat_level change took place
     }, {
       ...
     }
@@ -50,8 +45,7 @@ Parameters:
     "name": some human-readable name of the Levee,
     "emergency_level": one of "none", "heightened", "severe" - to be set by the human operator,
     "threat_level": one of "none", "heightened", "severe" - to be set by the Levee operations monitoring system,
-    "threat_level_updated_at": a timestamp when the most recent threat_level change took place,
-    "shape": the geometry of the Levee given in the GeoJSON notation
+    "threat_level_updated_at": a timestamp when the most recent threat_level change took place
   }
 }
 ```

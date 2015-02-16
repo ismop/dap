@@ -1,14 +1,14 @@
-class Profile < ActiveRecord::Base
+class Section < ActiveRecord::Base
 
-  validates_presence_of :profile_type
+  validates_presence_of :section_type
 
   has_many :sensors, dependent: :destroy
   has_many :results, dependent: :destroy
 
   belongs_to :levee
-  belongs_to :profile_type
+  belongs_to :section_type
 
-  has_and_belongs_to_many :experiments, join_table: 'profile_selections'
+  has_and_belongs_to_many :experiments, join_table: 'section_selections'
 
   def profile_shape
     if sensors.count < 2

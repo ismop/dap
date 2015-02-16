@@ -33,22 +33,22 @@ class LeveeImporter
     @json = JSON.parse(file)
   end
 
-  def import(profile_type = nil, levee_name = "Unnamed Levee #{Time.now}")
+  def import(section_type = nil, levee_name = "Unnamed Levee #{Time.now}")
     ActiveRecord::Base.transaction do
-      profile_type ||= ProfileType.create
+      section_type ||= SectionType.create
       levee = Levee.create { |l| l.name = levee_name }
       levees = []
-      @json.each_value do |profile|
-        polygon = profile["polygon"].map do |point|
+      @json.each_value do |section|
+        polygon = section["polygon"].map do |point|
           RGeo::Cartesian.factory.point(point[0], point[1])
         end
-        prof = Profile.create do |profile|
-          profile.shape = RGeo::Cartesian.factory.multi_point(polygon)
-          profile.levee = levee
-          profile.profile_type = profile_type
+        prof = Section.create do |section|
+          section.shape = RGeo::Cartesian.factory.multi_point(polygon)
+          section.levee = levee
+          section.section_type = section_type
         end
         sensors =[]
-        profile["points"].each do |point|
+        section["points"].each do |point|
           sensors << build_sensor(RGeo::Cartesian.factory.point(point[0], point[1]), prof).tap {|s| s.save}
         end
         levees << [prof, sensors]
@@ -59,7 +59,7 @@ class LeveeImporter
 
   private
 
-  def build_sensor(placement, profile)
+  def build_sensor(placement, section)
 
     @date ||= Time.parse("2014-06-01 12:00:00")
     id = Random.rand(10000000).to_s
@@ -88,7 +88,7 @@ class LeveeImporter
       sensor.power_type_id = 2
       sensor.interface_type_id = 3
       sensor.measurement_type_id = 1
-      sensor.profile_id = profile.id
+      sensor.section_id = section.id
     end
   end
 

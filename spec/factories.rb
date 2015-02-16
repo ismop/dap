@@ -23,13 +23,13 @@ FactoryGirl.define do
     status { ["unknown", "started", "finished", "error"].sample }
     selection { 'POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))' }
 
-    profiles { [create(:profile), create(:profile)] }
+    sections { [create(:section), create(:section)] }
   end
 
   factory :result do
     similarity { rand(0.0..100.0) }
 
-    profile
+    section
     experiment
     scenario
   end
@@ -99,14 +99,14 @@ FactoryGirl.define do
     interface_type
   end
 
-  factory :profile do
+  factory :section do
     levee { create(:levee) }
-    profile_type { create(:profile_type) }
+    section_type { create(:section_type) }
     shape { 'MULTIPOINT(49.981348 19.678777, 49.98191 19.678662, 49.981919 19.678856, 49.981928 19.679069)' }
     sensors {[]}
   end
 
-  factory :profile_type do
+  factory :section_type do
 
   end
 
@@ -133,7 +133,7 @@ FactoryGirl.define do
     precision { rand(0.0..99.99) }
 
     measurement_node
-    profile
+    section
     activity_state
     power_type
     interface_type
@@ -153,7 +153,7 @@ FactoryGirl.define do
   factory :scenario do
     file_name { Faker::Lorem.words(3).join(' ') }
     payload { Faker::Lorem.words(10).join(' ') }
-    profile_type { create(:profile_type) }
+    section_type { create(:section_type) }
   end
 
   factory :measurement do

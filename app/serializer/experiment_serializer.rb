@@ -1,6 +1,6 @@
 class ExperimentSerializer < ActiveModel::Serializer
 
-  attributes :id, :name, :status, :start_date, :end_date, :selection, :profile_ids
+  attributes :id, :name, :status, :start_date, :end_date, :selection, :section_ids
 
   has_many :results
 

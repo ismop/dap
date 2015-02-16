@@ -7,12 +7,12 @@ module Api
 
       def create
         experiment = Experiment.create(experiment_params)
-        # If the list of profiles is explicitly set, bind to these profiles
-        if !params['experiment']['profile_ids'].blank?
-          params['experiment']['profile_ids'].each do |id|
-            p = Profile.find(id.to_i)
+        # If the list of sections is explicitly set, bind to these sections
+        if !params['experiment']['section_ids'].blank?
+          params['experiment']['section_ids'].each do |id|
+            p = Section.find(id.to_i)
             if !p.blank?
-              experiment.profiles << p
+              experiment.sections << p
             end
           end
         end
@@ -36,7 +36,7 @@ module Api
       private
 
       def experiment_params
-        params.require(:experiment).permit(:name, :status, :status_message, :selection, :start_date, :end_date, :profile_ids)
+        params.require(:experiment).permit(:name, :status, :status_message, :selection, :start_date, :end_date, :section_ids)
       end
     end
   end

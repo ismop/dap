@@ -75,8 +75,8 @@ describe Api::V1::ExperimentsController do
   describe 'POST /experiments' do
     context 'when authenticated as user' do
 
-      let!(:p1) { create(:profile) }
-      let!(:p2) { create(:profile) }
+      let!(:p1) { create(:section) }
+      let!(:p2) { create(:section) }
 
       let(:create_json) do {experiment: {
         name: "My new experiment",
@@ -85,7 +85,7 @@ describe Api::V1::ExperimentsController do
         start_date: "2014-09-10 15:15",
         end_date: nil,
         selection: "POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))",
-        profile_ids: [p1.id, p2.id]
+        section_ids: [p1.id, p2.id]
       }} end
 
       it 'creates a new experiment' do
@@ -96,7 +96,7 @@ describe Api::V1::ExperimentsController do
         new_e = Experiment.last
         expect(new_e.id).to_not be_nil
         expect(new_e['status']).to eq "started"
-        expect(new_e.profiles).to eq [p1, p2]
+        expect(new_e.sections).to eq [p1, p2]
       end
 
     end

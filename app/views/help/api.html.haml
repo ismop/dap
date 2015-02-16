@@ -8,7 +8,7 @@
     %hr
 
     #ul.nav.nav-pills.nav-stacked
-      - %w(levees profiles edge_nodes measurement_nodes sensors timelines measurements experiments results).sort.each do |file|
+      - %w(levees sections edge_nodes measurement_nodes sensors timelines measurements experiments results).sort.each do |file|
         = nav_tab :category, file do
           = link_to file.titleize, help_api_file_path(file)
   .col-md-10

@@ -10,7 +10,7 @@ class ScenarioImporter
     end
   end
 
-  def import(profile_type)
+  def import(section_type)
     ActiveRecord::Base.transaction do
       context = Context.new do |c|
         c.context_type = "tests"
@@ -19,7 +19,7 @@ class ScenarioImporter
       context.save
       @scenarios.each do |s|
         s.context = context
-        s.profile_type = profile_type
+        s.section_type = section_type
         s.save
       end
     end if @scenarios

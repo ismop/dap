@@ -9,7 +9,7 @@ class Experiment < ActiveRecord::Base
 
   has_many :results, dependent: :destroy
 
-  has_many :profile_selections, dependent: :destroy
-  has_and_belongs_to_many :profiles, join_table: 'profile_selections'
+  has_many :section_selections, dependent: :destroy
+  has_and_belongs_to_many :sections, join_table: 'section_selections'
 
 end

@@ -6,7 +6,7 @@ class Ability
       can [:read, :update], Levee
       can [:read, :create], Measurement
       can [:read], Sensor
-      can [:read, :get_profiles_for_selection], Profile
+      can [:read, :get_sections_for_selection], Section
       can [:read], MeasurementNode
       can [:read], EdgeNode
       can [:read, :create, :update], Timeline

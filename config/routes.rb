@@ -62,7 +62,7 @@ Rails.application.routes.draw do
       resources :results, only: [:index, :show, :update, :create]
       resources :measurements, only: [:index, :show, :update, :create]
       resources :sensors, only: [:index, :show, :update, :create]
-      resources :profiles, only: [:index, :show, :update, :create]
+      resources :sections, only: [:index, :show, :update, :create]
       resources :measurement_nodes, only: [:index, :show, :update, :create]
       resources :edge_nodes, only: [:index, :show, :update, :create]
       resources :timelines, only: [:index, :show, :update, :create]

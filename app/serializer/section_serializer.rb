@@ -1,4 +1,4 @@
-class ProfileSerializer < ActiveModel::Serializer
+class SectionSerializer < ActiveModel::Serializer
   embed :ids
   attributes :id, :levee_id, :shape, :sensor_ids, :profile_shape
 

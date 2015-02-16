@@ -42,20 +42,20 @@ class MeasurementGenerator
 
   # Used in order to generate measurements for all sensors of the given Levee
   # based on scenarios loaded from files.Please note that number of columns
-  # in scenario file has to be equal to number of sensors per profile.
+  # in scenario file has to be equal to number of sensors per section.
   def generate(levee, context = nil, months = 1)
     start_time = Time.now - 2.weeks
 
     context ||= Context.create { |c| c.name = "Generated data #{Time.now}" }
 
-    levee.profiles.each do |profile|
+    levee.sections.each do |section|
       ActiveRecord::Base.transaction do
         data_row = @feed.next_row
-        raise "wrong number of parameters in scenario" if profile.sensors.count > data_row.length
+        raise "wrong number of parameters in scenario" if section.sensors.count > data_row.length
 
         timelines = []
         param_index = 0
-        profile.sensors.each do |sensor|
+        section.sensors.each do |sensor|
           timelines[param_index] = Timeline.create do |t|
             t.sensor = sensor
             t.context = context
@@ -66,7 +66,7 @@ class MeasurementGenerator
         measurements = []
         (1..months*30*24*60/15).each do |i|
           param_index = 0
-          profile.sensors.each do
+          section.sensors.each do
             measurements << Measurement.new do |m|
               m.value = data_row[param_index].to_f
               m.timestamp = start_time + (i*15).minutes

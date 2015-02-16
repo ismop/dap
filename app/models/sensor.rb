@@ -19,7 +19,7 @@ class Sensor < ActiveRecord::Base
   validates_numericality_of :energy_consumption
 
   belongs_to :measurement_node
-  belongs_to :profile
+  belongs_to :section
   belongs_to :measurement_type
   belongs_to :activity_state
   belongs_to :interface_type
