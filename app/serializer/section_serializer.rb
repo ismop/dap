@@ -1,6 +1,6 @@
 class SectionSerializer < ActiveModel::Serializer
   embed :ids
-  attributes :id, :levee_id, :shape, :sensor_ids, :profile_shape
+  attributes :id, :levee_id, :shape, :profile_shape, :sensor_ids
 
   def shape
     RGeo::GeoJSON.encode(object.shape).as_json

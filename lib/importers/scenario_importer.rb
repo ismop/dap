@@ -6,7 +6,7 @@ class ScenarioImporter
     @scenarios = []
     Dir.foreach(dir) do |name|
       path = File.join(dir,name)
-      @scenarios << self.from_file(path) unless File.directory?(path)
+      @scenarios << ScenarioImporter.from_file(path) unless File.directory?(path)
     end
   end
 

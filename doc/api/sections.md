@@ -27,7 +27,8 @@ GET /sections?selection=POLYGON%20((0%200,%200%2010,%2010%2010,%2010%200,%200%20
   "sections": [
     {
       "id": a numerical unique id (e.g. 1),
-      "shape": the geometry of the section given in the GeoJSON notation
+      "shape": the geometry of the section given in the GeoJSON notation,
+      "profile_shape": the geometry of the section profile,
       "sensor_ids": identifiers of sensors which belong to the target section.
     }, {
     {
@@ -53,7 +54,8 @@ Parameters:
 {
   "section": {
      "id": a numerical unique id (e.g. 1),
-     "shape": the geometry of the section given in the GeoJSON notation
+     "shape": the geometry of the section given in the GeoJSON notation,
+     "profile_shape": the geometry of the section profile,
      "sensor_ids": identifiers of sensors which belong to the target section.
   }
 }
