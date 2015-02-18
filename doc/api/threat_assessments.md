@@ -5,7 +5,7 @@ Each threat assessment is launched for a set of sections (see the appropriate AP
 scores for each timeline and each sensor belonging to any of the target sections.
 
 ```
-GET /threat_assessment
+GET /threat_assessments
 ```
 
 No parameters are required. The /selection/ parameter is given in a notation called GeoJSON, that uses JSON document
