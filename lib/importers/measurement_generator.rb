@@ -45,14 +45,11 @@ class MeasurementGenerator
   # in scenario file has to be equal to number of sensors per section.
   def generate(levee, context = nil, months = 1)
     start_time = Time.now - 2.weeks
-
     context ||= Context.create { |c| c.name = "Generated data #{Time.now}" }
-
     levee.sections.each do |section|
       ActiveRecord::Base.transaction do
         data_row = @feed.next_row
         raise "wrong number of parameters in scenario" if section.sensors.count > data_row.length
-
         timelines = []
         param_index = 0
         section.sensors.each do |sensor|
@@ -62,7 +59,6 @@ class MeasurementGenerator
           end
           param_index += 1
         end
-
         measurements = []
         (1..months*30*24*60/15).each do |i|
           param_index = 0

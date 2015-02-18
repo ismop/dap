@@ -36,22 +36,23 @@ class LeveeImporter
   def import(section_type = nil, levee_name = "Unnamed Levee #{Time.now}")
     ActiveRecord::Base.transaction do
       section_type ||= SectionType.create
+      measurement_type = MeasurementType.create(name: "Temperature", unit: "C")
       levee = Levee.create { |l| l.name = levee_name }
       levees = []
       @json.each_value do |section|
         polygon = section["polygon"].map do |point|
           RGeo::Cartesian.factory.point(point[0], point[1])
         end
-        prof = Section.create do |section|
+        new_section = Section.create do |section|
           section.shape = RGeo::Cartesian.factory.multi_point(polygon)
           section.levee = levee
           section.section_type = section_type
         end
         sensors =[]
         section["points"].each do |point|
-          sensors << build_sensor(RGeo::Cartesian.factory.point(point[0], point[1]), prof).tap {|s| s.save}
+          sensors << build_sensor(RGeo::Cartesian.factory.point(point[0], point[1]), new_section, measurement_type).tap {|s| s.save}
         end
-        levees << [prof, sensors]
+        levees << [new_section, sensors]
       end
       levees
     end
@@ -59,7 +60,7 @@ class LeveeImporter
 
   private
 
-  def build_sensor(placement, section)
+  def build_sensor(placement, section, measurement_type)
 
     @date ||= Time.parse("2014-06-01 12:00:00")
     id = Random.rand(10000000).to_s
