@@ -88,7 +88,7 @@ class LeveeImporter
       sensor.activity_state_id = 1
       sensor.power_type_id = 2
       sensor.interface_type_id = 3
-      sensor.measurement_type_id = 1
+      sensor.measurement_type_id = measurement_type.id
       sensor.section_id = section.id
     end
   end
