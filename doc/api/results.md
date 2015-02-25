@@ -17,6 +17,7 @@ No parameters are required.
       "similarity": the smiliarity value which constitutes the payload of the result object (Float).
       "section_id": identifier of the section to which this result applies,
       "threat_assessment_id": identifier of the threat_assessment which generated this result,
+      "threat_level": one of "none", "heightened", "severe",
       "scenario_id": identifier of the scenario to which this result applies.
     }, {
       ...
@@ -44,6 +45,7 @@ Parameters:
     "similarity": the smiliarity value which constitutes the payload of the result object (Float),
     "section_id": identifier of the section to which this result applies,
     "threat_assessment_id": identifier of the threat_assessment which generated this result,
+    "threat_level": one of "none", "heightened", "severe",
     "scenario_id": identifier of the scenario to which this result applies.
   }
 }
