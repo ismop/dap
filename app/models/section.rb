@@ -18,7 +18,11 @@ class Section < ActiveRecord::Base
       return RGeo::Cartesian.factory.line(sensors.first.placement, sensors.second.placement)
     end
     multipoint = RGeo::Cartesian.factory.multi_point(sensors.map(&:placement))
-    points = multipoint.convex_hull.exterior_ring.points
+    convex_hull = multipoint.convex_hull
+    if (convex_hull.class == RGeo::Geos::CAPILineStringImpl)
+      return convex_hull
+    end
+    points = convex_hull.exterior_ring.points
     distance = 0
     diagonal = nil
     points.each do |point1|
