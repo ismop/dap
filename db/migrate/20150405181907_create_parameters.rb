@@ -7,6 +7,7 @@ class CreateParameters < ActiveRecord::Migration
       t.belongs_to :measurement_type
     end
 
-    # TODO: Change measurements to reference parameters instead of sensors
+    # TODO: Change timelines to reference parameters instead of sensors
+    add_reference :timelines, :parameter, index: true
   end
 end

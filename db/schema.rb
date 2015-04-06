@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150112122456) do
+ActiveRecord::Schema.define(version: 20150406120850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,9 +24,38 @@ ActiveRecord::Schema.define(version: 20150112122456) do
     t.datetime "updated_at"
   end
 
+  create_table "budokop_sensors", force: true do |t|
+    t.integer  "battery_state"
+    t.integer  "battery_capacity"
+    t.string   "manufacturer",      default: "unknown manufacturer",  null: false
+    t.string   "model",             default: "unknown model",         null: false
+    t.string   "serial_number",     default: "unknown serial number", null: false
+    t.string   "firmware_version",  default: "unknown version",       null: false
+    t.date     "manufacture_date"
+    t.date     "purchase_date"
+    t.date     "warranty_date"
+    t.date     "deployment_date"
+    t.datetime "last_state_change"
+    t.integer  "device_id"
+  end
+
   create_table "contexts", force: true do |t|
     t.string "name",                           null: false
     t.string "context_type", default: "tests", null: false
+  end
+
+  create_table "device_aggregations", force: true do |t|
+    t.string  "custom_id",                                                                         default: "unknown ID", null: false
+    t.spatial "placement",  limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
+    t.integer "section_id"
+  end
+
+  create_table "devices", force: true do |t|
+    t.string  "custom_id",                                                                                    default: "unknown ID", null: false
+    t.spatial "placement",             limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
+    t.string  "device_type",                                                                                  default: "unknown",    null: false
+    t.integer "device_aggregation_id"
+    t.integer "section_id"
   end
 
   create_table "edge_nodes", force: true do |t|
@@ -110,6 +139,33 @@ ActiveRecord::Schema.define(version: 20150112122456) do
 
   add_index "measurements", ["timeline_id"], :name => "index_measurements_on_timeline_id"
   add_index "measurements", ["timestamp"], :name => "index_measurements_on_timestamp"
+
+  create_table "neosentio_sensors", force: true do |t|
+    t.float    "x_orientation",       default: 0.0,                     null: false
+    t.float    "y_orientation",       default: 0.0,                     null: false
+    t.float    "z_orientation",       default: 0.0,                     null: false
+    t.integer  "battery_state"
+    t.integer  "battery_capacity"
+    t.string   "manufacturer",        default: "unknown manufacturer",  null: false
+    t.string   "model",               default: "unknown model",         null: false
+    t.string   "serial_number",       default: "unknown serial number", null: false
+    t.string   "firmware_version",    default: "unknown version",       null: false
+    t.date     "manufacture_date"
+    t.date     "purchase_date"
+    t.date     "warranty_date"
+    t.date     "deployment_date"
+    t.datetime "last_state_change"
+    t.integer  "energy_consumption",  default: 0,                       null: false
+    t.float    "precision",           default: 0.0,                     null: false
+    t.integer  "measurement_node_id"
+    t.integer  "device_id"
+  end
+
+  create_table "parameters", force: true do |t|
+    t.string  "parameter_name",      default: "unknown parameter", null: false
+    t.integer "device_id"
+    t.integer "measurement_type_id"
+  end
 
   create_table "power_types", force: true do |t|
     t.string   "name",       default: "unnamed power type", null: false
@@ -212,9 +268,11 @@ ActiveRecord::Schema.define(version: 20150112122456) do
   create_table "timelines", force: true do |t|
     t.integer "sensor_id"
     t.integer "context_id"
+    t.integer "parameter_id"
   end
 
   add_index "timelines", ["context_id"], :name => "index_timelines_on_context_id"
+  add_index "timelines", ["parameter_id"], :name => "index_timelines_on_parameter_id"
   add_index "timelines", ["sensor_id"], :name => "index_timelines_on_sensor_id"
 
   create_table "users", force: true do |t|
