@@ -173,6 +173,16 @@ ActiveRecord::Schema.define(version: 20150406120850) do
     t.datetime "updated_at"
   end
 
+  create_table "pumps", force: true do |t|
+    t.string   "manufacturer",      default: "unknown manufacturer", null: false
+    t.string   "model",             default: "unknown model",        null: false
+    t.date     "manufacture_date"
+    t.date     "purchase_date"
+    t.date     "deployment_date"
+    t.datetime "last_state_change"
+    t.integer  "device_id"
+  end
+
   create_table "results", force: true do |t|
     t.float   "similarity"
     t.integer "threat_assessment_id"

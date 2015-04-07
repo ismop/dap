@@ -1,6 +1,4 @@
-class MeasurementNode < ActiveRecord::Base
-  validates_presence_of :custom_id
-  validates_uniqueness_of :custom_id
+class BudokopSensor < ActiveRecord::Base
 
   validates_numericality_of :battery_state
   validates_numericality_of :battery_capacity
@@ -14,14 +12,5 @@ class MeasurementNode < ActiveRecord::Base
   validates_presence_of :energy_consumption
   validates_numericality_of :energy_consumption
 
-  belongs_to :edge_node
-  belongs_to :activity_state
-  belongs_to :interface_type
-  belongs_to :power_type
-
-  has_many :sensors
-  has_many :neosentio_sensors
-
-  self.rgeo_factory_generator = RGeo::Geos.factory_generator
-
+  belongs_to :device
 end
