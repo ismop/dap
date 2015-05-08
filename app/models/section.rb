@@ -4,7 +4,6 @@ class Section < ActiveRecord::Base
 
   has_many :sensors, dependent: :destroy
   has_many :results, dependent: :destroy
-
   has_many :devices, dependent: :destroy
 
   belongs_to :levee
