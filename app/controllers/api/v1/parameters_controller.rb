@@ -1,7 +1,7 @@
 module Api
   module V1
     class ParametersController < Api::ApiController
-      load_and_authorize_resource :parmeter
+      load_and_authorize_resource :parameter
       respond_to :json
 
       def index

@@ -5,7 +5,7 @@ module Api
       respond_to :json
 
       def index
-        respond_with @budokop_sensor.where(filter).order(:id)
+        respond_with @budokop_sensors.where(filter).order(:id)
       end
 
       def show

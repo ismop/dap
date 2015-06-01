@@ -5,7 +5,7 @@ module Api
       respond_to :json
 
       def index
-        respond_with @pump.where(filter).order(:id)
+        respond_with @pumps.where(filter).order(:id)
       end
 
       def show

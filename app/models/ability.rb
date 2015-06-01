@@ -3,15 +3,21 @@ class Ability
 
   def initialize(user)
     if user
-      can [:read, :update], Levee
-      can [:read, :create], Measurement
-      can [:read], Sensor
-      can [:read, :get_sections_for_selection], Section
-      can [:read], MeasurementNode
+      can [:read], BudokopSensor
+      can [:read], DeviceAggregation
+      can [:read], Device
       can [:read], EdgeNode
+      can [:read, :update], Levee
+      can [:read], MeasurementNode
+      can [:read, :create], Measurement
+      can [:read], NeosentioSensor
+      can [:read], Parameter
+      can [:read], Pump
+      can [:read, :create, :update], Result
+      can [:read, :get_sections_for_selection], Section
+      can [:read], Sensor
       can [:read, :create, :update], Timeline
       can [:create, :read, :update, :destroy], ThreatAssessment
-      can [:read, :create, :update], Result
     end
   end
 end

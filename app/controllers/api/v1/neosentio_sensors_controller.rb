@@ -5,7 +5,7 @@ module Api
       respond_to :json
 
       def index
-        respond_with @neosentio_sensor.where(filter).order(:id)
+        respond_with @neosentio_sensors.where(filter).order(:id)
       end
 
       def show
