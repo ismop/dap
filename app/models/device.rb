@@ -7,11 +7,11 @@ class Device < ActiveRecord::Base
   belongs_to :device_aggregation
   belongs_to :section
 
-  has_one :budokop_sensor
-  has_one :neosentio_sensor
-  has_one :pump
+  has_one :budokop_sensor, dependent: :destroy
+  has_one :neosentio_sensor, dependent: :destroy
+  has_one :pump, dependent: :destroy
 
-  has_many :parameters
+  has_many :parameters, dependent: :destroy
 
   self.rgeo_factory_generator = RGeo::Geos.factory_generator
 
