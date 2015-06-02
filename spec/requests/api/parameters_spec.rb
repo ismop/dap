@@ -25,14 +25,33 @@ describe Api::V1::Parameter do
 
   end
 
-  # TODO implement
+  describe 'GET /parameters' do
 
-  def ens_response
+    let!(:parameter1) { create(:parameter) }
+
+    context 'when authenticated as user' do
+      it 'returns proper sensors' do
+        get api("/parameters", user)
+        expect(ps_response.size).to eq 1
+        expect(ps_response[0]).to parameter_eq parameter1
+      end
+    end
+
+    context 'when authenticated as user' do
+      it 'returns proper sensors' do
+        get api("/parameters/#{parameter1.id}", user)
+        expect(p_response).to parameter_eq parameter1
+      end
+    end
+
+  end
+
+  def ps_response
     json_response['parameters']
   end
 
-  def en_response
-    json_response['parameters']
+  def p_response
+    json_response['parameter']
   end
 
 end

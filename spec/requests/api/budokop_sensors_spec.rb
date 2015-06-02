@@ -24,14 +24,35 @@ describe Api::V1::BudokopSensor do
 
   end
 
-  # TODO implement
+  describe 'GET /budokop_sensors' do
 
-  def ens_response
+    let!(:sensor1) { create(:budokop_sensor) }
+    let!(:sensor2) { create(:budokop_sensor) }
+
+    context 'get all budokop sensors' do
+      it 'returns proper sensors' do
+        get api("/budokop_sensors", user)
+        expect(bss_response.size).to eq 2
+        expect(bss_response[0]).to budokop_sensor_eq sensor1
+        expect(bss_response[1]).to budokop_sensor_eq sensor2
+      end
+    end
+
+    context 'get budokop sensor by id' do
+      it 'returns proper sensors' do
+        get api("/budokop_sensors/#{sensor2.id}", user)
+        expect(bs_response).to budokop_sensor_eq sensor2
+      end
+    end
+
+  end
+
+  def bss_response
     json_response['budokop_sensors']
   end
 
-  def en_response
-    json_response['budokop_sensors']
+  def bs_response
+    json_response['budokop_sensor']
   end
 
 end

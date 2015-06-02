@@ -25,13 +25,25 @@ describe Api::V1::NeosentioSensor do
 
   end
 
-  # TODO implement
+  describe 'GET /neosentio_sensors' do
 
-  def ens_response
+    let!(:sensor1) { create(:neosentio_sensor) }
+
+    context 'when authenticated as user' do
+      it 'returns 200' do
+        get api("/neosentio_sensors", user)
+        expect(nss_response.size).to eq 1
+        expect(nss_response[0]).to neosentio_sensor_eq sensor1
+      end
+    end
+
+  end
+
+  def nss_response
     json_response['neosentio_sensors']
   end
 
-  def en_response
+  def ns_response
     json_response['neosentio_sensors']
   end
 

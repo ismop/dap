@@ -25,14 +25,37 @@ describe Api::V1::Device do
 
   end
 
-  # TODO implement
+  describe 'GET /devices' do
 
-  def ens_response
+    let(:sensor) { create(:neosentio_sensor) }
+    let(:sensor2) { create(:budokop_sensor) }
+    let!(:device1) { create(:device, device_type: 'neosentio-sensor', neosentio_sensor: sensor) }
+    let!(:device2) { create(:device, device_type: 'budokop-sensor', budokop_sensor: sensor2) }
+
+    context 'get all devices' do
+      it 'returns right devices' do
+        get api("/devices", user)
+        expect(ds.size).to eq 2
+        expect(ds[0]).to device_eq device1
+        expect(ds[1]).to device_eq device2
+      end
+    end
+
+    context 'get device by id' do
+      it 'returns right device' do
+        get api("/devices/#{device2.id}", user)
+        expect(d).to device_eq device2
+      end
+    end
+
+  end
+
+  def ds
     json_response['devices']
   end
 
-  def en_response
-    json_response['devices']
+  def d
+    json_response['device']
   end
 
 end
