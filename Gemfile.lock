@@ -22,8 +22,8 @@ GEM
       activesupport (= 4.1.2)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-    active_model_serializers (0.9.3)
-      activemodel (>= 3.2)
+    active_model_serializers (0.8.1)
+      activemodel (>= 3.0)
     activemodel (4.1.2)
       activesupport (= 4.1.2)
       builder (~> 3.1)
@@ -81,7 +81,8 @@ GEM
     execjs (2.5.2)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
-    ffaker (2.0.0)
+    faker (1.4.3)
+      i18n (~> 0.5)
     ffi (1.9.8)
     font-awesome-rails (4.3.0.0)
       railties (>= 3.2, < 5.0)
@@ -263,7 +264,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers
+  active_model_serializers (= 0.8.1)
   activerecord-import (~> 0.6.0)
   activerecord-postgis-adapter!
   better_errors
@@ -275,7 +276,7 @@ DEPENDENCIES
   date_validator
   devise (~> 3.2)
   factory_girl
-  ffaker
+  faker
   font-awesome-rails
   github-markup
   guard-rspec

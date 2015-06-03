@@ -35,7 +35,7 @@ gem 'redcarpet'
 gem 'github-markup', require: 'github/markup'
 
 # ActiveRecord stuff
-gem "active_model_serializers"
+gem 'active_model_serializers', '0.8.1'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -97,7 +97,7 @@ group :test do
   gem 'factory_girl'
 
   # Used to generate lorems etc. in factories
-  gem 'ffaker'
+  gem 'faker'
 
   # Used by rspec
   gem 'database_cleaner'
