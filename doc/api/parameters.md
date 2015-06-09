@@ -5,13 +5,18 @@ Obtains a list of all Parameters present in the registry. You need to authorize 
 ```
 GET /parameters
 ```
-No parameters are required, although it is possible to filter by selected attributes (equality tests only) by extending the GET request with query parameters. The response is a JSON file with the /placement/ object expressed as a GeoJSON data structure of type Point with elevation info. See http://geojson.org/geojson-spec.html for details. The 3D coordinates are given in the popular WGS 84 system, with elevation expressed as meters above (or below) sea level.
+No parameters are required.
 
 ```json
 {
   "parameters": [
     {
-        THIS DOCUMENTATION IS HAS TO BE UPDATED.
+          "id": numerically unique id (e.g. 1),
+          "parameter_name": name of the parameter,
+          "device_id": identifier of a device measuring the parameter,
+          "measurement_type_name": data type name,
+          "measurement_type_unit": data unit,
+          "timeline_ids": list of measurement timeline ids.
     }, {
       ...
     }
@@ -32,7 +37,12 @@ Parameters:
 ```json
 {
   "parameter": {
-        THIS DOCUMENTATION IS HAS TO BE UPDATED.
+        "id": numerically unique id (e.g. 1),
+        "parameter_name": name of the parameter,
+        "device_id": identifier of a device measuring the parameter,
+        "measurement_type_name": data type name,
+        "measurement_type_unit": data unit,
+        "timeline_ids": list of measurement timeline ids.
   }
 }
 ```

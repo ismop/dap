@@ -5,14 +5,18 @@ Obtains a list of all Device Aggregations present in the registry. You need to a
 ```
 GET /device_aggregations
 ```
-No parameters are required, although it is possible to filter by selected attributes (equality tests only) by extending the GET request with query parameters. The response is a JSON file with the /placement/ object expressed as a GeoJSON data structure of type Point with elevation info. See http://geojson.org/geojson-spec.html for details. The 3D coordinates are given in the popular WGS 84 system, with elevation expressed as meters above (or below) sea level.
+No parameters are required.
 
 ```json
 {
   "device_aggregations": [
     {
-        THIS DOCUMENTATION IS HAS TO BE UPDATED.
-    }, {
+        "id": numerically unique id (e.g. 1),
+        "custom_id": external identifier of the device, specific to the levee installation setup,
+        "placement": geometric coordinates of the device_aggregation, expressed as a GeoJSON data structure,
+        "section_id": identifier of a section the aggreagation belong to,
+        "device_ids": identifiers of aggregated devices.
+    },  {
       ...
     }
   ]
@@ -32,7 +36,11 @@ Parameters:
 ```json
 {
   "device_aggregation": {
-    THIS DOCUMENTATION IS HAS TO BE UPDATED.
+      "id": numerically unique id (e.g. 1),
+      "custom_id": external identifier of the sensor, specific to the levee installation setup,
+      "placement": geometric coordinates of the sensor, expressed as a GeoJSON data structure,
+      "section_id": identifier of a section the aggreagation belong to,
+      "device_ids": identifiers of aggregated devices.
   }
 }
 ```

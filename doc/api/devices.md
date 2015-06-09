@@ -11,7 +11,16 @@ No parameters are required, although it is possible to filter by selected attrib
 {
   "devices": [
     {
-        THIS DOCUMENTATION IS HAS TO BE UPDATED.
+        "id",
+        "custom_id": external identifier of the device, specific to the levee installation setup,
+        "placement": geometric coordinates of the device, expressed as a GeoJSON data structure,
+        "device_type": type of the device - can be one of "neosentio-sensor", "budokop-sensor", "pump",
+        "section_id": identifier of the section the device belongs to,
+        "device_aggregation_id": identifier of a section the device belongs to,
+        "neosentio_sensor_id": identifier of a sensor representation of the device (if device is a neosentio sensor) or null,
+        "budokop_sensor_id": identifier of a sensor representation of the device (if device is a budokop sensor) or null,
+        "pump_id":  identifier of a pump representation of the device (if device is a pump) or null,
+        "parameter_ids":  identifiers of parameters measured by the devide
     }, {
       ...
     }
@@ -32,7 +41,16 @@ Parameters:
 ```json
 {
   "device": {
-        THIS DOCUMENTATION IS HAS TO BE UPDATED.
+        "id",
+        "custom_id": external identifier of the device, specific to the levee installation setup,
+        "placement": geometric coordinates of the device, expressed as a GeoJSON data structure,
+        "device_type": type of the device - can be one of "neosentio-sensor", "budokop-sensor", "pump",
+        "section_id": identifier of the section the device belongs to,
+        "device_aggregation_id": identifier of a section the device belongs to,
+        "neosentio_sensor_id": identifier of a sensor representation of the device (if device is a neosentio sensor) or null,
+        "budokop_sensor_id": identifier of a sensor representation of the device (if device is a budokop sensor) or null,
+        "pump_id":  identifier of a pump representation of the device (if device is a pump) or null,
+        "parameter_ids":  identifiers of parameters measured by the devide
   }
 }
 ```

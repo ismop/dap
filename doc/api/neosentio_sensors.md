@@ -5,13 +5,34 @@ Obtains a list of all Neosentio Sensors present in the registry. You need to aut
 ```
 GET /neosentio_sensors
 ```
-No parameters are required, although it is possible to filter by selected attributes (equality tests only) by extending the GET request with query parameters. The response is a JSON file with the /placement/ object expressed as a GeoJSON data structure of type Point with elevation info. See http://geojson.org/geojson-spec.html for details. The 3D coordinates are given in the popular WGS 84 system, with elevation expressed as meters above (or below) sea level.
+No parameters are required.
 
 ```json
 {
   "neosentio_sensors": [
     {
-        THIS DOCUMENTATION IS HAS TO BE UPDATED.
+        "id": numerically unique id (e.g. 1),
+        "x_orientation": The orientation (not placement!) of the sensor along the X axis.,
+        "y_orientation": The orientation (not placement!) of the sensor along the Y axis.,
+        "z_orientation": The orientation (not placement!) of the sensor along the Z axis.,
+        "battery_state": last reported battery level of the sensor device,
+        "battery_capacity": maximum battery level of the sensor device,
+        "manufacturer": manufacturer of the sensor device,
+        "model": model of the sensor device,
+        "serial_number": serial number of the sensor device,
+        "firmware_version": version of the firmware run by the sensor device,
+        "manufacture_date": specifies when the device was manufactured,
+        "purchase_date": specifies when the device was purchased,
+        "warranty_date": specifies the expiration date of the device's warranty period,
+        "deployment_date": specifies when the device was installed,
+        "last_state_change": specifies when the last state change occurred. For current state refer to the /activity_state/ attribute.
+        "energy_consumption": the device's energy consumption,,
+        "precision": the precision of this sensor's measurement,
+        "measurement_node_id": ID of the measurement node to which this sensor is currently connected,
+        "device_id": specifies which device the sensor belongs to
+        "activity_state":  state the device is currently in. Valid options: "aktywny", "nieaktywny", "wyłączony", "uszkodzony", "konserwacja",
+        "power_type": specifies how this device is powered. Valid options: "bateryjne", "akumulatorowe", "akumulatorowe+harvesting", "sieciowe",
+        "interface_type": type of external interface provided by the device
     }, {
       ...
     }
@@ -32,7 +53,28 @@ Parameters:
 ```json
 {
   "neosentio_sensor": {
-        THIS DOCUMENTATION IS HAS TO BE UPDATED.
+        "id": numerically unique id (e.g. 1),
+        "x_orientation": The orientation (not placement!) of the sensor along the X axis.,
+        "y_orientation": The orientation (not placement!) of the sensor along the Y axis.,
+        "z_orientation": The orientation (not placement!) of the sensor along the Z axis.,
+        "battery_state": last reported battery level of the sensor device,
+        "battery_capacity": maximum battery level of the sensor device,
+        "manufacturer": manufacturer of the sensor device,
+        "model": model of the sensor device,
+        "serial_number": serial number of the sensor device,
+        "firmware_version": version of the firmware run by the sensor device,
+        "manufacture_date": specifies when the device was manufactured,
+        "purchase_date": specifies when the device was purchased,
+        "warranty_date": specifies the expiration date of the device's warranty period,
+        "deployment_date": specifies when the device was installed,
+        "last_state_change": specifies when the last state change occurred. For current state refer to the /activity_state/ attribute.
+        "energy_consumption": the device's energy consumption,,
+        "precision": the precision of this sensor's measurement,
+        "measurement_node_id": ID of the measurement node to which this sensor is currently connected,
+        "device_id": specifies which device the sensor belongs to
+        "activity_state":  state the device is currently in. Valid options: "aktywny", "nieaktywny", "wyłączony", "uszkodzony", "konserwacja",
+        "power_type": specifies how this device is powered. Valid options: "bateryjne", "akumulatorowe", "akumulatorowe+harvesting", "sieciowe",
+        "interface_type": type of external interface provided by the device
   }
 }
 ```
