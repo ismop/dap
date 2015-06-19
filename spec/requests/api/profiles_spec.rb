@@ -21,7 +21,7 @@ describe Api::V1::ProfilesController do
       end
 
       let!(:levee) { create(:levee) }
-      # Group these sensors into two sections
+      # Group these sensors into two profiles
       let!(:p1) { create(:profile, levee: levee) }
       let!(:p2) { create(:profile, levee: levee) }
 

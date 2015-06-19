@@ -1,4 +1,4 @@
-# This entity groups scenarios and sections of the same type
+# This entity groups scenarios and profiles of the same type
 class ProfileType < ActiveRecord::Base
 
   has_many :scenarios

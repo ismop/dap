@@ -14,7 +14,7 @@ No parameters are required.
         "id": numerically unique id (e.g. 1),
         "custom_id": external identifier of the device, specific to the levee installation setup,
         "placement": geometric coordinates of the device_aggregation, expressed as a GeoJSON data structure,
-        "section_id": identifier of a section the aggreagation belong to,
+        "profile_id": identifier of a profile the aggreagation belong to,
         "device_ids": identifiers of aggregated devices.
     },  {
       ...
@@ -39,7 +39,7 @@ Parameters:
       "id": numerically unique id (e.g. 1),
       "custom_id": external identifier of the sensor, specific to the levee installation setup,
       "placement": geometric coordinates of the sensor, expressed as a GeoJSON data structure,
-      "section_id": identifier of a section the aggreagation belong to,
+      "profile_id": identifier of a profile the aggreagation belong to,
       "device_ids": identifiers of aggregated devices.
   }
 }

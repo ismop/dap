@@ -7,7 +7,7 @@ module Api
 
       def create
         threat_assessment = ThreatAssessment.create(threat_assessment_params)
-        # If the list of sections is explicitly set, bind to these profiles
+        # If the list of profiles is explicitly set, bind to these profiles
         if !params['threat_assessment']['profile_ids'].blank?
           params['threat_assessment']['profile_ids'].each do |id|
             p = Profile.find(id.to_i)

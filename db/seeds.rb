@@ -66,7 +66,7 @@ t2 = Timeline.create(name: 'Sensor 2 timeline', measurement_type: 'actual', sens
 t3 = Timeline.create(name: 'Sensor 3 timeline', measurement_type: 'actual', sensor: s3)
 t4 = Timeline.create(name: 'Sensor 4 timeline', measurement_type: 'actual', sensor: s4)
 
-# sections
+# profile
 p1 = Profile.create(name: 'Section 1', sensors: [s1, s2])
 p2 = Profile.create(name: 'Section 2', sensors: [s3, s4])
 
