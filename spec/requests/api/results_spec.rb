@@ -9,10 +9,10 @@ describe Api::V1::ResultsController do
   describe 'Get /results' do
     context 'when authenticated as user' do
       let!(:e1) { create(:threat_assessment) }
-      let!(:p1) { create(:section)}
-      let!(:p2) { create(:section)}
-      let!(:s1) { create(:sensor, section: p1) } # Will automatically create 1 scenario
-      let!(:s2) { create(:sensor, section: p2) } # Will automatically create 1 scenario
+      let!(:p1) { create(:profile)}
+      let!(:p2) { create(:profile)}
+      let!(:s1) { create(:sensor, profile: p1) } # Will automatically create 1 scenario
+      let!(:s2) { create(:sensor, profile: p2) } # Will automatically create 1 scenario
       let!(:r1) { create(:result, threat_assessment: e1)}
       let!(:r2) { create(:result, threat_assessment: e1)}
 
@@ -35,13 +35,13 @@ describe Api::V1::ResultsController do
   describe 'POST /results' do
     context 'when authenticated as user' do
 
-      let!(:p1) { create(:section) }
+      let!(:p1) { create(:profile) }
       let!(:e1) { create(:threat_assessment) }
       let!(:s1) { create(:scenario) }
 
       let(:create_json) do {result: {
         similarity: 37.3,
-        section_id: p1.id,
+        profile_id: p1.id,
         scenario_id: s1.id,
         threat_assessment_id: e1.id
       }} end
@@ -54,7 +54,7 @@ describe Api::V1::ResultsController do
         new_r = Result.last
         expect(new_r.id).to_not be_nil
         expect(new_r['similarity']).to eq 37.3
-        expect(new_r.section).to eq p1
+        expect(new_r.profile).to eq p1
         expect(new_r.scenario).to eq s1
         expect(new_r.threat_assessment).to eq e1
       end

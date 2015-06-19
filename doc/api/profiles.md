@@ -1,6 +1,6 @@
-## List sections
+## List profiles
 
-Get a list of all sections present in the registry or search for sections which are contained by a polygon.
+Get a list of all profiles present in the registry or search for sections which are contained by a polygon.
 You need to authorize yourself with an administrator account (a token).
 Sections represent cross-sections of the embankment (levee) and aggregate sensors. Each sensor may belong to a single section. If you want to search for sections which are contained by a polygon feature, you need to pass the WKT (Well-Known Text) definition of this feature as an option in the GET request, with URL encoding applied.
 The WKT definition of a polygon looks like this:
@@ -18,13 +18,13 @@ The above definition corresponds to a square-shaped feature originating at 0 deg
 The polygon specification must be URL-encoded in the usual manner (see sample below). A section is assumed to be belong to the specified polygon if it includes at least one sensor which is located inside the polygon's boundary. Empty (sensorless) sections are not considered to belong to any polygon.
 
 ```
-GET /sections
-GET /sections?selection=POLYGON%20((0%200,%200%2010,%2010%2010,%2010%200,%200%200))
+GET /profiles
+GET /profiles?selection=POLYGON%20((0%200,%200%2010,%2010%2010,%2010%200,%200%200))
 ```
 
 ```json
 {
-  "sections": [
+  "profiles": [
     {
       "id": a numerical unique id (e.g. 1),
       "shape": the geometry of the section given in the GeoJSON notation,
@@ -40,12 +40,12 @@ GET /sections?selection=POLYGON%20((0%200,%200%2010,%2010%2010,%2010%200,%200%20
 }
 ```
 
-## Details of a section
+## Details of a profile
 
 Get the JSON representation of a given section. You need to authorize yourself with an administrator account (a token).
 
 ```
-GET /sections/:id
+GET /profiles/:id
 ```
 
 Parameters:
@@ -54,7 +54,7 @@ Parameters:
 
 ```json
 {
-  "section": {
+  "profile": {
      "id": a numerical unique id (e.g. 1),
      "shape": the geometry of the section given in the GeoJSON notation,
      "profile_shape": the geometry of the section profile,

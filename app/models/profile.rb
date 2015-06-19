@@ -1,6 +1,6 @@
-class Section < ActiveRecord::Base
+class Profile < ActiveRecord::Base
 
-  validates_presence_of :section_type
+  validates_presence_of :profile_type
 
   has_many :sensors, dependent: :destroy
   has_many :results, dependent: :destroy
@@ -8,7 +8,7 @@ class Section < ActiveRecord::Base
   has_many :device_aggregations, dependent: :destroy
 
   belongs_to :levee
-    belongs_to :section_type
+    belongs_to :profile_type
 
   has_and_belongs_to_many :threat_assessments, join_table: 'section_selections'
 

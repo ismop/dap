@@ -4,7 +4,7 @@ class CreateResults < ActiveRecord::Migration
       t.float :similarity,                    null:true
 
       t.references :threat_assessment
-      t.references :section
+      t.references :profile
       t.references :timeline
 
     end

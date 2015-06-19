@@ -35,7 +35,7 @@ class LeveeImporter
 
   def import(section_type = nil, levee_name = "Unnamed Levee #{Time.now}")
     ActiveRecord::Base.transaction do
-      section_type ||= SectionType.create
+      section_type ||= ProfileType.create
       measurement_type = MeasurementType.create(name: "Temperature", unit: "C")
       levee = Levee.create { |l| l.name = levee_name }
       levees = []
@@ -43,7 +43,7 @@ class LeveeImporter
         polygon = section["polygon"].map do |point|
           RGeo::Cartesian.factory.point(point[0], point[1])
         end
-        new_section = Section.create do |section|
+        new_section = Profile.create do |section|
           section.shape = RGeo::Cartesian.factory.multi_point(polygon)
           section.levee = levee
           section.section_type = section_type

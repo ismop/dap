@@ -48,7 +48,7 @@ RSpec::Matchers.define :device_eq do |expected|
         (expected.pump.nil? || actual['pump_id'] == expected.pump_id) &&
         actual['custom_id'] == expected.custom_id &&
         actual['device_type'] == expected.device_type &&
-        actual['section_id'] == expected.section_id
+        actual['profile_id'] == expected.profile_id
 
   end
 end

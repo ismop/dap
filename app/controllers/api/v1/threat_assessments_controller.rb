@@ -7,12 +7,12 @@ module Api
 
       def create
         threat_assessment = ThreatAssessment.create(threat_assessment_params)
-        # If the list of sections is explicitly set, bind to these sections
-        if !params['threat_assessment']['section_ids'].blank?
-          params['threat_assessment']['section_ids'].each do |id|
-            p = Section.find(id.to_i)
+        # If the list of sections is explicitly set, bind to these profiles
+        if !params['threat_assessment']['profile_ids'].blank?
+          params['threat_assessment']['profile_ids'].each do |id|
+            p = Profile.find(id.to_i)
             if !p.blank?
-              threat_assessment.sections << p
+              threat_assessment.profiles << p
             end
           end
         end
@@ -36,7 +36,7 @@ module Api
       private
 
       def threat_assessment_params
-        params.require(:threat_assessment).permit(:name, :status, :status_message, :selection, :start_date, :end_date, :section_ids)
+        params.require(:threat_assessment).permit(:name, :status, :status_message, :selection, :start_date, :end_date, :profile_ids)
       end
     end
     end

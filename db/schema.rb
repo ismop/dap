@@ -11,11 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150406120850) do
+ActiveRecord::Schema.define(version: 20150619123804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
 
   create_table "activity_states", force: true do |t|
     t.string   "name",       default: "unnamed activity", null: false
@@ -46,7 +47,7 @@ ActiveRecord::Schema.define(version: 20150406120850) do
   create_table "device_aggregations", force: true do |t|
     t.string  "custom_id",                                                                         default: "unknown ID", null: false
     t.spatial "placement",  limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
-    t.integer "section_id"
+    t.integer "profile_id"
   end
 
   create_table "devices", force: true do |t|
@@ -54,7 +55,7 @@ ActiveRecord::Schema.define(version: 20150406120850) do
     t.spatial "placement",             limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
     t.string  "device_type",                                                                                  default: "unknown",    null: false
     t.integer "device_aggregation_id"
-    t.integer "section_id"
+    t.integer "profile_id"
   end
 
   create_table "edge_nodes", force: true do |t|
@@ -172,6 +173,29 @@ ActiveRecord::Schema.define(version: 20150406120850) do
     t.datetime "updated_at"
   end
 
+  create_table "profile_selections", id: false, force: true do |t|
+    t.integer "threat_assessment_id"
+    t.integer "profile_id"
+  end
+
+  add_index "profile_selections", ["profile_id"], :name => "index_profile_selections_on_profile_id"
+  add_index "profile_selections", ["threat_assessment_id", "profile_id"], :name => "index_profile_selections_on_threat_assessment_id_and_profile_id"
+  add_index "profile_selections", ["threat_assessment_id"], :name => "index_profile_selections_on_threat_assessment_id"
+
+  create_table "profile_types", force: true do |t|
+  end
+
+  create_table "profiles", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.spatial  "shape",           limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
+    t.integer  "levee_id"
+    t.integer  "profile_type_id"
+  end
+
+  add_index "profiles", ["levee_id"], :name => "index_profiles_on_levee_id"
+  add_index "profiles", ["profile_type_id"], :name => "index_profiles_on_profile_type_id"
+
   create_table "pumps", force: true do |t|
     t.string   "manufacturer",      default: "unknown manufacturer", null: false
     t.string   "model",             default: "unknown model",        null: false
@@ -185,7 +209,7 @@ ActiveRecord::Schema.define(version: 20150406120850) do
   create_table "results", force: true do |t|
     t.float   "similarity"
     t.integer "threat_assessment_id"
-    t.integer "section_id"
+    t.integer "profile_id"
     t.integer "scenario_id"
   end
 
@@ -195,35 +219,12 @@ ActiveRecord::Schema.define(version: 20150406120850) do
     t.string  "file_name"
     t.binary  "payload",                          null: false
     t.integer "context_id"
-    t.integer "section_type_id"
+    t.integer "profile_type_id"
     t.string  "threat_level",    default: "none"
   end
 
   add_index "scenarios", ["context_id"], :name => "index_scenarios_on_context_id"
-  add_index "scenarios", ["section_type_id"], :name => "index_scenarios_on_section_type_id"
-
-  create_table "section_selections", id: false, force: true do |t|
-    t.integer "threat_assessment_id"
-    t.integer "section_id"
-  end
-
-  add_index "section_selections", ["section_id"], :name => "index_section_selections_on_section_id"
-  add_index "section_selections", ["threat_assessment_id", "section_id"], :name => "index_section_selections_on_threat_assessment_id_and_section_id"
-  add_index "section_selections", ["threat_assessment_id"], :name => "index_section_selections_on_threat_assessment_id"
-
-  create_table "section_types", force: true do |t|
-  end
-
-  create_table "sections", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.spatial  "shape",           limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
-    t.integer  "levee_id"
-    t.integer  "section_type_id"
-  end
-
-  add_index "sections", ["levee_id"], :name => "index_sections_on_levee_id"
-  add_index "sections", ["section_type_id"], :name => "index_sections_on_section_type_id"
+  add_index "scenarios", ["profile_type_id"], :name => "index_scenarios_on_profile_type_id"
 
   create_table "sensors", force: true do |t|
     t.string   "custom_id",                                                                                  default: "unknown ID",            null: false
@@ -251,7 +252,7 @@ ActiveRecord::Schema.define(version: 20150406120850) do
     t.integer  "measurement_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "section_id"
+    t.integer  "profile_id"
   end
 
   add_index "sensors", ["activity_state_id"], :name => "index_sensors_on_activity_state_id"

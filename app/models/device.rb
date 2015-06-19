@@ -5,7 +5,7 @@ class Device < ActiveRecord::Base
   validates :device_type, inclusion: { in: ["neosentio-sensor", "budokop-sensor", "pump"] }
 
   belongs_to :device_aggregation
-  belongs_to :section
+  belongs_to :profile
 
   has_one :budokop_sensor, dependent: :destroy
   has_one :neosentio_sensor, dependent: :destroy
