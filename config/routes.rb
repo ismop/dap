@@ -57,14 +57,20 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :levees, only: [:index, :show, :update]
-      resources :threat_assessments, only: [:index, :show, :update, :create]
-      resources :results, only: [:index, :show, :update, :create]
-      resources :measurements, only: [:index, :show, :update, :create]
-      resources :sensors, only: [:index, :show, :update, :create]
-      resources :sections, only: [:index, :show, :update, :create]
-      resources :measurement_nodes, only: [:index, :show, :update, :create]
+      resources :budokop_sensors, only: [:index, :show, :update, :create]
+      resources :device_aggregations, only: [:index, :show, :update, :create]
+      resources :devices, only: [:index, :show, :update, :create]
       resources :edge_nodes, only: [:index, :show, :update, :create]
+      resources :levees, only: [:index, :show, :update]
+      resources :measurement_nodes, only: [:index, :show, :update, :create]
+      resources :measurements, only: [:index, :show, :update, :create]
+      resources :neosentio_sensors, only: [:index, :show, :update, :create]
+      resources :parameters, only: [:index, :show, :update, :create]
+      resources :pumps, only: [:index, :show, :update, :create]
+      resources :results, only: [:index, :show, :update, :create]
+      resources :sections, only: [:index, :show, :update, :create]
+      resources :sensors, only: [:index, :show, :update, :create]
+      resources :threat_assessments, only: [:index, :show, :update, :create]
       resources :timelines, only: [:index, :show, :update, :create]
     end
   end

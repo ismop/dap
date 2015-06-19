@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.1'
+gem 'rails', '4.1.2'
 
 # Supported DB
 gem 'pg'
@@ -35,7 +35,7 @@ gem 'redcarpet'
 gem 'github-markup', require: 'github/markup'
 
 # ActiveRecord stuff
-gem "active_model_serializers"
+gem 'active_model_serializers', '0.8.1'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -97,7 +97,7 @@ group :test do
   gem 'factory_girl'
 
   # Used to generate lorems etc. in factories
-  gem 'ffaker'
+  gem 'faker'
 
   # Used by rspec
   gem 'database_cleaner'

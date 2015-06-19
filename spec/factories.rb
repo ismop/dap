@@ -106,10 +106,10 @@ FactoryGirl.define do
     sensors {[]}
   end
 
+
   factory :section_type do
 
   end
-
   factory :sensor do
     custom_id { rand_str(10) }
     placement { rand_point(true) }
@@ -163,5 +163,35 @@ FactoryGirl.define do
     timeline { sensor.timelines.first }
   end
 
+  factory :device do
+    custom_id { rand_str(10) }
+  end
+
+
+  factory :device_aggregation do
+
+  end
+
+  factory :budokop_sensor do
+    battery_state { rand(0.0..89.99) }
+    battery_capacity { rand(0.0..89.99) }
+    manufacturer { rand_str(10) }
+    model { rand_str(10) }
+    serial_number { rand_str(10) }
+    firmware_version { rand_str(10) }
+  end
+
+  factory :neosentio_sensor do
+    battery_state { rand(0.0..89.99) }
+    battery_capacity { rand(0.0..89.99) }
+  end
+
+  factory :parameter do
+    measurement_type
+  end
+
+  factory :pump do
+
+  end
 
 end
