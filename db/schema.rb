@@ -198,7 +198,6 @@ ActiveRecord::Schema.define(version: 20150702095243) do
   create_table "profiles", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "shape",           limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
     t.integer  "profile_type_id"
     t.integer  "section_id"
   end

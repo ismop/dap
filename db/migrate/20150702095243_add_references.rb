@@ -21,6 +21,7 @@ class AddReferences < ActiveRecord::Migration
     end
 
     remove_reference :profiles, :levee
+    remove_column :profiles, :shape
 
     add_reference :devices, :section, references: :sections, index: true, null: true
     add_reference :devices, :levee, references: :levees, index: true, null: true

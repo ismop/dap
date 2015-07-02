@@ -27,7 +27,6 @@ GET /profiles?selection=POLYGON%20((0%200,%200%2010,%2010%2010,%2010%200,%200%20
   "profiles": [
     {
       "id": a numerical unique id (e.g. 1),
-      "shape": the geometry of the profile given in the GeoJSON notation,
       "profile_shape": the geometry of the profile profile,
       "section_id": identifier of the section the profile belongs to,
       "levee_id": identifier of the levee the profile belongs to,
@@ -58,7 +57,6 @@ Parameters:
 {
   "profile": {
      "id": a numerical unique id (e.g. 1),
-     "shape": the geometry of the profile given in the GeoJSON notation,
      "profile_shape": the geometry of the profile profile,
      "section_id": identifier of the section the profile belongs to,
      "levee_id": identifier of the levee the profile belongs to,
