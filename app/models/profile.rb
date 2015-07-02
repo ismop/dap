@@ -7,8 +7,10 @@ class Profile < ActiveRecord::Base
   has_many :devices, dependent: :destroy
   has_many :device_aggregations, dependent: :destroy
 
-  belongs_to :levee
-    belongs_to :profile_type
+  belongs_to :section
+  belongs_to :profile_type
+
+  has_one :levee, through: :section
 
   has_and_belongs_to_many :threat_assessments, join_table: 'section_selections'
 

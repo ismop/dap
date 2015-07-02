@@ -1,6 +1,6 @@
 class DeviceSerializer < ActiveModel::Serializer
   embed :ids
-  attributes :id, :custom_id, :placement, :device_type, :profile_id, :device_aggregation_id
+  attributes :id, :custom_id, :placement, :device_type, :profile_id, :device_aggregation_id, :section_id, :levee_id
   attributes :neosentio_sensor_id, :budokop_sensor_id, :pump_id
   attributes :parameter_ids
 

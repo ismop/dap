@@ -1,6 +1,6 @@
 class DeviceAggregationSerializer < ActiveModel::Serializer
   embed :ids
-  attributes :id, :custom_id, :placement, :profile_id
+  attributes :id, :custom_id, :placement, :profile_id, :section_id, :levee_id
   attributes :device_ids
 
   def placement

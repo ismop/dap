@@ -4,7 +4,7 @@ class CreateDeviceAggregations < ActiveRecord::Migration
       t.string :custom_id,                null: false, default: "unknown ID"
       t.point :placement,                 geographic: true, has_z: true, srid: 4326
 
-      t.references :profile
+      t.references :section
     end
   end
 end

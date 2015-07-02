@@ -7,8 +7,12 @@ class Levee < ActiveRecord::Base
 
   self.rgeo_factory_generator = RGeo::Geos.factory_generator
 
-  has_many :profiles, dependent: :destroy
   has_many :sensors, through: :profiles
+
+  has_many :profiles, dependent: :destroy
+  has_many :sections, dependent: :destroy
+  has_many :devices, dependent: :destroy
+  has_many :device_aggregations, dependent: :destroy
 
   private
 

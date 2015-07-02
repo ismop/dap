@@ -6,7 +6,7 @@ class CreateDevices < ActiveRecord::Migration
       t.string :device_type,              null: false, default: "unknown" # Enum
 
       t.references :device_aggregation
-      t.references :profile
+      t.references :section
 
     end
   end

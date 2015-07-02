@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150619123804) do
+ActiveRecord::Schema.define(version: 20150702095243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,7 +48,12 @@ ActiveRecord::Schema.define(version: 20150619123804) do
     t.string  "custom_id",                                                                         default: "unknown ID", null: false
     t.spatial "placement",  limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
     t.integer "profile_id"
+    t.integer "section_id"
+    t.integer "levee_id"
   end
+
+  add_index "device_aggregations", ["levee_id"], :name => "index_device_aggregations_on_levee_id"
+  add_index "device_aggregations", ["section_id"], :name => "index_device_aggregations_on_section_id"
 
   create_table "devices", force: true do |t|
     t.string  "custom_id",                                                                                    default: "unknown ID", null: false
@@ -56,7 +61,12 @@ ActiveRecord::Schema.define(version: 20150619123804) do
     t.string  "device_type",                                                                                  default: "unknown",    null: false
     t.integer "device_aggregation_id"
     t.integer "profile_id"
+    t.integer "section_id"
+    t.integer "levee_id"
   end
+
+  add_index "devices", ["levee_id"], :name => "index_devices_on_levee_id"
+  add_index "devices", ["section_id"], :name => "index_devices_on_section_id"
 
   create_table "edge_nodes", force: true do |t|
     t.string   "custom_id",                                                                   default: "unknown ID",            null: false
@@ -189,12 +199,12 @@ ActiveRecord::Schema.define(version: 20150619123804) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.spatial  "shape",           limit: {:srid=>4326, :type=>"multi_point", :geographic=>true}
-    t.integer  "levee_id"
     t.integer  "profile_type_id"
+    t.integer  "section_id"
   end
 
-  add_index "profiles", ["levee_id"], :name => "index_profiles_on_levee_id"
   add_index "profiles", ["profile_type_id"], :name => "index_profiles_on_profile_type_id"
+  add_index "profiles", ["section_id"], :name => "index_profiles_on_section_id"
 
   create_table "pumps", force: true do |t|
     t.string   "manufacturer",      default: "unknown manufacturer", null: false
@@ -225,6 +235,13 @@ ActiveRecord::Schema.define(version: 20150619123804) do
 
   add_index "scenarios", ["context_id"], :name => "index_scenarios_on_context_id"
   add_index "scenarios", ["profile_type_id"], :name => "index_scenarios_on_profile_type_id"
+
+  create_table "sections", force: true do |t|
+    t.spatial "shape",    limit: {:srid=>0, :type=>"geometry"}
+    t.integer "levee_id"
+  end
+
+  add_index "sections", ["levee_id"], :name => "index_sections_on_levee_id"
 
   create_table "sensors", force: true do |t|
     t.string   "custom_id",                                                                                  default: "unknown ID",            null: false
