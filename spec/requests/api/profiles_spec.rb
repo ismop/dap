@@ -69,7 +69,7 @@ describe Api::V1::ProfilesController do
   end
 
   def p_response
-    json_response['profiles']
+    json_response['profile']
   end
 
 end

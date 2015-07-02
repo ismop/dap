@@ -15,7 +15,7 @@ class AddReferences < ActiveRecord::Migration
         s.levee = p.levee
       end
 
-      p.section = s
+      p.section = section
       p.save
 
     end

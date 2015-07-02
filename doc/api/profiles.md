@@ -46,7 +46,7 @@ GET /profiles?selection=POLYGON%20((0%200,%200%2010,%2010%2010,%2010%200,%200%20
 Get the JSON representation of a given profile. You need to authorize yourself with an administrator account (a token).
 
 ```
-GET /profiles/:id
+GET /profile/:id
 ```
 
 Parameters:

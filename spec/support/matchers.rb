@@ -60,3 +60,11 @@ RSpec::Matchers.define :device_aggregation_eq do |expected|
   end
 end
 
+
+RSpec::Matchers.define :section_eq do |expected|
+  match do |actual|
+    actual['id'] == expected.id &&
+        actual['levee_id'] == expected.levee_id
+  end
+end
+

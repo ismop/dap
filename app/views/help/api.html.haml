@@ -8,7 +8,7 @@
     %hr
 
     #ul.nav.nav-pills.nav-stacked
-      - %w(budokop_sensors device_aggregations devices edge_nodes levees measurement_nodes measurements neosentio_sensors parameters pumps profiles sensors timelines threat_assessments results).sort.each do |file|
+      - %w(budokop_sensors device_aggregations devices edge_nodes levees measurement_nodes measurements neosentio_sensors parameters pumps profiles sensors timelines threat_assessments results sections).sort.each do |file|
         = nav_tab :category, file do
           = link_to file.titleize, help_api_file_path(file)
   .col-md-10
