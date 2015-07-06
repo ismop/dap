@@ -191,6 +191,7 @@ FactoryGirl.define do
   end
 
   factory :parameter do
+    custom_id { rand_str(10) }
     measurement_type
   end
 

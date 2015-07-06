@@ -34,6 +34,7 @@ end
 RSpec::Matchers.define :parameter_eq do |expected|
   match do |actual|
     actual['id'] == expected.id &&
+      actual['custom_id'] == expected.custom_id &&
       actual['measurement_type_name'] == expected.measurement_type.name.to_s &&
         actual['measurement_type_unit'] == expected.measurement_type.unit.to_s
 

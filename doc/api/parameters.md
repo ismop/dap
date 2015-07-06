@@ -12,6 +12,7 @@ No parameters are required.
   "parameters": [
     {
           "id": numerically unique id (e.g. 1),
+          "custom_id": external identifier of the parameter, specific to the levee installation setup,
           "parameter_name": name of the parameter,
           "device_id": identifier of a device measuring the parameter,
           "measurement_type_name": data type name,
@@ -38,6 +39,7 @@ Parameters:
 {
   "parameter": {
         "id": numerically unique id (e.g. 1),
+        "custom_id": external identifier of the parameter, specific to the levee installation setup,
         "parameter_name": name of the parameter,
         "device_id": identifier of a device measuring the parameter,
         "measurement_type_name": data type name,
