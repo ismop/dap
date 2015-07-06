@@ -49,6 +49,29 @@ describe Api::V1::DeviceAggregation do
 
   end
 
+
+  describe 'GET /device_aggregations' do
+
+    let!(:device_aggregation_parent) { create(:device_aggregation) }
+    let!(:device_aggregation) { create(:device_aggregation, parent: device_aggregation_parent) }
+
+    let(:sensor) { create(:neosentio_sensor) }
+    let(:sensor2) { create(:budokop_sensor) }
+    let!(:device1) { create(:device, device_type: 'neosentio-sensor', neosentio_sensor: sensor, device_aggregation: device_aggregation) }
+    let!(:device2) { create(:device, device_type: 'budokop-sensor', budokop_sensor: sensor2, device_aggregation: device_aggregation) }
+
+    context 'get all device aggregations' do
+
+      it 'returns right device aggregations' do
+        get api("/device_aggregations/#{device_aggregation.id}", user)
+        expect(da).to device_aggregation_eq device_aggregation
+        get api("/device_aggregations/#{device_aggregation_parent.id}", user)
+        expect(da).to device_aggregation_eq device_aggregation_parent
+      end
+    end
+
+  end
+
   def das
     json_response['device_aggregations']
   end

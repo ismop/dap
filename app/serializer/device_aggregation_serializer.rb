@@ -1,6 +1,6 @@
 class DeviceAggregationSerializer < ActiveModel::Serializer
   embed :ids
-  attributes :id, :custom_id, :placement, :profile_id, :section_id, :levee_id, :type
+  attributes :id, :custom_id, :placement, :profile_id, :section_id, :levee_id, :type, :children_ids, :parent_id
   attributes :device_ids
 
   def type
@@ -16,6 +16,14 @@ class DeviceAggregationSerializer < ActiveModel::Serializer
       []
     else
       object.devices.collect{|d| d.id}
+    end
+  end
+
+  def children_ids
+    if object.children.blank?
+      []
+    else
+      object.children.collect{|d| d.id}
     end
   end
 

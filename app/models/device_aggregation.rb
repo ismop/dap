@@ -6,6 +6,11 @@ class DeviceAggregation < ActiveRecord::Base
   belongs_to :section
   belongs_to :levee
 
+  belongs_to :levee
+
+  belongs_to :parent, :class_name => 'DeviceAggregation'
+  has_many :children, :class_name => 'DeviceAggregation', :foreign_key => 'parent_id'
+
   has_many :devices
 
   self.rgeo_factory_generator = RGeo::Geos.factory_generator

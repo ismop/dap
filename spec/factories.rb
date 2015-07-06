@@ -172,9 +172,8 @@ FactoryGirl.define do
     custom_id { rand_str(10) }
   end
 
-
   factory :device_aggregation do
-
+    custom_id { rand_str(10) }
   end
 
   factory :budokop_sensor do

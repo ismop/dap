@@ -56,7 +56,9 @@ end
 RSpec::Matchers.define :device_aggregation_eq do |expected|
   match do |actual|
     actual['id'] == expected.id &&
-        (actual['device_ids'] - expected.device_ids).empty?
+        actual['parent_id'] == expected.parent_id &&
+        (actual['device_ids'] - expected.device_ids).empty? &&
+        (actual['children_ids'] - expected.children.ids).empty?
   end
 end
 

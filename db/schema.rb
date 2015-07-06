@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150703061131) do
+ActiveRecord::Schema.define(version: 20150706095912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,9 +51,11 @@ ActiveRecord::Schema.define(version: 20150703061131) do
     t.integer "section_id"
     t.integer "levee_id"
     t.string  "device_aggregation_type"
+    t.integer "parent_id"
   end
 
   add_index "device_aggregations", ["levee_id"], :name => "index_device_aggregations_on_levee_id"
+  add_index "device_aggregations", ["parent_id"], :name => "index_device_aggregations_on_parent_id"
   add_index "device_aggregations", ["section_id"], :name => "index_device_aggregations_on_section_id"
 
   create_table "devices", force: true do |t|
