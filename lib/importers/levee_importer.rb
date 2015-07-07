@@ -33,26 +33,26 @@ class LeveeImporter
     @json = JSON.parse(file)
   end
 
-  def import(section_type = nil, levee_name = "Unnamed Levee #{Time.now}")
+  def import(p_type = nil, levee_name = "Unnamed Levee #{Time.now}")
     ActiveRecord::Base.transaction do
-      section_type ||= SectionType.create
+      profile_type ||= ProfileType.create
       measurement_type = MeasurementType.create(name: "Temperature", unit: "C")
       levee = Levee.create { |l| l.name = levee_name }
       levees = []
-      @json.each_value do |section|
-        polygon = section["polygon"].map do |point|
+      @json.each_value do |profile|
+        polygon = profile["polygon"].map do |point|
           RGeo::Cartesian.factory.point(point[0], point[1])
         end
-        new_section = Section.create do |section|
-          section.shape = RGeo::Cartesian.factory.multi_point(polygon)
-          section.levee = levee
-          section.section_type = section_type
+        new_profile = Profile.create do |profile|
+          profile.shape = RGeo::Cartesian.factory.multi_point(polygon)
+          profile.levee = levee
+          profile.profile_type = profile_type
         end
         sensors =[]
-        section["points"].each do |point|
-          sensors << build_sensor(RGeo::Cartesian.factory.point(point[0], point[1]), new_section, measurement_type).tap {|s| s.save}
+        profile["points"].each do |point|
+          sensors << build_sensor(RGeo::Cartesian.factory.point(point[0], point[1]), new_profile, measurement_type).tap {|s| s.save}
         end
-        levees << [new_section, sensors]
+        levees << [new_profile, sensors]
       end
       levees
     end
@@ -60,7 +60,7 @@ class LeveeImporter
 
   private
 
-  def build_sensor(placement, section, measurement_type)
+  def build_sensor(placement, profile, measurement_type)
 
     @date ||= Time.parse("2014-06-01 12:00:00")
     id = Random.rand(10000000).to_s
@@ -89,7 +89,7 @@ class LeveeImporter
       sensor.power_type_id = 2
       sensor.interface_type_id = 3
       sensor.measurement_type_id = measurement_type.id
-      sensor.section_id = section.id
+      sensor.profile_id = profile.id
     end
   end
 

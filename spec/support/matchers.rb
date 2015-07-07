@@ -34,6 +34,7 @@ end
 RSpec::Matchers.define :parameter_eq do |expected|
   match do |actual|
     actual['id'] == expected.id &&
+      actual['custom_id'] == expected.custom_id &&
       actual['measurement_type_name'] == expected.measurement_type.name.to_s &&
         actual['measurement_type_unit'] == expected.measurement_type.unit.to_s
 
@@ -48,7 +49,7 @@ RSpec::Matchers.define :device_eq do |expected|
         (expected.pump.nil? || actual['pump_id'] == expected.pump_id) &&
         actual['custom_id'] == expected.custom_id &&
         actual['device_type'] == expected.device_type &&
-        actual['section_id'] == expected.section_id
+        actual['profile_id'] == expected.profile_id
 
   end
 end
@@ -56,7 +57,17 @@ end
 RSpec::Matchers.define :device_aggregation_eq do |expected|
   match do |actual|
     actual['id'] == expected.id &&
-        (actual['device_ids'] - expected.device_ids).empty?
+        actual['parent_id'] == expected.parent_id &&
+        (actual['device_ids'] - expected.device_ids).empty? &&
+        (actual['children_ids'] - expected.children.ids).empty?
+  end
+end
+
+
+RSpec::Matchers.define :section_eq do |expected|
+  match do |actual|
+    actual['id'] == expected.id &&
+        actual['levee_id'] == expected.levee_id
   end
 end
 

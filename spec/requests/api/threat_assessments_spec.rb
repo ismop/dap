@@ -75,8 +75,8 @@ describe Api::V1::ThreatAssessmentsController do
   describe 'POST /threat_assessments' do
     context 'when authenticated as user' do
 
-      let!(:p1) { create(:section) }
-      let!(:p2) { create(:section) }
+      let!(:p1) { create(:profile) }
+      let!(:p2) { create(:profile) }
 
       let(:create_json) do {threat_assessment: {
         name: "My new threat_assessment",
@@ -85,7 +85,7 @@ describe Api::V1::ThreatAssessmentsController do
         start_date: "2014-09-10 15:15",
         end_date: nil,
         selection: "POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))",
-        section_ids: [p1.id, p2.id]
+        profile_ids: [p1.id, p2.id]
       }} end
 
       it 'creates a new threat_assessment' do
@@ -96,7 +96,7 @@ describe Api::V1::ThreatAssessmentsController do
         new_e = ThreatAssessment.last
         expect(new_e.id).to_not be_nil
         expect(new_e['status']).to eq "started"
-        expect(new_e.sections).to eq [p1, p2]
+        expect(new_e.profiles).to eq [p1, p2]
       end
 
     end

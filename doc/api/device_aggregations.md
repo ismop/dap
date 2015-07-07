@@ -13,8 +13,13 @@ No parameters are required.
     {
         "id": numerically unique id (e.g. 1),
         "custom_id": external identifier of the device, specific to the levee installation setup,
-        "placement": geometric coordinates of the device_aggregation, expressed as a GeoJSON data structure,
-        "section_id": identifier of a section the aggreagation belong to,
+        "parent_id": identifier of parent device aggregation,
+        "children_ids": identifiers of children - other aggregations,
+        "type": string representing type of the device aggregation,
+        "placement": geometric coordinates of the device aggregation, expressed as a GeoJSON data structure,
+        "profile_id": identifier of the profile the device aggregations belongs to,
+        "section_id": identifier of the section the device aggregations belongs to,
+        "levee_id": identifier of the levee the device aggregations belongs to,
         "device_ids": identifiers of aggregated devices.
     },  {
       ...
@@ -38,9 +43,14 @@ Parameters:
   "device_aggregation": {
       "id": numerically unique id (e.g. 1),
       "custom_id": external identifier of the sensor, specific to the levee installation setup,
+      "parent_id": identifier of parent device aggregation,
+      "children_ids": identifiers of children - other aggregations,
+      "type": string representing type of the device aggregation,
       "placement": geometric coordinates of the sensor, expressed as a GeoJSON data structure,
-      "section_id": identifier of a section the aggreagation belong to,
-      "device_ids": identifiers of aggregated devices.
+      "profile_id": identifier of the profile the device aggregations belongs to,
+      "section_id": identifier of the section the device aggregations belongs to,
+      "levee_id": identifier of the levee the device aggregations belongs to,
+      "device_ids": identifiers of aggregated devices
   }
 }
 ```

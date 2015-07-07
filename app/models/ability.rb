@@ -14,7 +14,8 @@ class Ability
       can [:read], Parameter
       can [:read], Pump
       can [:read, :create, :update], Result
-      can [:read, :get_sections_for_selection], Section
+      can [:read, :get_profile_for_selection], Profile
+      can [:read], Section
       can [:read], Sensor
       can [:read, :create, :update], Timeline
       can [:create, :read, :update, :destroy], ThreatAssessment

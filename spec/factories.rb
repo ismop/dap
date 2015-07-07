@@ -23,13 +23,13 @@ FactoryGirl.define do
     status { ["unknown", "started", "finished", "error"].sample }
     selection { 'POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))' }
 
-    sections { [create(:section), create(:section)] }
+    profiles { [create(:profile), create(:profile)] }
   end
 
   factory :result do
     similarity { rand(0.0..100.0) }
 
-    section
+    profile
     threat_assessment
     scenario
   end
@@ -99,17 +99,22 @@ FactoryGirl.define do
     interface_type
   end
 
-  factory :section do
+  factory :profile do
+    section { create(:section) }
     levee { create(:levee) }
-    section_type { create(:section_type) }
-    shape { 'MULTIPOINT(49.981348 19.678777, 49.98191 19.678662, 49.981919 19.678856, 49.981928 19.679069)' }
+    profile_type {  create(:profile_type) }
     sensors {[]}
   end
 
+  factory :section do
+    levee { create(:levee) }
+    shape { 'MULTIPOINT(49.981348 19.678777, 49.98191 19.678662, 49.981919 19.678856, 49.981928 19.679069)' }
+  end
 
-  factory :section_type do
+  factory :profile_type do
 
   end
+
   factory :sensor do
     custom_id { rand_str(10) }
     placement { rand_point(true) }
@@ -133,7 +138,7 @@ FactoryGirl.define do
     precision { rand(0.0..99.99) }
 
     measurement_node
-    section
+    profile
     activity_state
     power_type
     interface_type
@@ -153,7 +158,7 @@ FactoryGirl.define do
   factory :scenario do
     file_name { Faker::Lorem.words(3).join(' ') }
     payload { Faker::Lorem.words(10).join(' ') }
-    section_type { create(:section_type) }
+    profile_type { create(:profile_type ) }
   end
 
   factory :measurement do
@@ -167,9 +172,8 @@ FactoryGirl.define do
     custom_id { rand_str(10) }
   end
 
-
   factory :device_aggregation do
-
+    custom_id { rand_str(10) }
   end
 
   factory :budokop_sensor do
@@ -187,6 +191,7 @@ FactoryGirl.define do
   end
 
   factory :parameter do
+    custom_id { rand_str(10) }
     measurement_type
   end
 
