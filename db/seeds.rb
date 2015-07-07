@@ -44,9 +44,9 @@ InterfaceType.create(name: 'RF2')
 
 # Initial points describing sample levee sections
 # MOS1, MOS2, MOS3, MOS4, MOS6, MOS5, (MOS1)
-Levee.create(name: 'Real section', shape: 'MULTIPOINT(49.981348 19.678777 211.21, 49.98191 19.678662 211.14, 49.981919 19.678856 215.70, 49.981928 19.679069 211.10, 49.981371 19.679169 210.84, 49.981357 19.678973 215.84)')
+Levee.create(name: 'Real section')
 # MOS2, TG1, TG2, TG3, MOS4, MOS3, (MOS2)
-Levee.create(name: 'Fictional section', shape: 'MULTIPOINT(49.98191 19.678662 211.14, 49.982779 19.678487 211.02, 49.982803 19.678659 215.58, 49.98283 19.678898 211.35, 49.981928 19.679069 211.10, 49.981919 19.678856 215.70)')
+Levee.create(name: 'Fictional section')
 
 # Edge nodes
 EdgeNode.create(custom_id: 'WB001', placement: 'POINT(49.97221 19.6751)', manufacturer: 'Siemens AG', model: 'ABC1', serial_number: '00001', firmware_version: '20140617', manufacture_date: '2014-03-12', purchase_date: '2014-06-08', warranty_date: '2016-12-31', deployment_date: '2014-06-01', last_state_change: '2014-06-01 12:00', energy_consumption: 5, activity_state: ActivityState.first, interface_type: InterfaceType.first)
@@ -55,28 +55,24 @@ EdgeNode.create(custom_id: 'WB001', placement: 'POINT(49.97221 19.6751)', manufa
 MeasurementNode.create(custom_id: 'MN001', placement: 'POINT(49.971 19.67 211.20)', battery_state: 75, battery_capacity: 100, manufacturer: 'Siemens AG', model: 'MNXA05', serial_number: '00001', firmware_version: '20140610', manufacture_date: '2014-03-12', purchase_date: '2014-06-08', warranty_date: '2016-12-31', deployment_date: '2014-06-01', last_state_change: '2014-06-01 12:00', energy_consumption: 7, edge_node: EdgeNode.first, activity_state: ActivityState.first, power_type: PowerType.first, interface_type: InterfaceType.second)
 
 # Sensors
-s1 = Sensor.create(custom_id: 'sensor_1', placement: 'POINT(49.981348 19.678777 211.21)', x_orientation: 90, y_orientation: 0, z_orientation: 180, battery_state: 90, battery_capacity: 100, manufacturer: 'Siemens AG', model: 'Mark I temperature sensor', serial_number: 'TS-32482349', firmware_version: '20140610', manufacture_date: '2014-03-12', purchase_date: '2014-06-08', warranty_date: '2016-12-31', deployment_date: '2014-06-01', last_state_change: '2014-06-01 12:00', energy_consumption: 2, precision: 0.1, measurement_node: MeasurementNode.first, activity_state: ActivityState.first, power_type: PowerType.second, interface_type: InterfaceType.third, measurement_type: MeasurementType.first)
-s2 = Sensor.create(custom_id: 'sensor_2', placement: 'POINT(49.981665 19.678662 211.14)', x_orientation: 90, y_orientation: 0, z_orientation: 180, battery_state: 55, battery_capacity: 100, manufacturer: 'Siemens AG', model: 'Mark I temperature sensor', serial_number: 'TS-32482362', firmware_version: '20140610', manufacture_date: '2014-03-12', purchase_date: '2014-06-08', warranty_date: '2016-12-31', deployment_date: '2014-06-01', last_state_change: '2014-06-01 12:00', energy_consumption: 2, precision: 0.1, measurement_node: MeasurementNode.first, activity_state: ActivityState.first, power_type: PowerType.second, interface_type: InterfaceType.third, measurement_type: MeasurementType.first)
-s3 = Sensor.create(custom_id: 'sensor_3', placement: 'POINT(49.981919 19.678856 212.70)', x_orientation: 90, y_orientation: 0, z_orientation: 180, battery_state: 67, battery_capacity: 100, manufacturer: 'Siemens AG', model: 'Mark I temperature sensor', serial_number: 'TS-32482380', firmware_version: '20140610', manufacture_date: '2014-03-12', purchase_date: '2014-06-08', warranty_date: '2016-12-31', deployment_date: '2014-06-01', last_state_change: '2014-06-01 12:00', energy_consumption: 2, precision: 0.1, measurement_node: MeasurementNode.first, activity_state: ActivityState.first, power_type: PowerType.second, interface_type: InterfaceType.third, measurement_type: MeasurementType.first)
-s4 = Sensor.create(custom_id: 'sensor_4', placement: 'POINT(49.981500 19.678866 215.70)', x_orientation: 90, y_orientation: 0, z_orientation: 180, battery_state: 67, battery_capacity: 100, manufacturer: 'Siemens AG', model: 'Mark I temperature sensor', serial_number: 'TS-32482381', firmware_version: '20140610', manufacture_date: '2014-03-12', purchase_date: '2014-06-08', warranty_date: '2016-12-31', deployment_date: '2014-06-01', last_state_change: '2014-06-01 12:00', energy_consumption: 2, precision: 0.1, measurement_node: MeasurementNode.first, activity_state: ActivityState.first, power_type: PowerType.second, interface_type: InterfaceType.third, measurement_type: MeasurementType.first)
+d1 = Device.create(custom_id: 'sensor_1', placement: 'POINT(49.981348 19.678777 211.21)')
+p1 = Parameter.create(custom_id: 'sensor_1', measurement_type: MeasurementType.first)
+s1 = NeosentioSensor.create(x_orientation: 90, y_orientation: 0, z_orientation: 180, battery_state: 90, battery_capacity: 100, manufacturer: 'Siemens AG', model: 'Mark I temperature sensor', serial_number: 'TS-32482349', firmware_version: '20140610', manufacture_date: '2014-03-12', purchase_date: '2014-06-08', warranty_date: '2016-12-31', deployment_date: '2014-06-01', last_state_change: '2014-06-01 12:00', energy_consumption: 2, precision: 0.1, measurement_node: MeasurementNode.first )
 
 # Timelines
-t1 = Timeline.create(name: 'Sensor 1 timeline', measurement_type: 'actual', sensor: s1)
-t2 = Timeline.create(name: 'Sensor 2 timeline', measurement_type: 'actual', sensor: s2)
-t3 = Timeline.create(name: 'Sensor 3 timeline', measurement_type: 'actual', sensor: s3)
-t4 = Timeline.create(name: 'Sensor 4 timeline', measurement_type: 'actual', sensor: s4)
+t1 = Timeline.create(parameter: p1)
+
+s1 = Section.create(levee: Levee.first)
 
 # profile
-p1 = Profile.create(name: 'Section 1', sensors: [s1, s2])
-p2 = Profile.create(name: 'Section 2', sensors: [s3, s4])
+p1 = Profile.create(devices: [d1])
 
 # ThreatAssessment
-e1 = ThreatAssessment.create(name: 'Threat assessment 1', selection: 'POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))', start_date: '2014-09-09 20:15', end_date: '2014-09-09 20:20', sections: [p1, p2] )
+e1 = ThreatAssessment.create(name: 'Threat assessment 1', selection: 'POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))', start_date: '2014-09-09 20:15', end_date: '2014-09-09 20:20', profiles: [p1] )
 
 # Results
-Result.create(similarity: 2.5, threat_assessment: e1, profile: p1, timeline: t1)
-Result.create(similarity: 3.5, threat_assessment: e1, profile: p1, timeline: t2)
-Result.create(similarity: 7.0, threat_assessment: e1, profile: p2, timeline: t3)
-Result.create(similarity: 9.9, threat_assessment: e1, profile: p2, timeline: t4)
+Result.create(similarity: 2.5, threat_assessment: e1, profile: p1)
+Result.create(similarity: 3.5, threat_assessment: e1, profile: p1)
+
 
 #mtypes = MeasurementType.create([])
