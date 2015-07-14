@@ -73,6 +73,7 @@ Rails.application.routes.draw do
       resources :sensors, only: [:index, :show, :update, :create]
       resources :threat_assessments, only: [:index, :show, :update, :create]
       resources :timelines, only: [:index, :show, :update, :create]
+      resources :contexts, only: [:index, :show]
     end
   end
 

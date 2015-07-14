@@ -71,3 +71,11 @@ RSpec::Matchers.define :section_eq do |expected|
   end
 end
 
+RSpec::Matchers.define :context_eq do |expected|
+  match do |actual|
+    actual['id'] == expected.id &&
+        actual['name'] == expected.name &&
+        actual['context_type'] == expected.context_type
+  end
+end
+

@@ -12,7 +12,8 @@ No parameters are required, although it is possible to filter by selected attrib
   "timelines": [
     {
       "id": numerically unique id (e.g. 1),
-      "sensor_id": ID of the sensor represented by this timeline.
+      "sensor_id": ID of the sensor represented by this timeline,
+      "parameter_id": ID of the parameter represented by this timeline,
       "context_id": ID of the context the timeline is connected with.
     }, {
       ...
@@ -35,7 +36,8 @@ Parameters:
 {
   "timeline": {
       "id": numerically unique id (e.g. 1),
-       "sensor_id": ID of the sensor represented by this timeline.
+       "sensor_id": ID of the sensor represented by this timeline,
+       "parameter_id": ID of the parameter represented by this timeline,
        "context_id": ID of the context the timeline is connected with.
   }
 }

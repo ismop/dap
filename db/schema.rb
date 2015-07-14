@@ -246,7 +246,7 @@ ActiveRecord::Schema.define(version: 20150706102752) do
 
   add_index "sections", ["levee_id"], :name => "index_sections_on_levee_id"
 
-  create_table "sensors", force: true do |t|
+  create_table "sensors", force: true do  |t|
     t.string   "custom_id",                                                                                  default: "unknown ID",            null: false
     t.spatial  "placement",           limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
     t.float    "x_orientation",                                                                              default: 0.0,                     null: false

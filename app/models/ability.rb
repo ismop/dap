@@ -19,6 +19,7 @@ class Ability
       can [:read], Sensor
       can [:read, :create, :update], Timeline
       can [:create, :read, :update, :destroy], ThreatAssessment
+      can [:create, :read, :update, :destroy], Context
     end
   end
 end

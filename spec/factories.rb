@@ -152,7 +152,7 @@ FactoryGirl.define do
 
   factory :context do
     context_type 'tests'
-    name 'test context'
+    name { Faker::Lorem.words(3).join(' ') }
   end
 
   factory :scenario do
