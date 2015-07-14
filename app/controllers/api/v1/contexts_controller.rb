@@ -5,7 +5,7 @@ module Api
       respond_to :json
 
       def index
-        respond_with @contexts.order(:id)
+        respond_with @contexts.where(filter).order(:id)
       end
 
       def show
