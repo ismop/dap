@@ -44,6 +44,21 @@ describe Api::V1::Parameter do
       end
     end
 
+    context 'filter parameters by id' do
+      let!(:p1) { create(:parameter)}
+      let!(:p2) { create(:parameter)}
+      let!(:p3) { create(:parameter)}
+      let!(:p4) { create(:parameter)}
+
+      it 'returns parameters with selected ids' do
+        get api("/parameters?id=#{p2.id},#{p3.id}", user)
+        expect(ps_response).to be_an Array
+        expect(ps_response.length).to eq 2
+        expect(ps_response.collect{|r| r['id']}).to include p2.id
+        expect(ps_response.collect{|r| r['id']}).to include p3.id
+      end
+    end
+
   end
 
   def ps_response

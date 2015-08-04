@@ -29,6 +29,22 @@ describe Api::V1::TimelinesController do
         expect(ts_response.length).to eq 4
       end
     end
+
+    context 'filter timelines by id' do
+      let!(:t1) { create(:timeline)}
+      let!(:t2) { create(:timeline)}
+      let!(:t3) { create(:timeline)}
+      let!(:t4) { create(:timeline)}
+
+      it 'returns timelines with selected ids' do
+        get api("/timelines?id=#{t1.id},#{t4.id}", user)
+        expect(ts_response).to be_an Array
+        expect(ts_response.length).to eq 2
+        expect(ts_response.collect{|r| r['id']}).to include t1.id
+        expect(ts_response.collect{|r| r['id']}).to include t4.id
+      end
+    end
+
   end
 
   describe 'GET /timelines/{id}' do

@@ -5,7 +5,14 @@ module Api
       respond_to :json
 
       def index
-        respond_with @timelines.where(filter).order(:id)
+        query = @timelines
+
+        if params.keys.include? "id"
+          ids = params[:id].split(',')
+          query = query.where(id: ids)
+        end
+
+        respond_with query.where(filter).order(:id)
       end
 
       def show

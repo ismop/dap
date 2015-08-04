@@ -13,6 +13,8 @@ GET /measurements?time_from=2014-06-23%2015:50:40%20+0200&time_to=2014-06-23%201
 
 This will return all measurements which fall between 23 June 2014 15:50:40 UTC+0200 and 23 June 2014 16:50:40 UTC+0200. The response is a JSON file.
 
+Multiple (comma-separated) values can be specified in filter fields (/id/, /timeline_id/, /context_id/).
+
 ```json
 {
   "measurements": [
@@ -38,7 +40,7 @@ GET /measurements/:id
 
 Parameters:
 
-+ `id` (required) - The ID of the Measurement you are interested in, as returned by the GET /measurements call.
++ `id` (required) - The ID of the Measurement you are interested in, as returned by the GET /measurements call. Multiple (comma-separated) values can be entered.
 
 ```json
 {
