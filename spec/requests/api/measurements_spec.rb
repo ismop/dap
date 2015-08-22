@@ -36,6 +36,22 @@ describe Api::V1::MeasurementsController do
       end
     end
 
+    context 'filter measurements by id' do
+      let!(:t) { create(:timeline) }
+      let!(:m1) { create(:measurement, timeline: t, timestamp: Time.now-1.hour)}
+      let!(:m2) { create(:measurement, timeline: t, timestamp: Time.now-4.hours)}
+      let!(:m3) { create(:measurement, timeline: t, timestamp: Time.now-8.hours)}
+      let!(:m4) { create(:measurement, timeline: t, timestamp: Time.now-24.hours)}
+
+      it 'returns measurements with selected ids' do
+        get api("/measurements?id=#{m2.id},#{m4.id}", user)
+        expect(ms_response).to be_an Array
+        expect(ms_response.length).to eq 2
+        expect(ms_response.collect{|r| r['id']}).to include m2.id
+        expect(ms_response.collect{|r| r['id']}).to include m4.id
+      end
+    end
+
     context 'filter measurements by time' do
       let!(:s) { create(:sensor) }
       let!(:m1) { create(:measurement, timeline: s.timelines.first, timestamp: Time.now-1.hour)}
@@ -90,6 +106,11 @@ describe Api::V1::MeasurementsController do
         expect(ms_response.length).to eq 4
       end
 
+      it 'returns measurements for two sensors' do
+        get api("/measurements?sensor_id=#{s1.id},#{s2.id}", user)
+        expect(ms_response.length).to eq 6
+      end
+
       it 'combine filter params' do
         get api("/measurements?sensor_id=#{s2.id}&time_from=#{URI::encode((Time.now-1.hour).to_s)}", user)
         expect(ms_response.length).to eq 1
@@ -113,9 +134,14 @@ describe Api::V1::MeasurementsController do
       let!(:m12) { create(:measurement, timeline: t12)}
       let!(:m2) { create(:measurement, timeline: t2)}
 
-      it 'returns measurements for selected sensor' do
+      it 'returns measurements for selected context' do
         get api("/measurements?context_id=#{m11.timeline.context_id}", user)
         expect(ms_response.length).to eq 2
+      end
+
+      it 'returns measurements for two contexts' do
+        get api("/measurements?context_id=#{m11.timeline.context_id},#{m2.timeline.context_id}", user)
+        expect(ms_response.length).to eq 3
       end
 
       it 'combine filter params' do

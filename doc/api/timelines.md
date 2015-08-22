@@ -30,7 +30,7 @@ GET /timelines/:id
 
 Parameters:
 
-+ `id` (required) - The ID of the Timeline you are interested in, as returned by the GET /timelines or GET /sensors call
++ `id` (required) - The ID of the Timeline you are interested in, as returned by the GET /timelines or GET /sensors call. Multiple (comma-separated) values can be entered.
 
 ```json
 {

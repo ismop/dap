@@ -18,18 +18,26 @@ module Api
           time_to = '2100-01-01'
         end
 
+        if params.keys.include? "id"
+          ids = params[:id].split(',')
+          query = query.where(id: ids)
+        end
+
         query = query.where(timestamp: time_from..time_to)
 
         if params.keys.include? "sensor_id"
-          query = query.includes(:timeline).references(:timelines).where(:timelines => { sensor_id: params[:sensor_id] })
+          sensor_ids = params['sensor_id'].split(',')
+          query = query.includes(:timeline).references(:timelines).where(:timelines => { sensor_id: sensor_ids })
         end
 
         if params.keys.include? "context_id"
-          query = query.includes(:timeline).references(:timelines).where(:timelines => { context_id: params[:context_id] })
+          context_ids = params['context_id'].split(',')
+          query = query.includes(:timeline).references(:timelines).where(:timelines => { context_id: context_ids })
         end
 
         if params.keys.include? "timeline_id"
-          query = query.where(timeline_id: params[:timeline_id])
+          timeline_ids = params['timeline_id'].split(',')
+          query = query.where(timeline_id: timeline_ids)
         end
 
         respond_with query.order(:id)

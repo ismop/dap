@@ -33,7 +33,7 @@ GET /parameters/:id
 
 Parameters:
 
-+ `id` (required) - The ID of the Parameter you are interested in, as returned by the GET /parameters call
++ `id` (required) - The ID of the Parameter you are interested in, as returned by the GET /parameters call. Multiple (comma-separated) values can be entered.
 
 ```json
 {
