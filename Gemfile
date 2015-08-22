@@ -69,6 +69,9 @@ gem 'rack-cors', :require => 'rack/cors'
 # Date validation
 gem 'date_validator'
 
+# Geocoord converter
+gem 'proj4rb'
+
 group :development do
   # Avoid writing crap to logfiles in devmode
   gem 'quiet_assets'
