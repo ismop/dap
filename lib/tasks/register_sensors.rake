@@ -24,6 +24,7 @@ namespace :data do
       s.save
     end
 
+
     # Register aggregations for fiber optic cables
     fo1 = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód 1', levee: l)
     fo2 = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód 2', levee: l)
