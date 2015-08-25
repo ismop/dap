@@ -100,35 +100,101 @@ namespace :data do
 
           p1 = Parameter.find_or_create_by(parameter_name: "Odczyt sensora #{d1.custom_id}", device: d1)
           p1.custom_id = 'ASP.UT_'+d1.custom_id[-1]+'_'+d1.custom_id[4..-3]+'.F_CV'
-
-          puts "My custom ID: #{p1.custom_id}"
-
           p1.measurement_type = mt_t
           p2 = Parameter.find_or_create_by(parameter_name: "Odczyt sensora #{d2.custom_id}", device: d2)
           p2.custom_id = 'ASP.UT_'+d2.custom_id[-1]+'_'+d2.custom_id[4..-3]+'.F_CV'
           p2.measurement_type = mt_p
 
-          puts "My custom ID: #{p2.custom_id}"
+          p1.save
+          p2.save
 
+          if p1.valid?
+            if p1.reload.timelines.blank?
+              t1 = Timeline.new
+              t1.parameter = p1
+              t1.context = c
+              t1.save
+            end
+          end
+
+          if p2.valid?
+            if p2.reload.timelines.blank?
+              t2 = Timeline.new
+              t2.parameter = p2
+              t2.context = c
+              t2.save
+            end
+          end
+        end
+      elsif arr[0][2..3] == 'SV'
+        d1 = Device.find_or_create_by(custom_id: arr[0]+'_T')
+        d2 = Device.find_or_create_by(custom_id: arr[0]+'_S')
+        d1.placement = "POINT(#{arr[2]} #{arr[3]} #{arr[4]})"
+        d2.placement = "POINT(#{arr[2]} #{arr[3]} #{arr[4]})"
+        d1.device_type = 'budokop-sensor'
+        d2.device_type = 'budokop-sensor'
+        d1.levee = l
+        d2.levee = l
+
+        if d1.budokop_sensor.blank?
+          bs1 = BudokopSensor.new(battery_state: 0, battery_capacity: 0)
+          bs1.save
+          d1.budokop_sensor = bs1
+        end
+        if d2.budokop_sensor.blank?
+          bs2 = BudokopSensor.new(battery_state: 0, battery_capacity: 0)
+          bs2.save
+          d2.budokop_sensor = bs2
+        end
+
+        # Assign d1 and d2 to correct section
+        Section.all.each do |s|
+          if d1.placement.within? s.shape.convex_hull
+            puts "Device #{d1.custom_id} belongs to section #{s.id.to_s}"
+            d1.section = s
+          end
+          if d2.placement.within? s.shape.convex_hull
+            puts "Device #{d2.custom_id} belongs to section #{s.id.to_s}"
+            d2.section = s
+          end
+        end
+
+        # Assign correct device_aggregation, if applicable
+        d1.device_aggregation = sva
+        d2.device_aggregation = sva
+
+        d1.save
+        d2.save
+
+        unless d1.reload.parameters.count > 0
+          puts "Creating parameter for device #{d1.custom_id} which has #{d1.parameters.count} parameters."
+
+          p1 = Parameter.find_or_create_by(parameter_name: "Odczyt sensora #{d1.custom_id}", device: d1)
+          p1.custom_id = 'ASP.SV_'+d1.custom_id[-1]+'_'+d1.custom_id[4..-3]+'.F_CV'
+          p1.measurement_type = mt_t
+          p2 = Parameter.find_or_create_by(parameter_name: "Odczyt sensora #{d2.custom_id}", device: d2)
+          p2.custom_id = 'ASP.SV_'+d2.custom_id[-1]+'_'+d2.custom_id[4..-3]+'.F_CV'
+          p2.measurement_type = mt_p
 
           p1.save
           p2.save
 
-          if !(p1.valid?)
-            puts "P1 ERRORS: #{p1.errors.inspect}"
+          if p1.valid?
+            if p1.reload.timelines.blank?
+              t1 = Timeline.new
+              t1.parameter = p1
+              t1.context = c
+              t1.save
+            end
           end
 
-          if p1.reload.timelines.blank?
-            t1 = Timeline.new
-            t1.parameter = p1
-            t1.context = c
-            t1.save
-          end
-          if p2.reload.timelines.blank?
-            t2 = Timeline.new
-            t2.parameter = p2
-            t2.context = c
-            t2.save
+          if p2.valid?
+            if p2.reload.timelines.blank?
+              t2 = Timeline.new
+              t2.parameter = p2
+              t2.context = c
+              t2.save
+            end
           end
         end
       else
