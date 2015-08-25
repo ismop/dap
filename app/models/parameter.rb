@@ -1,7 +1,6 @@
 class Parameter < ActiveRecord::Base
 
   validates :custom_id, presence: true
-  validates :custom_id, uniqueness: true
 
   belongs_to :device
   belongs_to :measurement_type
