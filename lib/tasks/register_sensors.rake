@@ -4,6 +4,7 @@ namespace :data do
 
     l = Levee.find_or_create_by(name: 'Obwałowanie eksperymentalne - Czernichów')
     c = Context.find_or_create_by(name: 'Obwałowanie eksperymentalne - sensory Budokop', context_type: 'measurements')
+    disc = Device.find_or_create_by(name: 'Odczyty nieznanych sensorów', device_type: 'parameter_discovery')
     mt_t = MeasurementType.find_or_create_by(name: 'Temperatura', unit: 'C')
     mt_p = MeasurementType.find_or_create_by(name: 'Ciśnienie porowe', unit: 'Pa')
     mt_dir = MeasurementType.find_or_create_by(name: 'Kierunek wiatru', unit: 'stopnie')
@@ -122,7 +123,7 @@ namespace :data do
               t2 = Timeline.new
               t2.parameter = p2
               t2.context = c
-              t2.save
+              t2.saveInterim commit for backup purposes.
             end
           end
         end
