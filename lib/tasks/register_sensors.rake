@@ -38,8 +38,6 @@ namespace :data do
     # Register aggregations for fiber optic cables
     fo1 = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód 1', levee: l)
     fo2 = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód 2', levee: l)
-    uta = DeviceAggregation.find_or_create_by(custom_id: 'Czujniki UT', levee: l)
-    sva = DeviceAggregation.find_or_create_by(custom_id: 'Czujniki SV', levee: l)
     other = DeviceAggregation.find_or_create_by(custom_id: 'Pozostałe czujniki', levee: l)
     ws1 = DeviceAggregation.find_or_create_by(custom_id: 'Stacja pogodowa Budokop', \
       device_aggregation_type: 'weather_station', levee: l)
@@ -47,8 +45,6 @@ namespace :data do
       device_aggregation_type: 'weather_station', levee: l)
     fo1.save
     fo2.save
-    uta.save
-    sva.save
     other.save
     ws1.save
     ws2.save
@@ -57,6 +53,9 @@ namespace :data do
       arr = line.split(',')
 
       if arr[0][2..3] == 'UT'
+
+        ut_da = DeviceAggregation.find_or_create_by(custom_id: "czujniki #{arr[0]}", levee: l)
+        ut_da.save
         d1 = Device.find_or_create_by(custom_id: arr[0]+'_T')
         d2 = Device.find_or_create_by(custom_id: arr[0]+'_P')
         d1.placement = "POINT(#{arr[2]} #{arr[3]} #{arr[4]})"
@@ -65,6 +64,8 @@ namespace :data do
         d2.device_type = 'budokop-sensor'
         d1.levee = l
         d2.levee = l
+        d1.device_aggregation = ut_da
+        d2.device_aggregation = ut_da
 
         if d1.budokop_sensor.blank?
           bs1 = BudokopSensor.new(battery_state: 0, battery_capacity: 0)
@@ -88,10 +89,6 @@ namespace :data do
             d2.section = s
           end
         end
-
-        # Assign correct device_aggregation, if applicable
-        d1.device_aggregation = uta
-        d2.device_aggregation = uta
 
         d1.save
         d2.save
@@ -123,11 +120,13 @@ namespace :data do
               t2 = Timeline.new
               t2.parameter = p2
               t2.context = c
-              t2.saveInterim commit for backup purposes.
+              t2.save
             end
           end
         end
       elsif arr[0][2..3] == 'SV'
+        sv_da = DeviceAggregation.find_or_create_by(custom_id: "czujniki #{arr[0]}", levee: l)
+        sv_da.save
         d1 = Device.find_or_create_by(custom_id: arr[0]+'_T')
         d2 = Device.find_or_create_by(custom_id: arr[0]+'_S')
         d1.placement = "POINT(#{arr[2]} #{arr[3]} #{arr[4]})"
@@ -136,6 +135,8 @@ namespace :data do
         d2.device_type = 'budokop-sensor'
         d1.levee = l
         d2.levee = l
+        d1.device_aggregation = sv_da
+        d2.device_aggregation = sv_da
 
         if d1.budokop_sensor.blank?
           bs1 = BudokopSensor.new(battery_state: 0, battery_capacity: 0)
@@ -159,10 +160,6 @@ namespace :data do
             d2.section = s
           end
         end
-
-        # Assign correct device_aggregation, if applicable
-        d1.device_aggregation = sva
-        d2.device_aggregation = sva
 
         d1.save
         d2.save
