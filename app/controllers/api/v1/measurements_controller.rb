@@ -9,11 +9,13 @@ module Api
 
         if params.keys.include? "time_from"
           time_from = Time.parse(params[:time_from]).utc.to_s
+          params[:time_from] = nil
         else
           time_from = '1980-01-01'
         end
         if params.keys.include? "time_to"
           time_to = Time.parse(params[:time_to]).utc.to_s
+          params[:time_to] = nil
         else
           time_to = '2100-01-01'
         end
@@ -21,18 +23,16 @@ module Api
         query = query.where(timestamp: time_from..time_to)
 
         if params.keys.include? "sensor_id"
-          query = query.includes(:timeline).references(:timelines).where(:timelines => { sensor_id: params[:sensor_id] })
+          query = query.includes(:timeline).references(:timelines).where(:timelines => { sensor_id: params[:sensor_id].to_s.split(',') })
+          params[:sensor_id] = nil
         end
 
         if params.keys.include? "context_id"
-          query = query.includes(:timeline).references(:timelines).where(:timelines => { context_id: params[:context_id] })
+          query = query.includes(:timeline).references(:timelines).where(:timelines => { context_id: params[:context_id].to_s.split(',') })
+          params[:context_id] = nil
         end
 
-        if params.keys.include? "timeline_id"
-          query = query.where(timeline_id: params[:timeline_id])
-        end
-
-        respond_with query.order(:id)
+        respond_with query.where(filter).order(:id)
       end
 
       def show
