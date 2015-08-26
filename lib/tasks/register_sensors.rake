@@ -259,6 +259,13 @@ namespace :data do
     Section.all.each do |s|
       p = Profile.find_or_create_by(section: s, profile_type: pt)
       p.devices = s.devices
+
+      p.device_aggregations = s.devices.select { |d|
+        d.custom_id[2..3] == 'SV' or d.custom_id[2..3] == 'UT'
+      }.collect { |d|
+        d.device_aggregation
+      }.flatten.uniq
+
       p.save
     end
 

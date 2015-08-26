@@ -15,13 +15,13 @@ class Profile < ActiveRecord::Base
   has_and_belongs_to_many :threat_assessments, join_table: 'section_selections'
 
   def profile_shape
-    if sensors.count < 2
+    if devices.count < 2
       return nil
     end
-    if sensors.count == 2
-      return RGeo::Cartesian.factory.line(sensors.first.placement, sensors.second.placement)
+    if devices.count == 2
+      return RGeo::Cartesian.factory.line(devices.first.placement, devices.second.placement)
     end
-    multipoint = RGeo::Cartesian.factory.multi_point(sensors.map(&:placement))
+    multipoint = RGeo::Cartesian.factory.multi_point(devices.map(&:placement))
     convex_hull = multipoint.convex_hull
     if (convex_hull.class == RGeo::Geos::CAPILineStringImpl)
       return convex_hull
