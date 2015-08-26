@@ -66,6 +66,8 @@ namespace :data do
         d2.levee = l
         d1.device_aggregation = ut_da
         d2.device_aggregation = ut_da
+        ut_da.placement = d1.placement
+        ut_da.save
 
         if d1.budokop_sensor.blank?
           bs1 = BudokopSensor.new(battery_state: 0, battery_capacity: 0)
@@ -137,6 +139,8 @@ namespace :data do
         d2.levee = l
         d1.device_aggregation = sv_da
         d2.device_aggregation = sv_da
+        sv_da.placement = d1.placement
+        sv_da.save
 
         if d1.budokop_sensor.blank?
           bs1 = BudokopSensor.new(battery_state: 0, battery_capacity: 0)
