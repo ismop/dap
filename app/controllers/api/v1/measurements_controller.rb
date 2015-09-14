@@ -32,7 +32,18 @@ module Api
           params[:context_id] = nil
         end
 
-        respond_with query.where(filter).order(:id)
+        if params.keys.include? "limit"
+          case params[:limit]
+            when 'first'
+              query = query.where(filter).order(:timestamp)
+            respond_with [query.first]
+            when 'last'
+              query = query.where(filter).order(:timestamp)
+            respond_with [query.last]
+          end
+        else
+          respond_with query.where(filter).order(:id)
+        end
       end
 
       def show
