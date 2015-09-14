@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150706102752) do
+ActiveRecord::Schema.define(version: 20150826115509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -203,6 +203,7 @@ ActiveRecord::Schema.define(version: 20150706102752) do
     t.datetime "updated_at"
     t.integer  "profile_type_id"
     t.integer  "section_id"
+    t.spatial  "shape",           limit: {:srid=>4326, :type=>"line_string", :geographic=>true}
   end
 
   add_index "profiles", ["profile_type_id"], :name => "index_profiles_on_profile_type_id"
@@ -323,5 +324,9 @@ ActiveRecord::Schema.define(version: 20150706102752) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "weather_stations", force: true do |t|
+    t.integer "device_id"
+  end
 
 end

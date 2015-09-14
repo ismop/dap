@@ -7,7 +7,7 @@ class ProfileSerializer < ActiveModel::Serializer
   end
 
   def profile_shape
-    RGeo::GeoJSON.encode(object.profile_shape).as_json
+    RGeo::GeoJSON.encode(object.shape).as_json
   end
 
 end

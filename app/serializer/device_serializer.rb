@@ -2,7 +2,7 @@ class DeviceSerializer < ActiveModel::Serializer
   embed :ids
   attributes :id, :custom_id, :placement, :device_type, :device_aggregation_id
   attributes :profile_id, :section_id, :levee_id
-  attributes :neosentio_sensor_id, :budokop_sensor_id, :pump_id
+  attributes :neosentio_sensor_id, :budokop_sensor_id, :pump_id, :weather_station_id
   attributes :parameter_ids
 
   def placement
@@ -30,6 +30,14 @@ class DeviceSerializer < ActiveModel::Serializer
       nil
     else
       object.pump.id
+    end
+  end
+
+  def weather_station_id
+    if object.weather_station.blank?
+      nil
+    else
+      object.weather_station.id
     end
   end
 
