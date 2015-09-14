@@ -38,6 +38,21 @@ describe Api::V1::ProfilesController do
         get api('/sections', user)
         expect(ss_response.size).to eq 2
       end
+
+      it 'returns ground type info for sections' do
+        gt1 = create(:ground_type)
+        gt2 = create(:ground_type)
+
+        s1.ground_type = gt1
+        s2.ground_type = gt2
+        s1.save
+        s2.save
+
+        get api('/sections', user)
+
+        expect(ss_response.first['ground_type_label']).to eq gt1.label
+        expect(ss_response.second['ground_type_label']).to eq gt2.label
+      end
     end
 
     context 'when getting defined section' do

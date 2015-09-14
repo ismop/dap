@@ -4,6 +4,7 @@ class Section < ActiveRecord::Base
   has_many :devices, dependent: :destroy
   has_many :device_aggregations, dependent: :destroy
 
+  belongs_to :ground_type
   belongs_to :levee
 
 end

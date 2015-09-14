@@ -106,9 +106,15 @@ FactoryGirl.define do
     sensors {[]}
   end
 
+  factory :ground_type do
+    label { rand_str(10) }
+    description { Faker::Lorem.words(10).join(' ') }
+  end
+
   factory :section do
     levee { create(:levee) }
     shape { 'MULTIPOINT(49.981348 19.678777, 49.98191 19.678662, 49.981919 19.678856, 49.981928 19.679069)' }
+    ground_type
   end
 
   factory :profile_type do
