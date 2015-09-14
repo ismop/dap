@@ -25,6 +25,17 @@ RSpec::Matchers.define :budokop_sensor_eq do |expected|
   end
 end
 
+RSpec::Matchers.define :fiber_optic_node_eq do |expected|
+  match do |actual|
+    actual['id'] == expected.id &&
+        actual['cable_distance_marker'] == expected.cable_distance_marker &&
+        actual['levee_distance_marker'] == expected.levee_distance_marker &&
+        actual['deployment_date'] == expected.deployment_date &&
+        actual['last_state_change'] == expected.last_state_change &&
+        actual['device_id'] == expected.device_id
+  end
+end
+
 RSpec::Matchers.define :pump_eq do |expected|
   match do |actual|
     actual['id'] == expected.id

@@ -67,6 +67,7 @@ Rails.application.routes.draw do
       resources :neosentio_sensors, only: [:index, :show, :update, :create]
       resources :parameters, only: [:index, :show, :update, :create]
       resources :pumps, only: [:index, :show, :update, :create]
+      resources :fiber_optic_nodes, only: [:index, :show, :update, :create]
       resources :results, only: [:index, :show, :update, :create]
       resources :profiles, only: [:index, :show, :update, :create]
       resources :sections, only: [:index, :show, :update, :create]
