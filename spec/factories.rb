@@ -108,7 +108,7 @@ FactoryGirl.define do
 
   factory :section do
     levee { create(:levee) }
-    shape { 'MULTIPOINT(49.981348 19.678777, 49.98191 19.678662, 49.981919 19.678856, 49.981928 19.679069)' }
+    shape { 'MULTIPOINT(49.981348 19.678777, 49.98191 19.678662, 49.981919 19.678856, 49.981928 19.679069, 49.981348 19.678777)' }
   end
 
   factory :profile_type do
@@ -173,6 +173,7 @@ FactoryGirl.define do
   end
 
   factory :device_aggregation do
+    shape { 'MULTIPOINT(49.981348 19.678777, 49.981919 19.678856, 49.981928 19.679069, 49.981348 19.678777)' }
     custom_id { rand_str(10) }
   end
 
