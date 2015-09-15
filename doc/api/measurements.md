@@ -13,6 +13,21 @@ GET /measurements?time_from=2014-06-23%2015:50:40%20+0200&time_to=2014-06-23%201
 
 This will return all measurements which fall between 23 June 2014 15:50:40 UTC+0200 and 23 June 2014 16:50:40 UTC+0200. The response is a JSON file.
 
+Additionally, the /limit/ flag can be used to obtain only the first or last measurement from the selected range:
+
+```
+GET /measurements?time_from=2014-06-23%2015:50:40%20+0200&time_to=2014-06-23%2016:50:40%20+0200&limit=first
+```
+
+This will return the first measurement (chronologically) from the specified range.
+
+
+```
+GET /measurements?time_from=2014-06-23%2015:50:40%20+0200&time_to=2014-06-23%2016:50:40%20+0200&limit=last
+```
+
+Likewise, this will return the last measurement (chronologically) from the specified range.
+
 Multiple (comma-separated) values can be specified in filter fields (/id/, /timeline_id/, /context_id/).
 
 ```json

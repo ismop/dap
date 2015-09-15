@@ -151,6 +151,47 @@ describe Api::V1::MeasurementsController do
 
     end
 
+    context 'return first and last measurements when requested' do
+      let(:t) { create(:timeline) }
+
+      it 'properly returns first measurement' do
+        time = Time.now
+        ms = []
+        for i in 1..10 do
+          ms << create(:measurement, timeline: t, timestamp: time+i.seconds)
+        end
+
+        get api("/measurements?limit=first", user)
+        expect(ms_response.length).to eq 1
+        expect(ms_response.collect{|r| r['id']}).to include ms.first.id
+      end
+
+      it 'properly returns last measurement' do
+        time = Time.now
+        ms = []
+        for i in 1..10 do
+          ms << create(:measurement, timeline: t, timestamp: time+i.seconds)
+        end
+
+        get api("/measurements?limit=last", user)
+        expect(ms_response.length).to eq 1
+        expect(ms_response.collect{|r| r['id']}).to include ms.last.id
+      end
+
+      it 'properly returns first and last measurements when time_from and time_to are used' do
+        time = Time.now
+        ms = []
+        for i in 1..10 do
+          ms << create(:measurement, timeline: t, timestamp: time+i.seconds)
+        end
+
+        get api("/measurements?time_from=#{URI::encode((time+3.seconds).to_s)}&time_to=#{URI::encode((time+7.seconds).to_s)}&limit=first", user)
+        expect(ms_response.collect{|r| r['id']}).to include ms[2].id
+        get api("/measurements?time_from=#{URI::encode((time+3.seconds).to_s)}&time_to=#{URI::encode((time+7.seconds).to_s)}&limit=last", user)
+        expect(ms_response.collect{|r| r['id']}).to include ms[5].id
+      end
+
+    end
   end
 
   def ms_response
