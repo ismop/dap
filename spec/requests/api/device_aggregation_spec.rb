@@ -68,6 +68,13 @@ describe Api::V1::DeviceAggregation do
         get api("/device_aggregations/#{device_aggregation_parent.id}", user)
         expect(da).to device_aggregation_eq device_aggregation_parent
       end
+
+      it 'gets shape info for device aggregations' do
+        get api("/device_aggregations/#{device_aggregation.id}", user)
+        expect(da['shape']).to be_a Hash
+        expect(da['shape']['type']).to eq 'MultiPoint'
+        expect(da['shape']['coordinates']).to be_a Array
+      end
     end
 
   end
