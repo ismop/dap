@@ -202,7 +202,11 @@ FactoryGirl.define do
   end
 
   factory :pump do
+  end
 
+  factory :fiber_optic_node do
+    cable_distance_marker { rand(1..450) }
+    levee_distance_marker { rand(1..450) }
   end
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150914111602) do
+ActiveRecord::Schema.define(version: 20150914124940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,13 +44,13 @@ ActiveRecord::Schema.define(version: 20150914111602) do
   end
 
   create_table "device_aggregations", force: true do |t|
-    t.string  "custom_id",                                                                           default: "unknown ID", null: false
+    t.string  "custom_id",                                                                                      default: "unknown ID", null: false
+    t.spatial "placement",               limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
     t.integer "profile_id"
     t.integer "section_id"
     t.integer "levee_id"
     t.string  "device_aggregation_type"
     t.integer "parent_id"
-    t.spatial "shape",                   limit: {:srid=>4326, :type=>"geometry", :geographic=>true}
   end
 
   add_index "device_aggregations", ["levee_id"], :name => "index_device_aggregations_on_levee_id"
@@ -93,6 +93,14 @@ ActiveRecord::Schema.define(version: 20150914111602) do
   add_index "edge_nodes", ["custom_id"], :name => "index_edge_nodes_on_custom_id", :unique => true
   add_index "edge_nodes", ["interface_type_id"], :name => "index_edge_nodes_on_interface_type_id"
   add_index "edge_nodes", ["last_state_change"], :name => "index_edge_nodes_on_last_state_change"
+
+  create_table "fiber_optic_nodes", force: true do |t|
+    t.float    "cable_distance_marker"
+    t.float    "levee_distance_marker"
+    t.date     "deployment_date"
+    t.datetime "last_state_change"
+    t.integer  "device_id"
+  end
 
   create_table "interface_types", force: true do |t|
     t.string   "name",       default: "unnamed interface type", null: false
