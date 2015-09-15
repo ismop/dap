@@ -39,6 +39,21 @@ describe Api::V1::Device do
         expect(ds[0]).to device_eq device1
         expect(ds[1]).to device_eq device2
       end
+
+      it 'returns device metadata' do
+        pump = create(:pump)
+        node = create(:fiber_optic_node)
+
+        device3 = create(:device, device_type: 'pump', pump: pump)
+        device4 = create(:device, device_type: 'fiber_optic_node', fiber_optic_node: node)
+
+        get api("/devices", user)
+
+        expect(ds[0]['metadata'].keys.length).to eq 17
+        expect(ds[1]['metadata'].keys.length).to eq 11
+        expect(ds[2]['metadata'].keys.length).to eq 6
+        expect(ds[3]['metadata'].keys.length).to eq 4
+      end
     end
 
     context 'get device by id' do
