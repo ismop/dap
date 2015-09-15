@@ -32,7 +32,6 @@ describe Api::V1::Context do
     context 'get all contexts' do
       it 'returns right contexts' do
         get api("/contexts", user)
-        puts Context.count
         expect(ds[0]).to context_eq context
       end
     end
