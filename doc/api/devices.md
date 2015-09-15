@@ -22,7 +22,8 @@ No parameters are required, although it is possible to filter by selected attrib
         "neosentio_sensor_id": identifier of a sensor representation of the device (if device is a neosentio sensor) or null,
         "budokop_sensor_id": identifier of a sensor representation of the device (if device is a budokop sensor) or null,
         "pump_id":  identifier of a pump representation of the device (if device is a pump) or null,
-        "parameter_ids":  identifiers of parameters measured by the devide
+        "parameter_ids":  identifiers of parameters measured by the device,
+        "metadata": a hash which contains additional metadata specific to the type of the device (i.e. its contents depend on the device_type field)
     }, {
       ...
     }
@@ -54,7 +55,8 @@ Parameters:
         "neosentio_sensor_id": identifier of a sensor representation of the device (if device is a neosentio sensor) or null,
         "budokop_sensor_id": identifier of a sensor representation of the device (if device is a budokop sensor) or null,
         "pump_id":  identifier of a pump representation of the device (if device is a pump) or null,
-        "parameter_ids":  identifiers of parameters measured by the devide
+        "parameter_ids":  identifiers of parameters measured by the device,
+        "metadata": a hash which contains additional metadata specific to the type of the device (i.e. its contents depend on the device_type field)
   }
 }
 ```
