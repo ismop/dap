@@ -12,8 +12,10 @@ GET /sections
   "sections": [
     {
       "id": a numerical unique id (e.g. 1),
-       "shape": the geometry of the profile given in the GeoJSON notation,
-       "levee_id": identifier of the levee the profile belongs to
+       "shape": the geometry of the section given in the GeoJSON notation,
+       "levee_id": identifier of the levee the section belongs to
+       "ground_type_label": identifier of the type of ground which comprises the section (if set)
+       "ground_type_description": description of the type of ground which comprises the section (if set)
     }, {
     {
      ...
@@ -38,8 +40,10 @@ Parameters:
 {
   "section": {
      "id": a numerical unique id (e.g. 1),
-     "shape": the geometry of the profile given in the GeoJSON notation,
-     "levee_id": identifier of the levee the profile belongs to
+     "shape": the geometry of the section given in the GeoJSON notation,
+     "levee_id": identifier of the levee the section belongs to
+     "ground_type_label": identifier of the type of ground which comprises the section (if set)
+     "ground_type_description": description of the type of ground which comprises the section (if set)
   }
 }
 ```
