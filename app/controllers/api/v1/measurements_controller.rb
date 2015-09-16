@@ -33,16 +33,30 @@ module Api
         end
 
         if params.keys.include? "limit"
-          case params[:limit]
-            when 'first'
-              query = query.where(filter).order(:timestamp)
-            respond_with [query.first]
-            when 'last'
-              query = query.where(filter).order(:timestamp)
-            respond_with [query.last]
+          result = []
+          timelines = []
+          if params[:limit] == 'first'
+            query = query.where(filter).includes(:timeline).order('timestamp ASC')
+          else
+            query = query.where(filter).includes(:timeline).order('timestamp DESC')
           end
+
+          query.each do |m|
+            if timelines.include? m.timeline
+              # Do nothing
+            else
+              result << m
+              timelines << m.timeline
+            end
+          end
+          respond_with result
         else
-          respond_with query.where(filter).order(:id)
+          query = query.where(filter).order(:id)
+          if query.blank?
+            respond_with []
+          else
+            respond_with query
+          end
         end
       end
 
