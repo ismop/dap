@@ -153,6 +153,7 @@ describe Api::V1::MeasurementsController do
 
     context 'return first and last measurements when requested' do
       let(:t) { create(:timeline) }
+      let(:t2) { create(:timeline) }
 
       it 'properly returns first measurement' do
         time = Time.now
@@ -176,6 +177,23 @@ describe Api::V1::MeasurementsController do
         get api("/measurements?limit=last", user)
         expect(ms_response.length).to eq 1
         expect(ms_response.collect{|r| r['id']}).to include ms.last.id
+      end
+
+      it 'properly returns last measurement for each timeline', focus: true do
+        time = Time.now
+        ms = []
+        ms2 = []
+        for i in 1..10 do
+          ms << create(:measurement, timeline: t, timestamp: time+i.seconds)
+          ms2 << create(:measurement, timeline: t2, timestamp: time+i.seconds)
+        end
+
+        get api("/measurements?limit=each_timeline_last", user)
+        expect(ms_response.length).to eq 2
+        expect(ms_response[0]['timeline_id']).to eq t.id
+        expect(ms_response[0]['id']).to eq ms.last.id
+        expect(ms_response[1]['timeline_id']).to eq t2.id
+        expect(ms_response[1]['id']).to eq ms2.last.id
       end
 
       it 'properly returns first and last measurements when time_from and time_to are used' do
