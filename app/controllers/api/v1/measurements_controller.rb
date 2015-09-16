@@ -36,10 +36,19 @@ module Api
           case params[:limit]
             when 'first'
               query = query.where(filter).order(:timestamp)
-            respond_with [query.first]
+              respond_with [query.first]
             when 'last'
               query = query.where(filter).order(:timestamp)
-            respond_with [query.last]
+              respond_with [query.last]
+            when 'each_timeline_last'
+              map = Hash.new
+              query.where(filter).order(:timeline_id).each do |x|
+                existing = map[x.timeline_id]
+                if existing.nil? || (x.timestamp - existing.try(:timestamp)) > 0
+                  map[x.timeline_id] = x
+                end
+              end
+              respond_with map.sort.map{ |k,v| v }
           end
         else
           respond_with query.where(filter).order(:id)
