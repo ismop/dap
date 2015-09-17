@@ -13,6 +13,7 @@ class Ability
       can [:read], NeosentioSensor
       can [:read], Parameter
       can [:read], Pump
+      can [:read], FiberOpticNode
       can [:read, :create, :update], Result
       can [:read, :get_profile_for_selection], Profile
       can [:read], Section

@@ -1,14 +1,14 @@
 class DeviceAggregationSerializer < ActiveModel::Serializer
   embed :ids
-  attributes :id, :custom_id, :placement, :profile_id, :section_id, :levee_id, :type, :children_ids, :parent_id
+  attributes :id, :custom_id, :shape, :profile_id, :section_id, :levee_id, :type, :children_ids, :parent_id
   attributes :device_ids
 
   def type
     object.device_aggregation_type
   end
 
-  def placement
-    RGeo::GeoJSON.encode(object.placement).as_json
+  def shape
+    RGeo::GeoJSON.encode(object.shape).as_json
   end
 
   def device_ids
