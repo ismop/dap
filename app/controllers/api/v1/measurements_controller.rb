@@ -33,25 +33,30 @@ module Api
         end
 
         if params.keys.include? "limit"
-          case params[:limit]
-            when 'first'
-              query = query.where(filter).order(:timestamp)
-              respond_with [query.first]
-            when 'last'
-              query = query.where(filter).order(:timestamp)
-              respond_with [query.last]
-            when 'each_timeline_last'
-              map = Hash.new
-              query.where(filter).order(:timeline_id).each do |x|
-                existing = map[x.timeline_id]
-                if existing.nil? || (x.timestamp - existing.try(:timestamp)) > 0
-                  map[x.timeline_id] = x
-                end
-              end
-              respond_with map.sort.map{ |k,v| v }
+          result = []
+          timelines = []
+          if params[:limit] == 'first'
+            query = query.where(filter).includes(:timeline).order('timestamp ASC')
+          else
+            query = query.where(filter).includes(:timeline).order('timestamp DESC')
           end
+
+          query.each do |m|
+            if timelines.include? m.timeline
+              # Do nothing
+            else
+              result << m
+              timelines << m.timeline
+            end
+          end
+          respond_with result
         else
-          respond_with query.where(filter).order(:id)
+          query = query.where(filter).order(:id)
+          if query.blank?
+            respond_with []
+          else
+            respond_with query
+          end
         end
       end
 

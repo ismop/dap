@@ -152,14 +152,15 @@ describe Api::V1::MeasurementsController do
     end
 
     context 'return first and last measurements when requested' do
-      let(:t) { create(:timeline) }
+      let(:t1) { create(:timeline) }
       let(:t2) { create(:timeline) }
+      let(:t3) { create(:timeline) }
 
       it 'properly returns first measurement' do
         time = Time.now
         ms = []
         for i in 1..10 do
-          ms << create(:measurement, timeline: t, timestamp: time+i.seconds)
+          ms << create(:measurement, timeline: t1, timestamp: time+i.seconds)
         end
 
         get api("/measurements?limit=first", user)
@@ -171,7 +172,7 @@ describe Api::V1::MeasurementsController do
         time = Time.now
         ms = []
         for i in 1..10 do
-          ms << create(:measurement, timeline: t, timestamp: time+i.seconds)
+          ms << create(:measurement, timeline: t1, timestamp: time+i.seconds)
         end
 
         get api("/measurements?limit=last", user)
@@ -179,28 +180,33 @@ describe Api::V1::MeasurementsController do
         expect(ms_response.collect{|r| r['id']}).to include ms.last.id
       end
 
-      it 'properly returns last measurement for each timeline', focus: true do
+      it 'properly returns one measurement per timeline' do
         time = Time.now
-        ms = []
-        ms2 = []
+        ms1, ms2, ms3 = [], [], []
         for i in 1..10 do
-          ms << create(:measurement, timeline: t, timestamp: time+i.seconds)
-          ms2 << create(:measurement, timeline: t2, timestamp: time+i.seconds)
+          ms1 << create(:measurement, timeline: t1, timestamp: time+i.seconds)
+          ms2 << create(:measurement, timeline: t2, timestamp: time+(i*5).seconds)
+          ms3 << create(:measurement, timeline: t3, timestamp: time+(i*100).seconds)
         end
 
-        get api("/measurements?limit=each_timeline_last", user)
-        expect(ms_response.length).to eq 2
-        expect(ms_response[0]['timeline_id']).to eq t.id
-        expect(ms_response[0]['id']).to eq ms.last.id
-        expect(ms_response[1]['timeline_id']).to eq t2.id
-        expect(ms_response[1]['id']).to eq ms2.last.id
+        get api("/measurements?limit=first", user)
+        expect(ms_response.length).to eq 3
+        expect(ms_response.collect{|r| r['id']}).to include ms1.first.id
+        expect(ms_response.collect{|r| r['id']}).to include ms2.first.id
+        expect(ms_response.collect{|r| r['id']}).to include ms3.first.id
+
+        get api("/measurements?limit=last", user)
+        expect(ms_response.length).to eq 3
+        expect(ms_response.collect{|r| r['id']}).to include ms1.last.id
+        expect(ms_response.collect{|r| r['id']}).to include ms2.last.id
+        expect(ms_response.collect{|r| r['id']}).to include ms3.last.id
       end
 
       it 'properly returns first and last measurements when time_from and time_to are used' do
         time = Time.now
         ms = []
         for i in 1..10 do
-          ms << create(:measurement, timeline: t, timestamp: time+i.seconds)
+          ms << create(:measurement, timeline: t1, timestamp: time+i.seconds)
         end
 
         get api("/measurements?time_from=#{URI::encode((time+3.seconds).to_s)}&time_to=#{URI::encode((time+7.seconds).to_s)}&limit=first", user)
@@ -209,6 +215,16 @@ describe Api::V1::MeasurementsController do
         expect(ms_response.collect{|r| r['id']}).to include ms[5].id
       end
 
+      it 'returns an empty table when no results are found' do
+        time = Time.now
+        ms = []
+        for i in 1..10 do
+          ms << create(:measurement, timeline: t1, timestamp: time+i.seconds)
+        end
+
+        get api("/measurements?time_from=#{URI::encode((time+20.seconds).to_s)}&time_to=#{URI::encode((time+30.seconds).to_s)}&limit=first", user)
+        expect(ms_response).to eq []
+      end
     end
   end
 
