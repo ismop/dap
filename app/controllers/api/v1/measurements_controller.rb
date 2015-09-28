@@ -49,6 +49,14 @@ module Api
           params[:context_id] = nil
         end
 
+        if params[:limit] == 'first'
+          sql += ' ORDER BY m.timeline_id, m.timestamp ASC '
+        elsif params[:limit] == 'last'
+          sql += ' ORDER BY m.timeline_id, m.timestamp DESC '
+        else
+          sql += ' ORDER BY m.timeline_id '
+        end
+
         if params.keys.include? 'quantity'
 
           # Finalize inner SQL
@@ -69,11 +77,6 @@ module Api
         if params.keys.include? 'limit'
           result = []
           timelines = []
-          if params[:limit] == 'first'
-            sql += " ORDER BY m.timeline_id, m.timestamp ASC"
-          else
-            sql += " ORDER BY m.timeline_id, m.timestamp DESC"
-          end
 
           Measurement.find_by_sql(sql).each.each do |m|
             if timelines.include? m.timeline
@@ -84,7 +87,6 @@ module Api
             end
           end
         else
-          sql += " ORDER BY m.timeline_id"
           ms = Measurement.find_by_sql(sql)
           if ms.blank?
             result = []
