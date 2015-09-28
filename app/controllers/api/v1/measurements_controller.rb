@@ -7,12 +7,10 @@ module Api
       def index
 
         if params.keys.include? 'quantity'
-          sql = "SELECT m.* FROM (SELECT *, row_number() OVER(ORDER BY id ASC) AS row FROM measurements) m "
+          sql = "SELECT m.* FROM (SELECT m.*, row_number() OVER(ORDER BY m.id ASC) AS row FROM measurements m JOIN timelines t ON m.timeline_id = t.id "
         else
-          sql = "SELECT m.* FROM measurements m "
+          sql = "SELECT m.* FROM measurements m JOIN timelines t ON m.timeline_id = t.id "
         end
-
-        sql += "JOIN timelines t ON m.timeline_id = t.id "
 
         result = []
 
@@ -37,7 +35,7 @@ module Api
         end
 
         if params.keys.include? "timeline_id"
-          sql += " AND t.id IN (#{params[:timeline_id].to_s})"
+          sql += " AND m.timeline_id IN (#{params[:timeline_id].to_s})"
           params[:timeline_id] = nil
         end
 
@@ -53,6 +51,9 @@ module Api
 
         if params.keys.include? 'quantity'
 
+          # Finalize inner SQL
+          sql += ') m '
+
           # Run a preliminary query to determine how many results will be retrieved
           count_measurements = sql.sub 'SELECT m.*', 'SELECT COUNT(m.*)'
           count_timelines = sql.sub('SELECT m.*', 'SELECT COUNT(DISTINCT m.timeline_id)')
@@ -62,7 +63,7 @@ module Api
           t_r = @connection.exec_query(count_timelines)
           m_qty = m_r.first['count'].to_i
           t_qty = t_r.first['count'].to_i
-          sql += " AND m.row % #{((m_qty/(params[:quantity].to_i))/t_qty).to_i} = 0 "
+          sql += " WHERE m.row % #{((m_qty/(params[:quantity].to_i))/t_qty).to_i} = 0 "
         end
 
         if params.keys.include? 'limit'
