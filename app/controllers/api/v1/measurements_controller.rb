@@ -36,6 +36,11 @@ module Api
           params[:id] = nil
         end
 
+        if params.keys.include? "timeline_id"
+          sql += " AND t.id IN (#{params[:timeline_id].to_s})"
+          params[:timeline_id] = nil
+        end
+
         if params.keys.include? "sensor_id"
           sql += " AND t.sensor_id IN (#{params[:sensor_id].to_s})"
           params[:sensor_id] = nil
