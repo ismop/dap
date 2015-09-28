@@ -60,7 +60,6 @@ module Api
           sql += " AND m.row % #{((m_qty/(params[:quantity].to_i))/t_qty).to_i} = 0 "
         end
 
-
         if params.keys.include? 'limit'
           result = []
           timelines = []
@@ -78,7 +77,6 @@ module Api
               timelines << m.timeline
             end
           end
-          # respond_with result
         else
           sql += " ORDER BY m.timeline_id"
           ms = Measurement.find_by_sql(sql)
