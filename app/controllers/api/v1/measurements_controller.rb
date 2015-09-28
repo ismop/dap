@@ -5,7 +5,16 @@ module Api
       respond_to :json
 
       def index
-        query = @measurements
+
+        if params.keys.include? 'quantity'
+          sql = "SELECT m.* FROM (SELECT *, row_number() OVER(ORDER BY id ASC) AS row FROM measurements) m "
+        else
+          sql = "SELECT m.* FROM measurements m "
+        end
+
+        sql += "JOIN timelines t ON m.timeline_id = t.id "
+
+        result = []
 
         if params.keys.include? "time_from"
           time_from = Time.parse(params[:time_from]).utc.to_s
@@ -20,28 +29,47 @@ module Api
           time_to = '2100-01-01'
         end
 
-        query = query.where(timestamp: time_from..time_to)
+        sql += "WHERE m.timestamp BETWEEN '#{time_from}' AND '#{time_to}' "
+
+        if params.keys.include? "id"
+          sql += " AND m.id IN (#{params[:id].to_s})"
+          params[:id] = nil
+        end
 
         if params.keys.include? "sensor_id"
-          query = query.includes(:timeline).references(:timelines).where(:timelines => { sensor_id: params[:sensor_id].to_s.split(',') })
+          sql += " AND t.sensor_id IN (#{params[:sensor_id].to_s})"
           params[:sensor_id] = nil
         end
 
         if params.keys.include? "context_id"
-          query = query.includes(:timeline).references(:timelines).where(:timelines => { context_id: params[:context_id].to_s.split(',') })
+          sql += " AND t.context_id IN (#{params[:context_id].to_s})"
           params[:context_id] = nil
         end
 
-        if params.keys.include? "limit"
+        if params.keys.include? 'quantity'
+
+          # Run a preliminary query to determine how many results will be retrieved
+          count_measurements = sql.sub 'SELECT m.*', 'SELECT COUNT(m.*)'
+          count_timelines = sql.sub('SELECT m.*', 'SELECT COUNT(DISTINCT m.timeline_id)')
+
+          @connection = ActiveRecord::Base.connection
+          m_r = @connection.exec_query(count_measurements)
+          t_r = @connection.exec_query(count_timelines)
+          m_qty = m_r.first['count'].to_i
+          t_qty = t_r.first['count'].to_i
+          sql += " AND m.row % #{((m_qty/(params[:quantity].to_i))/t_qty).to_i} = 0 "
+        end
+
+        if params.keys.include? 'limit'
           result = []
           timelines = []
           if params[:limit] == 'first'
-            query = query.where(filter).includes(:timeline).order('timestamp ASC')
+            sql += " ORDER BY m.timeline_id, m.timestamp ASC"
           else
-            query = query.where(filter).includes(:timeline).order('timestamp DESC')
+            sql += " ORDER BY m.timeline_id, m.timestamp DESC"
           end
 
-          query.each do |m|
+          Measurement.find_by_sql(sql).each.each do |m|
             if timelines.include? m.timeline
               # Do nothing
             else
@@ -49,15 +77,17 @@ module Api
               timelines << m.timeline
             end
           end
-          respond_with result
         else
-          query = query.where(filter).order(:id)
-          if query.blank?
-            respond_with []
+          sql += " ORDER BY m.timeline_id"
+          ms = Measurement.find_by_sql(sql)
+          if ms.blank?
+            result = []
           else
-            respond_with query
+            result = ms
           end
         end
+
+        respond_with result
       end
 
       def show
