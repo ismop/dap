@@ -54,7 +54,7 @@ module Api
         elsif params[:limit] == 'last'
           sql += ' ORDER BY m.timeline_id, m.timestamp DESC '
         else
-          sql += ' ORDER BY m.timeline_id '
+          sql += ' ORDER BY m.timeline_id, m.timestamp ASC '
         end
 
         if params.keys.include? 'quantity'
