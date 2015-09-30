@@ -71,7 +71,18 @@ module Api
           t_r = @connection.exec_query(count_timelines)
           m_qty = m_r.first['count'].to_i
           t_qty = t_r.first['count'].to_i
-          sql += " WHERE m.row % #{((m_qty/(params[:quantity].to_i))/t_qty).to_i} = 0 "
+          divisor = 1
+          if params[:quantity].to_i > 0
+            divisor = m_qty/(params[:quantity].to_i)
+            if t_qty > 0
+              divisor = (divisor/t_qty).to_i
+            end
+          end
+          if divisor == 0
+            divisor = 1
+          end
+
+          sql += " WHERE m.row % #{divisor} = 0 "
         end
 
         if params.keys.include? 'limit'
