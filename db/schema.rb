@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151005102411) do
+ActiveRecord::Schema.define(version: 20151005111952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,10 +122,10 @@ ActiveRecord::Schema.define(version: 20151005102411) do
   end
 
   create_table "levees", force: true do |t|
-    t.string   "name",                    default: "unnamed levee", null: false
-    t.string   "emergency_level",         default: "none",          null: false
-    t.string   "threat_level",            default: "none",          null: false
-    t.datetime "threat_level_updated_at", default: "now()",         null: false
+    t.string   "name",                    default: "unnamed levee",       null: false
+    t.string   "emergency_level",         default: "none",                null: false
+    t.string   "threat_level",            default: "none",                null: false
+    t.datetime "threat_level_updated_at", default: '2015-10-05 09:21:03', null: false
   end
 
   create_table "measurement_nodes", force: true do |t|
@@ -261,9 +261,9 @@ ActiveRecord::Schema.define(version: 20151005102411) do
   add_index "scenarios", ["profile_type_id"], :name => "index_scenarios_on_profile_type_id"
 
   create_table "sections", force: true do |t|
-    t.spatial "shape",          limit: {:srid=>0, :type=>"geometry"}
     t.integer "levee_id"
     t.integer "ground_type_id"
+    t.spatial "shape",          limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "sections", ["ground_type_id"], :name => "index_sections_on_ground_type_id"
@@ -323,6 +323,7 @@ ActiveRecord::Schema.define(version: 20151005102411) do
     t.integer "context_id"
     t.integer "parameter_id"
     t.integer "experiment_id"
+    t.string  "label"
   end
 
   add_index "timelines", ["context_id"], :name => "index_timelines_on_context_id"
