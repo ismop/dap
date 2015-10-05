@@ -7,8 +7,8 @@ require 'rails_helper'
 
 describe Levee do
   it { should validate_presence_of :name }
-  it { should ensure_inclusion_of(:threat_level).in_array(%w(none heightened severe)) }
-  it { should ensure_inclusion_of(:emergency_level).in_array(%w(none heightened severe)) }
+  it { should validate_inclusion_of(:threat_level).in_array(%w(none heightened severe)) }
+  it { should validate_inclusion_of(:emergency_level).in_array(%w(none heightened severe)) }
 
   subject { build(:levee) }
   it 'should properly update threat level update date' do

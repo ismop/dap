@@ -1,7 +1,7 @@
 
 require 'rails_helper'
 
-describe Api::V1::Parameter do
+describe Api::V1::ParametersController do
 
   include ApiHelpers
 

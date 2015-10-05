@@ -1,7 +1,7 @@
 
 require 'rails_helper'
 
-describe Api::V1::Context do
+describe Api::V1::ContextsController do
 
   include ApiHelpers
 

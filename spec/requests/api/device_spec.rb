@@ -1,7 +1,7 @@
 
 require 'rails_helper'
 
-describe Api::V1::Device do
+describe Api::V1::DevicesController do
 
   include ApiHelpers
 

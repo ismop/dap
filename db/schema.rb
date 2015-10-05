@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150914124940) do
+ActiveRecord::Schema.define(version: 20151005102411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,14 @@ ActiveRecord::Schema.define(version: 20150914124940) do
   add_index "edge_nodes", ["custom_id"], :name => "index_edge_nodes_on_custom_id", :unique => true
   add_index "edge_nodes", ["interface_type_id"], :name => "index_edge_nodes_on_interface_type_id"
   add_index "edge_nodes", ["last_state_change"], :name => "index_edge_nodes_on_last_state_change"
+
+  create_table "experiments", force: true do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string   "name"
+    t.text     "description"
+    t.integer  "levee_id"
+  end
 
   create_table "fiber_optic_nodes", force: true do |t|
     t.float    "cable_distance_marker"
@@ -314,9 +322,11 @@ ActiveRecord::Schema.define(version: 20150914124940) do
     t.integer "sensor_id"
     t.integer "context_id"
     t.integer "parameter_id"
+    t.integer "experiment_id"
   end
 
   add_index "timelines", ["context_id"], :name => "index_timelines_on_context_id"
+  add_index "timelines", ["experiment_id"], :name => "index_timelines_on_experiment_id"
   add_index "timelines", ["parameter_id"], :name => "index_timelines_on_parameter_id"
   add_index "timelines", ["sensor_id"], :name => "index_timelines_on_sensor_id"
 

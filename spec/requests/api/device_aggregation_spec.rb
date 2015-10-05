@@ -1,7 +1,7 @@
 
 require 'rails_helper'
 
-describe Api::V1::DeviceAggregation do
+describe Api::V1::DeviceAggregationsController do
 
   include ApiHelpers
 
