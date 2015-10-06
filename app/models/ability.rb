@@ -21,6 +21,7 @@ class Ability
       can [:read, :create, :update], Timeline
       can [:create, :read, :update, :destroy], ThreatAssessment
       can [:create, :read, :update, :destroy], Context
+      can [:create, :read, :update], Experiment
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::BudokopSensor do
+describe Api::V1::BudokopSensorsController do
 
   include ApiHelpers
 

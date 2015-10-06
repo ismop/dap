@@ -209,4 +209,11 @@ FactoryGirl.define do
     levee_distance_marker { rand(1..450) }
   end
 
+  factory :experiment do
+    name { rand_str(10) }
+    description { Faker::Lorem.words(10).join(' ') }
+    start_date { rand(21..100).days.ago }
+    end_date { rand(1..19).days.ago }
+  end
+
 end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::FiberOpticNode do
+describe Api::V1::FiberOpticNodesController do
 
   include ApiHelpers
 

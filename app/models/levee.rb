@@ -13,6 +13,7 @@ class Levee < ActiveRecord::Base
   has_many :sections, dependent: :destroy
   has_many :devices, dependent: :destroy
   has_many :device_aggregations, dependent: :destroy
+  has_many :experiments, dependent: :nullify
 
   private
 

@@ -2,7 +2,14 @@ class Device < ActiveRecord::Base
   validates :custom_id, presence: true
   validates :custom_id, uniqueness: true
 
-  validates :device_type, inclusion: { in: ['neosentio-sensor', 'budokop-sensor', 'pump',  'parameter_discovery', 'weather_station', 'fiber_optic_node', 'deprecated'] }
+  validates :device_type, inclusion: { in: ['neosentio-sensor',
+                                            'budokop-sensor',
+                                            'pump',
+                                            'parameter_discovery',
+                                            'weather_station',
+                                            'fiber_optic_node',
+                                            'deprecated',
+                                            'unknown'] }
 
   belongs_to :device_aggregation
   belongs_to :profile

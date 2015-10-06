@@ -1,7 +1,7 @@
 
 require 'rails_helper'
 
-describe Api::V1::Pump do
+describe Api::V1::PumpsController do
 
   include ApiHelpers
 

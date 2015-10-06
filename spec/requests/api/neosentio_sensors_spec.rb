@@ -1,7 +1,7 @@
 
 require 'rails_helper'
 
-describe Api::V1::NeosentioSensor do
+describe Api::V1::NeosentioSensorsController do
 
   include ApiHelpers
 
