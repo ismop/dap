@@ -122,10 +122,10 @@ ActiveRecord::Schema.define(version: 20151005111952) do
   end
 
   create_table "levees", force: true do |t|
-    t.string   "name",                    default: "unnamed levee",       null: false
-    t.string   "emergency_level",         default: "none",                null: false
-    t.string   "threat_level",            default: "none",                null: false
-    t.datetime "threat_level_updated_at", default: '2015-10-05 09:21:03', null: false
+    t.string   "name",                    default: "unnamed levee", null: false
+    t.string   "emergency_level",         default: "none",          null: false
+    t.string   "threat_level",            default: "none",          null: false
+    t.datetime "threat_level_updated_at", default: "now()",         null: false
   end
 
   create_table "measurement_nodes", force: true do |t|
@@ -261,9 +261,9 @@ ActiveRecord::Schema.define(version: 20151005111952) do
   add_index "scenarios", ["profile_type_id"], :name => "index_scenarios_on_profile_type_id"
 
   create_table "sections", force: true do |t|
+    t.spatial "shape",          limit: {:srid=>0, :type=>"geometry"}
     t.integer "levee_id"
     t.integer "ground_type_id"
-    t.spatial "shape",          limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "sections", ["ground_type_id"], :name => "index_sections_on_ground_type_id"
