@@ -12,7 +12,9 @@ module Api
           query = query.where(id: ids)
         end
 
-        respond_with query.where(filter).order(:id)
+        respond_with(query.
+                     includes(:measurement_type, :timelines).
+                     where(filter).order(:id))
       end
 
       def show
