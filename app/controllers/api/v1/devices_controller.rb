@@ -5,7 +5,11 @@ module Api
       respond_to :json
 
       def index
-        respond_with @devices.where(filter).order(:id)
+        respond_with(@devices.
+                     includes(:budokop_sensor, :neosentio_sensor, :pump,
+                              :weather_station, :fiber_optic_node, :parameters).
+                     where(filter).
+                     order(:id))
       end
 
       def show
