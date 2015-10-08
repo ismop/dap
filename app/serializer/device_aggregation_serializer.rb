@@ -1,5 +1,4 @@
 class DeviceAggregationSerializer < ActiveModel::Serializer
-  embed :ids
   attributes :id, :custom_id, :shape, :profile_id, :section_id, :levee_id, :type, :children_ids, :parent_id
   attributes :device_ids
 

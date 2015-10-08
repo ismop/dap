@@ -35,7 +35,7 @@ gem 'redcarpet'
 gem 'github-markup', require: 'github/markup'
 
 # ActiveRecord stuff
-gem 'active_model_serializers', '0.8.1'
+gem 'active_model_serializers', '0.10.0.rc3'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
