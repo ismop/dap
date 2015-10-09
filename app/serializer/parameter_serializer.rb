@@ -1,5 +1,4 @@
 class ParameterSerializer < ActiveModel::Serializer
-  embed :ids
   attributes :id, :custom_id, :parameter_name, :device_id
   attributes :measurement_type_name, :measurement_type_unit
 

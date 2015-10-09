@@ -1,5 +1,4 @@
 class NeosentioSensorSerializer < ActiveModel::Serializer
-  embed :ids
   attributes :id, :x_orientation, :y_orientation, :z_orientation, :battery_state, :battery_capacity, :manufacturer, :model, :serial_number, :firmware_version, :manufacture_date, :purchase_date, :warranty_date, :deployment_date, :last_state_change, :energy_consumption, :precision, :measurement_node_id, :device_id
   attributes :activity_state, :power_type, :interface_type
 

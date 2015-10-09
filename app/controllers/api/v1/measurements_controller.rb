@@ -106,7 +106,7 @@ module Api
           end
         end
 
-        respond_with result
+        respond_with result, root: 'measurements'
       end
 
       def show

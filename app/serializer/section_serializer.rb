@@ -1,5 +1,4 @@
 class SectionSerializer < ActiveModel::Serializer
-  embed :ids
   attributes :id, :levee_id, :shape
   attributes :ground_type_label, :ground_type_description
 
