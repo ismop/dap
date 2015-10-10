@@ -72,6 +72,9 @@ gem 'date_validator'
 # Geocoord converter
 gem 'proj4rb'
 
+# Influxdb for storage of measurement data
+gem 'influxdb'
+
 group :development do
   # Avoid writing crap to logfiles in devmode
   gem 'quiet_assets'
