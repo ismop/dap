@@ -105,7 +105,7 @@ namespace :influxdb do
 
     influxdb = InfluxDB::Client.new 'dap', host: "127.0.0.1"
 
-    for i in 1..1000 do
+    for i in 1001..2000 do
 
       data = []
       for j in 1..10000 do
@@ -134,6 +134,71 @@ namespace :influxdb do
     end
 
     puts "All done. Enjoy!"
+
+  end
+
+  task :populate_levee_three => :environment do
+
+    influxdb = InfluxDB::Client.new 'dap', host: "127.0.0.1"
+
+    for i in 1..9 do
+
+      data = []
+      for j in 1..1000 do
+
+        timestamp = (Time.now-j.minutes).to_i
+
+        data << {
+            series: "leveeA1",
+            tags: { device: "UT#{i}", measurement: 'temperature' },
+            values: { temperature: rand(20) },
+            timestamp: timestamp
+        }
+
+        data << {
+            series: "leveeA1",
+            tags: { device: "UT#{i}", measurement: 'pore_pressure' },
+            values: { pore_pressure: rand(1000) },
+            timestamp: timestamp
+        }
+
+        data << {
+            series: "leveeA2",
+            tags: { device: "UT#{i*10}", measurement: 'temperature' },
+            values: { temperature: rand(20) },
+            timestamp: timestamp
+        }
+
+        data << {
+            series: "leveeA2",
+            tags: { device: "UT#{i*10}", measurement: 'pore_pressure' },
+            values: { pore_pressure: rand(1000) },
+            timestamp: timestamp
+        }
+
+        data << {
+            series: "leveeA3",
+            tags: { device: "UT#{i*100}", measurement: 'temperature' },
+            values: { temperature: rand(20) },
+            timestamp: timestamp
+        }
+
+        data << {
+            series: "leveeA3",
+            tags: { device: "UT#{i*100}", measurement: 'pore_pressure' },
+            values: { pore_pressure: rand(1000) },
+            timestamp: timestamp
+        }
+      end
+
+      puts "Writing batch #{i} of 1000"
+      influxdb.write_points(data)
+
+    end
+
+    puts "All done. Enjoy!"
+
+    #SELECT FIRST(temperature) FROM /^levee/ WHERE time > '2015-10-12 18:22:00' GROUP BY device
 
   end
 
