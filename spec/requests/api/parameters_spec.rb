@@ -59,6 +59,30 @@ describe Api::V1::ParametersController do
       end
     end
 
+    context 'filter parameters by levee_id' do
+      let!(:l1) { create(:levee) }
+      let!(:l2) { create(:levee) }
+
+      let!(:d1_1) { create(:device, levee: l1) }
+      let!(:d1_2) { create(:device, levee: l1) }
+      let!(:d2_1) { create(:device, levee: l2) }
+      let!(:d2_2) { create(:device, levee: l2) }
+
+      let!(:p1_1) { create(:parameter, device: d1_1)}
+      let!(:p1_2) { create(:parameter, device: d1_2)}
+      let!(:p2_1) { create(:parameter, device: d2_1)}
+      let!(:p2_2) { create(:parameter, device: d2_2)}
+
+      it 'returns parameters which match selected levee id' do
+        get api("/parameters?levee_id=#{l2.id}", user)
+
+        expect(ps_response).to be_an Array
+        expect(ps_response.length).to eq 2
+        expect(ps_response.collect{|r| r['id']}).to include p2_1.id
+        expect(ps_response.collect{|r| r['id']}).to include p2_2.id
+      end
+    end
+
   end
 
   def ps_response
