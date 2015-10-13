@@ -12,6 +12,10 @@ module Api
           query = query.where(id: ids)
         end
 
+        if params.keys.include? 'levee_id'
+          query = query.joins(:device).where("devices.levee_id = ?", params[:levee_id])
+        end
+
         respond_with(query.
                      includes(:measurement_type, :timelines).
                      where(filter).order(:id))
