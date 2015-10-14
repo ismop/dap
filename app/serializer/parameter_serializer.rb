@@ -1,6 +1,6 @@
 class ParameterSerializer < ActiveModel::Serializer
   attributes :id, :custom_id, :parameter_name, :device_id
-  attributes :measurement_type_name, :measurement_type_unit
+  attributes :measurement_type_name, :measurement_type_unit, :measurement_type_label
 
   attributes :timeline_ids
 
@@ -10,6 +10,10 @@ class ParameterSerializer < ActiveModel::Serializer
 
   def measurement_type_unit
     object.measurement_type.nil? ? nil : object.measurement_type.unit
+  end
+
+  def measurement_type_label
+    object.measurement_type.nil? ? nil : object.measurement_type.label
   end
 
   def timeline_ids

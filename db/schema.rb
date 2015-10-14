@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151005111952) do
+ActiveRecord::Schema.define(version: 20151014184829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20151005111952) do
     t.integer "profile_id"
     t.integer "section_id"
     t.integer "levee_id"
+    t.string  "label"
   end
 
   add_index "devices", ["levee_id"], :name => "index_devices_on_levee_id"
@@ -161,6 +162,7 @@ ActiveRecord::Schema.define(version: 20151005111952) do
     t.string   "unit",       default: "unnamed unit",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "label"
   end
 
   create_table "measurements", force: true do |t|
