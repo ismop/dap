@@ -228,80 +228,27 @@ namespace :influxdb do
       data = []
 
       ms.each do |m|
-        ts_label = "#{m.timeline.parameter.device.id}:#{m.timeline.parameter.device.custom_id}:#{m.timeline.parameter.measurement_type.name}"
+        ts_label = "#{m.timeline.parameter.device.label}:#{m.timeline.parameter.measurement_type.label}"
         tag_timeline_id = "#{m.timeline.id}"
         tag_timeline_label = "#{m.timeline.label}"
         m_timestamp = m.timestamp.to_i
 
-        data << {
+        item = {
             series: ts_label,
-            tags:  { timeline_id: tag_timeline_id, timeline_label: tag_timeline_label },
-            values: { measurement: m.value },
+            tags:  { tid: tag_timeline_id, tl: tag_timeline_label },
+            values: { m: m.value },
             timestamp: m_timestamp
         }
 
+        data << item
+
       end
+
+      #puts data.inspect
 
       puts "Pushing data object..."
       influxdb.write_points(data)
     end
-
-
-
-    # for i in 1..9 do
-    #
-    #   data = []
-    #   for j in 1..1000 do
-    #
-    #     timestamp = (Time.now-j.minutes).to_i
-    #
-    #     data << {
-    #         series: "leveeA1",
-    #         tags: { device: "UT#{i}", measurement: 'temperature' },
-    #         values: { temperature: rand(20) },
-    #         timestamp: timestamp
-    #     }
-    #
-    #     data << {
-    #         series: "leveeA1",
-    #         tags: { device: "UT#{i}", measurement: 'pore_pressure' },
-    #         values: { pore_pressure: rand(1000) },
-    #         timestamp: timestamp
-    #     }
-    #
-    #     data << {
-    #         series: "leveeA2",
-    #         tags: { device: "UT#{i*10}", measurement: 'temperature' },
-    #         values: { temperature: rand(20) },
-    #         timestamp: timestamp
-    #     }
-    #
-    #     data << {
-    #         series: "leveeA2",
-    #         tags: { device: "UT#{i*10}", measurement: 'pore_pressure' },
-    #         values: { pore_pressure: rand(1000) },
-    #         timestamp: timestamp
-    #     }
-    #
-    #     data << {
-    #         series: "leveeA3",
-    #         tags: { device: "UT#{i*100}", measurement: 'temperature' },
-    #         values: { temperature: rand(20) },
-    #         timestamp: timestamp
-    #     }
-    #
-    #     data << {
-    #         series: "leveeA3",
-    #         tags: { device: "UT#{i*100}", measurement: 'pore_pressure' },
-    #         values: { pore_pressure: rand(1000) },
-    #         timestamp: timestamp
-    #     }
-    #   end
-    #
-    #   puts "Writing batch #{i} of 1000"
-    #   influxdb.write_points(data)
-    #
-    # end
 
     puts "All done. Enjoy!"
 
