@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151014184829) do
+ActiveRecord::Schema.define(version: 20151019145120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,11 @@ ActiveRecord::Schema.define(version: 20151014184829) do
     t.string   "name"
     t.text     "description"
     t.integer  "levee_id"
+  end
+
+  create_table "experiments_scenarios", force: true do |t|
+    t.integer "scenario_id",   null: false
+    t.integer "experiment_id", null: false
   end
 
   create_table "fiber_optic_nodes", force: true do |t|
@@ -326,11 +331,13 @@ ActiveRecord::Schema.define(version: 20151014184829) do
     t.integer "parameter_id"
     t.integer "experiment_id"
     t.string  "label"
+    t.integer "scenario_id"
   end
 
   add_index "timelines", ["context_id"], :name => "index_timelines_on_context_id"
   add_index "timelines", ["experiment_id"], :name => "index_timelines_on_experiment_id"
   add_index "timelines", ["parameter_id"], :name => "index_timelines_on_parameter_id"
+  add_index "timelines", ["scenario_id"], :name => "index_timelines_on_scenario_id"
   add_index "timelines", ["sensor_id"], :name => "index_timelines_on_sensor_id"
 
   create_table "users", force: true do |t|
