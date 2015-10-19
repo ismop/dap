@@ -8,4 +8,7 @@ class Scenario < ActiveRecord::Base
   belongs_to :context
   belongs_to :profile_type
 
+  has_and_belongs_to_many :experiments
+
+  has_many :timelines, dependent: :destroy
 end
