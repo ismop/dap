@@ -258,68 +258,89 @@ namespace :influxdb do
 
   task :copy_production_data_3 => :environment do
 
-    influxdb = InfluxDB::Client.new 'dap_test_3', host: "127.0.0.1"
+    Rails.logger.silence do
 
-    puts '====== INFLUXDB PRODUCTION DATA IMPORT ======'
+      influxdb = InfluxDB::Client.new 'dap_test_3', host: "127.0.0.1"
 
-    puts 'Dropping influxdb database...'
-    influxdb.delete_database('dap_test_3')
+      puts '====== INFLUXDB PRODUCTION DATA IMPORT ======'
 
-    puts 'Recreating influxdb database...'
-    influxdb.create_database('dap_test_3')
+      puts 'Dropping influxdb database...'
+      influxdb.delete_database('dap_test_3')
 
-    STEP = 10000
+      puts 'Recreating influxdb database...'
+      influxdb.create_database('dap_test_3')
 
-    for batch in 1..10000 do
+      STEP = 1000
+      OFFSET = 0
 
-      puts "Dumping measurements #{(batch-1)*STEP} to #{(batch*STEP)-1}..."
+      for batch in 1..100000 do
 
-      ms = Measurement.joins(timeline: [{parameter: [{device: [:device_aggregation]}, :measurement_type]}, :context]).where("measurements.id > #{(batch-1)*STEP} AND measurements.id < #{(batch*STEP)-1}").all
+        puts "Dumping measurements #{(batch-1)*STEP} to #{(batch*STEP)-1}..."
 
-      data = []
+        ms = Measurement.includes(timeline: [{parameter: [{device: [:device_aggregation, :profile, :levee]}, :measurement_type]}, :context]).where("measurements.id > #{OFFSET+((batch-1)*STEP)} AND measurements.id < #{OFFSET+((batch*STEP)-1)}")
 
-      ms.each do |m|
+        data = []
 
-        # Construct time series label for this measurement
-        ts_label = "#{m.timeline.parameter.device.label}:#{m.timeline.parameter.measurement_type.label}"
+        ms.each do |m|
 
-        # Construct device aggregation tag for this measurement
-        if m.timeline.parameter.device.device_aggregation.present?
-          tag_aggregation_label = m.timeline.parameter.device.device_aggregation.id.to_s
-        else
-          tag_aggregation_label = 'disaggregated_device'
+          dlabel = m.timeline.parameter.device.present? ? m.timeline.parameter.device.label : 'UNK'
+          mtlabel = m.timeline.parameter.measurement_type.present? ? m.timeline.parameter.measurement_type.label : 'UNK'
+
+          # Construct time series label for this measurement
+          ts_label = "#{dlabel}:#{mtlabel}"
+
+          # Construct device aggregation tag for this measurement
+          if m.timeline.parameter.device.device_aggregation.present?
+            tag_aggregation_label = m.timeline.parameter.device.device_aggregation.id.to_s
+          else
+            tag_aggregation_label = 'none'
+          end
+
+          # Construct profile tag for this measurement
+          if m.timeline.parameter.device.profile.present?
+            tag_profile_label = m.timeline.parameter.device.profile.id.to_s
+          else
+            tag_profile_label = ''
+          end
+
+          # Construct levee tag for this measurement
+          if m.timeline.parameter.device.levee.present?
+            tag_levee_label = m.timeline.parameter.device.levee.id.to_s
+          else
+            tag_levee_label = 'none'
+          end
+
+          # Construct timeline ID tag for this measurement
+          tag_timeline_id = "#{m.timeline.id}"
+
+          # Construct timeline label tag for this measurement
+          tag_timeline_label = "#{m.timeline.label}"
+
+          # Construct timestamp for this measurement
+          m_timestamp = m.timestamp.to_i
+
+          item = {
+              series: ts_label,
+              tags:  { tid: tag_timeline_id, tl: tag_timeline_label, da: tag_aggregation_label, p: tag_profile_label, l: tag_levee_label },
+              values: { m: m.value },
+              timestamp: m_timestamp
+          }
+
+          data << item
+
         end
 
-        # Construct timeline ID tag for this measurement
-        tag_timeline_id = "#{m.timeline.id}"
+        #puts data.inspect
 
-        # Construct timeline label tag for this measurement
-        tag_timeline_label = "#{m.timeline.label}"
-
-        # Construct timestamp for this measurement
-        m_timestamp = m.timestamp.to_i
-
-        item = {
-            series: ts_label,
-            tags:  { tid: tag_timeline_id, tl: tag_timeline_label, da: tag_aggregation_label },
-            values: { m: m.value },
-            timestamp: m_timestamp
-        }
-
-        data << item
-
+        puts "Pushing data object..."
+        influxdb.write_points(data)
       end
 
-      #puts data.inspect
+      puts "All done. Enjoy!"
 
-      puts "Pushing data object..."
-      influxdb.write_points(data)
+
+      #SELECT FIRST(temperature) FROM /^levee/ WHERE time > '2015-10-12 18:22:00' GROUP BY device
     end
-
-    puts "All done. Enjoy!"
-
-
-    #SELECT FIRST(temperature) FROM /^levee/ WHERE time > '2015-10-12 18:22:00' GROUP BY device
 
   end
 
@@ -331,37 +352,88 @@ namespace :influxdb do
 
     # 1. ostatni odczyt rzeczywisty dla zdefniowanego czasu dla wszystkich devicow nalezacych do danego device aggregation (przyklad z fibre view)
 
-    puts 'Last actual reading in defined time window for all devices belonging to specified DA...'
-    da = DeviceAggregation.all[2]
-    puts "Using device aggregation #{da.custom_id} with ID #{da.id.to_s}"
+    puts 'Latest real reading in defined time window (assuming 1-30 August 2015) for all devices belonging to specified DA...'
 
-    query = "SELECT * FROM /.*/ WHERE da = '#{da.id.to_s}'"
+    da = DeviceAggregation.find(37)
+    start_t = '2015-08-01 00:00:00'
+    end_t = '2015-08-31 23:59:59'
+    puts "Using device aggregation #{da.custom_id} with ID #{da.id.to_s}..."
+
+    query = "SELECT LAST(m) FROM /.*/ WHERE time > '#{start_t}' AND time < '#{end_t}' AND da = '#{da.id.to_s}'"
+    puts "Executing query: #{query}..."
 
     run_query(influxdb, query)
     puts "-------------------------------------------"
     #2. wartosci measurements dla zadanego zakresu czasowego (wszystkie)
-    puts 'All measurements from a specified interval (using 1-31 August 2015)...'
+    puts 'All measurements from a specified interval (using 29 August 2015)...'
 
-    start_t = '2015-08-01 00:00:00'
-    end_t = '2015-08-31 23:59:59'
+    start_t = '2015-08-29 00:00:00'
+    end_t = '2015-08-29 23:59:59'
 
     query = "SELECT * FROM /.*/ WHERE time > '#{start_t}' AND time < '#{end_t}'"
+    puts "Executing query: #{query}..."
 
     run_query(influxdb, query)
     puts "-------------------------------------------"
     #3. tak samo jak wyzej ale ze zdefiniowanym limitem (np. 1000 odczytow z ostatniego miesiaca)
-    puts 'Last 10 measurements per timeline from a specified interval (using 1-31 August 2015)...'
+    puts 'Last 1000 measurements per timeline from a specified interval (using 27-28 August 2015)...'
 
-    start_t = '2015-08-01 00:00:00'
-    end_t = '2015-08-31 23:59:59'
-    cutoff = 10
+    start_t = '2015-08-27 00:00:00'
+    end_t = '2015-08-27 23:59:59'
+    qty = 1000
 
-    query = "SELECT * FROM /.*/ WHERE time > '#{start_t}' AND time < '#{end_t}' LIMIT #{cutoff}"
+    start_t_parsed = DateTime.parse(start_t)
+    end_t_parsed = DateTime.parse(end_t)
+    elapsed_seconds = ((end_t_parsed - start_t_parsed) * 24 * 60 * 60).to_i
+    grouping_interval = (elapsed_seconds/qty).floor
+
+    puts "Specified interval spans #{elapsed_seconds.inspect} seconds; using group window of #{grouping_interval} seconds..."
+
+
+    #query = "SELECT * FROM /.*/ WHERE time > '#{start_t}' AND time < '#{end_t}' LIMIT #{cutoff}"
+    query = "SELECT MEDIAN(m) FROM /.*/ WHERE time > '#{start_t}' AND time < '#{end_t}' GROUP BY time(#{grouping_interval}s)"
+    puts "Executing query: #{query}..."
 
     run_query(influxdb, query)
     puts "-------------------------------------------"
+    #4. Ostatnie odczyty danego typu (np. temperatury) dla zdefiniowanej daty dla sensorow nalezacych do danego przekroju (przyklad z widoku poprzecznego)
+    puts "Latest measurements for devices of a specified type, for a specified date and belonging to a specific profile"
 
+    p = Profile.find(5)
+    puts "Using profile #{p.id} which contains #{p.devices.length} devices."
+    puts "Assuming interval of 10-15 October 2015 and looking for temperature measurements."
 
+    start_t = '2015-10-10 00:00:00'
+    end_t = '2015-10-15 23:59:59'
+
+    query = "SELECT LAST(m) FROM /.*:T/ WHERE time < '#{end_t}' AND p = '#{p.id}'"
+    puts "Executing query: #{query}..."
+
+    run_query(influxdb, query)
+    puts "-------------------------------------------"
+    #5. Ostatnie odczyty danego typu (np. temperatury) dla zdefiniowanego levee (widok przekroju walu z gory)
+    puts "Latest measurements for sensors of a specified type, for a specified date and belonging to a specific levee"
+
+    l = Levee.first
+    puts "Using levee #{l.name} which contains #{l.devices.length} devices."
+    puts "Assuming measurement type == temperature and cutoff date == 31 August 2015."
+
+    end_t = '2015-08-31 23:59:59'
+
+    query = "SELECT LAST(m) FROM /.*:T/ WHERE time < '#{end_t}' AND l = '#{l.id}'"
+    puts "Executing query: #{query}..."
+
+    run_query(influxdb, query)
+    puts "-------------------------------------------"
+    #6. Ostatni odczyt ze zdefiniowanych sensorow (stacja pogodowa)
+    puts "Latest measurement for a specific device (weather station/temperature)"
+
+    query = "SELECT LAST(m) FROM /.*WEATHER:T/"
+    puts "Executing query: #{query}..."
+
+    run_query(influxdb, query)
+
+    puts "This is Cave Johnson. We're done here."
   end
 
   def run_query(connector, query)
