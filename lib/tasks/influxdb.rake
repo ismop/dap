@@ -352,14 +352,15 @@ namespace :influxdb do
 
     # 1. ostatni odczyt rzeczywisty dla zdefniowanego czasu dla wszystkich devicow nalezacych do danego device aggregation (przyklad z fibre view)
 
-    puts 'Latest real reading in defined time window (assuming 1-30 August 2015) for all devices belonging to specified DA...'
+    puts 'Latest real reading in defined time window (assuming until October 2015) for all devices belonging to specified DA...'
 
-    da = DeviceAggregation.find(37)
-    start_t = '2015-08-01 00:00:00'
-    end_t = '2015-08-31 23:59:59'
-    puts "Using device aggregation #{da.custom_id} with ID #{da.id.to_s}..."
+    da1 = DeviceAggregation.find(1)
+    da2 = DeviceAggregation.find(53)
+    start_t = '2015-10-01 00:00:00'
+    end_t = '2015-10-05 23:59:59'
+    puts "Using device aggregations #{da1.custom_id} and #{da2.custom_id} with IDs #{da1.id.to_s} and #{da2.id.to_s}..."
 
-    query = "SELECT LAST(m) FROM /.*/ WHERE time > '#{start_t}' AND time < '#{end_t}' AND da = '#{da.id.to_s}'"
+    query = "SELECT LAST(m) FROM /.*/ WHERE time > '#{start_t}' AND time < '#{end_t}' AND (da = '#{da1.id.to_s}' OR da = '#{da2.id.to_s}')"
     puts "Executing query: #{query}..."
 
     run_query(influxdb, query)
@@ -446,6 +447,7 @@ namespace :influxdb do
       result.each do |m|
         total_m+=m['values'].length
       end
+
       puts "#{result.length} timelines with #{total_m.to_s} measurements received in #{t2-t1} seconds. Showing first result..."
       puts "#{result.first['values'].first.inspect}"
     end
