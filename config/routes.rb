@@ -76,6 +76,7 @@ Rails.application.routes.draw do
       resources :timelines, only: [:index, :show, :update, :create]
       resources :contexts, only: [:index, :show]
       resources :experiments, only: [:index, :show, :update, :create]
+      resources :scenarios, only: [:index, :show, :update, :create]
     end
   end
 

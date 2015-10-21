@@ -96,3 +96,11 @@ RSpec::Matchers.define :experiment_eq do |expected|
       actual['description'] == expected.description
   end
 end
+
+RSpec::Matchers.define :scenario_eq do |expected|
+  match do |actual|
+    actual['id'] == expected.id &&
+        actual['name'] == expected.name &&
+        actual['description'] == expected.description
+  end
+end
