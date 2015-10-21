@@ -3,5 +3,4 @@ class Context < ActiveRecord::Base
   validates :context_type, inclusion: {in: ["measurements", "tests", "other"]}
   validates_presence_of :name
   has_many :timelines, dependent: :destroy
-  has_many :scenarios, dependent: :destroy
 end

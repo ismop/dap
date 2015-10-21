@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151020161114) do
+ActiveRecord::Schema.define(version: 20151021190104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,15 +257,9 @@ ActiveRecord::Schema.define(version: 20151020161114) do
   add_index "results", ["scenario_id"], :name => "index_results_on_scenario_id"
 
   create_table "scenarios", force: true do |t|
-    t.string  "file_name"
-    t.binary  "payload",                          null: false
-    t.integer "context_id"
-    t.integer "profile_type_id"
-    t.string  "threat_level",    default: "none"
+    t.string "name"
+    t.text   "description"
   end
-
-  add_index "scenarios", ["context_id"], :name => "index_scenarios_on_context_id"
-  add_index "scenarios", ["profile_type_id"], :name => "index_scenarios_on_profile_type_id"
 
   create_table "sections", force: true do |t|
     t.spatial "shape",          limit: {:srid=>0, :type=>"geometry"}
