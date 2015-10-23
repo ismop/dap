@@ -26,18 +26,18 @@ describe Api::V1::ProfilesController do
       let!(:p2) { create(:profile, levee: levee) }
 
       # Create four sensors with easy-to-manipulate geographical placement
-      let!(:s1) { create(:sensor, profile: p1, placement: "POINT (5 6 7)")}
-      let!(:s2) { create(:sensor, profile: p1, placement: "POINT (8 9 10)")}
-      let!(:s3) { create(:sensor, profile: p2, placement: "POINT (10 11 12)")}
-      let!(:s4) { create(:sensor, profile: p2, placement: "POINT (13 14 15)")}
+      let!(:d1) { create(:device, profile: p1, placement: "POINT (5 6 7)")}
+      let!(:d2) { create(:device, profile: p1, placement: "POINT (8 9 10)")}
+      let!(:d3) { create(:device, profile: p2, placement: "POINT (10 11 12)")}
+      let!(:d4) { create(:device, profile: p2, placement: "POINT (13 14 15)")}
 
 
       it 'returns all profiles' do
         get api('/profiles', user)
         expect(ps_response).to be_an Array
         expect(ps_response.size).to eq 2
-        expect(ps_response.first["sensor_ids"]).to include(s1.id, s2.id)
-        expect(ps_response.second["sensor_ids"]).to include(s3.id, s4.id)
+        expect(ps_response.first["device_ids"]).to include(d1.id, d2.id)
+        expect(ps_response.second["device_ids"]).to include(d3.id, d4.id)
       end
 
       it 'returns only 1 profile' do

@@ -17,16 +17,16 @@ describe Api::V1::TimelinesController do
 
     context 'when authenticated as user' do
 
-      let!(:s) { create(:sensor) } # Will automatically create 1 timeline
-      let!(:t2) { create(:timeline, sensor: s) }
-      let!(:t3) { create(:timeline, sensor: s) }
-      let!(:t4) { create(:timeline, sensor: s) }
+      let!(:p) { create(:parameter) }
+      let!(:t2) { create(:timeline, parameter: p) }
+      let!(:t3) { create(:timeline, parameter: p) }
+      let!(:t4) { create(:timeline, parameter: p) }
 
       it 'returns 200 and all timelines on success' do
         get api('/timelines', user)
         expect(response.status).to eq 200
         expect(ts_response).to be_an Array
-        expect(ts_response.length).to eq 4
+        expect(ts_response.length).to eq 3
       end
     end
 
@@ -44,19 +44,18 @@ describe Api::V1::TimelinesController do
         expect(ts_response.collect{|r| r['id']}).to include t4.id
       end
     end
-
   end
 
   describe 'GET /timelines/{id}' do
 
     context 'when authenticated as user' do
-      let!(:s) { create(:sensor) }
-      let!(:t2) { create(:timeline, sensor: s) }
+      let!(:p) { create(:parameter) }
+      let!(:t2) { create(:timeline, parameter: p) }
 
       it 'returns the selected timeline' do
-        get api("/timelines/#{s.timelines.first.id}", user)
+        get api("/timelines/#{p.timelines.first.id}", user)
 
-        expect(t_response["id"]).to eq s.timelines.first.id
+        expect(t_response["id"]).to eq p.timelines.first.id
       end
     end
   end
