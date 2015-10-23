@@ -44,7 +44,6 @@ describe Api::V1::TimelinesController do
         expect(ts_response.collect{|r| r['id']}).to include t4.id
       end
     end
-
   end
 
   describe 'GET /timelines/{id}' do
