@@ -5,14 +5,21 @@ module Api
       respond_to :json
 
       def index
-        query = @scenarios.joins(:experiments)
+        query = @scenarios
 
-        if params.keys.include? "experiment_id"
-          ids = params[:experiment_id]
-          query = query.where("experiments.id = ?", params[:experiment_id])
+        if params.keys.include? "experiment_ids"
+          query = query.joins(:experiments)
+          ids = params[:experiment_ids].split(',').collect{|id| id.to_i}
+          query = query.where("experiments.id IN (?)", ids)
         end
 
-        respond_with query.where(filter).order(:id)
+        if params.keys.include? "timeline_ids"
+          query = query.joins(:timelines)
+          ids = params[:timeline_ids]
+          query = query.where("timelines.id IN (?)", params[:timeline_ids].split(','))
+        end
+
+        respond_with query.where(filter).uniq.order(:id)
       end
 
       def show
