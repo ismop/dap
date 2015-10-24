@@ -6,9 +6,6 @@ module Api
 
       def create
         result = Result.create(result_params)
-        if !params['result']['profile_id'].blank?
-          result.profile = Profile.find(params['result']['profile_id'].to_i)
-        end
         if !params['result']['scenario_id'].blank?
           result.scenario = Scenario.find(params['result']['scenario_id'].to_i)
         end
@@ -36,7 +33,7 @@ module Api
       private
 
       def result_params
-        params.require(:result).permit(:similarity, :threat_assessment_id, :profile_id, :scenario_id)
+        params.require(:result).permit(:similarity, :threat_assessment_id, :scenario_id, :rank, :payload)
       end
     end
   end

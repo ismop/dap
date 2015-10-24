@@ -1,11 +1,7 @@
 class ThreatAssessmentSerializer < ActiveModel::Serializer
 
-  attributes :id, :name, :status, :start_date, :end_date, :selection, :profile_ids
+  attributes :id, :threat_assessment_run_id, :profile_ids
 
   has_many :results
-
-  def selection
-    RGeo::GeoJSON.encode(object.selection).as_json
-  end
 
 end

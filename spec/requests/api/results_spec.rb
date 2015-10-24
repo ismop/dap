@@ -9,8 +9,6 @@ describe Api::V1::ResultsController do
   describe 'Get /results' do
     context 'when authenticated as user' do
       let!(:e1) { create(:threat_assessment) }
-      let!(:p1) { create(:profile)}
-      let!(:p2) { create(:profile)}
       let!(:r1) { create(:result, threat_assessment: e1)}
       let!(:r2) { create(:result, threat_assessment: e1)}
 
@@ -24,8 +22,8 @@ describe Api::V1::ResultsController do
         get api('/results', user)
         expect(rs_response).to be_an Array
         expect(rs_response.size).to eq 2
-        expect(rs_response[0]).to include 'similarity'
-        expect(rs_response[0]['similarity']).to be_a Float
+        expect(rs_response[0]).to include 'rank'
+        expect(rs_response[0]['rank']).to be_a Integer
       end
     end
   end
@@ -33,13 +31,12 @@ describe Api::V1::ResultsController do
   describe 'POST /results' do
     context 'when authenticated as user' do
 
-      let!(:p1) { create(:profile) }
       let!(:e1) { create(:threat_assessment) }
       let!(:s1) { create(:scenario) }
 
       let(:create_json) do {result: {
         similarity: 37.3,
-        profile_id: p1.id,
+        rank: 5,
         scenario_id: s1.id,
         threat_assessment_id: e1.id
       }} end
@@ -52,7 +49,6 @@ describe Api::V1::ResultsController do
         new_r = Result.last
         expect(new_r.id).to_not be_nil
         expect(new_r['similarity']).to eq 37.3
-        expect(new_r.profile).to eq p1
         expect(new_r.scenario).to eq s1
         expect(new_r.threat_assessment).to eq e1
       end

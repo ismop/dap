@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151023165619) do
+ActiveRecord::Schema.define(version: 20151024124347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -250,8 +250,9 @@ ActiveRecord::Schema.define(version: 20151023165619) do
   create_table "results", force: true do |t|
     t.float   "similarity"
     t.integer "threat_assessment_id"
-    t.integer "profile_id"
     t.integer "scenario_id"
+    t.integer "rank"
+    t.string  "payload"
   end
 
   add_index "results", ["scenario_id"], :name => "index_results_on_scenario_id"
@@ -270,19 +271,25 @@ ActiveRecord::Schema.define(version: 20151023165619) do
   add_index "sections", ["ground_type_id"], :name => "index_sections_on_ground_type_id"
   add_index "sections", ["levee_id"], :name => "index_sections_on_levee_id"
 
-  create_table "threat_assessments", force: true do |t|
-    t.string   "name",                                                                      default: "Unnamed threat assessment", null: false
-    t.datetime "start_date",                                                                                                      null: false
+  create_table "threat_assessment_runs", force: true do |t|
+    t.string   "name",          default: "Unnamed threat assessment run", null: false
+    t.string   "status",        default: "unknown",                       null: false
+    t.datetime "start_date",                                              null: false
     t.datetime "end_date"
-    t.string   "status",                                                                    default: "unknown",                   null: false
-    t.string   "status_message",                                                            default: ""
-    t.spatial  "selection",      limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
+    t.integer  "experiment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "threat_assessments", ["end_date"], :name => "index_threat_assessments_on_end_date"
-  add_index "threat_assessments", ["start_date"], :name => "index_threat_assessments_on_start_date"
+  add_index "threat_assessment_runs", ["end_date"], :name => "index_threat_assessment_runs_on_end_date"
+  add_index "threat_assessment_runs", ["start_date"], :name => "index_threat_assessment_runs_on_start_date"
+
+  create_table "threat_assessments", force: true do |t|
+    t.integer  "threat_assessment_run_id"
+    t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "timelines", force: true do |t|
     t.integer "context_id"
