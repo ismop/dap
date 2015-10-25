@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151019145120) do
+ActiveRecord::Schema.define(version: 20151023165619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,15 +257,9 @@ ActiveRecord::Schema.define(version: 20151019145120) do
   add_index "results", ["scenario_id"], :name => "index_results_on_scenario_id"
 
   create_table "scenarios", force: true do |t|
-    t.string  "file_name"
-    t.binary  "payload",                          null: false
-    t.integer "context_id"
-    t.integer "profile_type_id"
-    t.string  "threat_level",    default: "none"
+    t.string "name"
+    t.text   "description"
   end
-
-  add_index "scenarios", ["context_id"], :name => "index_scenarios_on_context_id"
-  add_index "scenarios", ["profile_type_id"], :name => "index_scenarios_on_profile_type_id"
 
   create_table "sections", force: true do |t|
     t.spatial "shape",          limit: {:srid=>0, :type=>"geometry"}
@@ -275,41 +269,6 @@ ActiveRecord::Schema.define(version: 20151019145120) do
 
   add_index "sections", ["ground_type_id"], :name => "index_sections_on_ground_type_id"
   add_index "sections", ["levee_id"], :name => "index_sections_on_levee_id"
-
-  create_table "sensors", force: true do |t|
-    t.string   "custom_id",                                                                                  default: "unknown ID",            null: false
-    t.spatial  "placement",           limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
-    t.float    "x_orientation",                                                                              default: 0.0,                     null: false
-    t.float    "y_orientation",                                                                              default: 0.0,                     null: false
-    t.float    "z_orientation",                                                                              default: 0.0,                     null: false
-    t.integer  "battery_state"
-    t.integer  "battery_capacity"
-    t.string   "manufacturer",                                                                               default: "unknown manufacturer",  null: false
-    t.string   "model",                                                                                      default: "unknown model",         null: false
-    t.string   "serial_number",                                                                              default: "unknown serial number", null: false
-    t.string   "firmware_version",                                                                           default: "unknown version",       null: false
-    t.date     "manufacture_date"
-    t.date     "purchase_date"
-    t.date     "warranty_date"
-    t.date     "deployment_date"
-    t.datetime "last_state_change"
-    t.integer  "energy_consumption",                                                                         default: 0,                       null: false
-    t.float    "precision",                                                                                  default: 0.0,                     null: false
-    t.integer  "measurement_node_id"
-    t.integer  "activity_state_id"
-    t.integer  "power_type_id"
-    t.integer  "interface_type_id"
-    t.integer  "measurement_type_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "profile_id"
-  end
-
-  add_index "sensors", ["activity_state_id"], :name => "index_sensors_on_activity_state_id"
-  add_index "sensors", ["custom_id"], :name => "index_sensors_on_custom_id", :unique => true
-  add_index "sensors", ["interface_type_id"], :name => "index_sensors_on_interface_type_id"
-  add_index "sensors", ["last_state_change"], :name => "index_sensors_on_last_state_change"
-  add_index "sensors", ["power_type_id"], :name => "index_sensors_on_power_type_id"
 
   create_table "threat_assessments", force: true do |t|
     t.string   "name",                                                                      default: "Unnamed threat assessment", null: false
@@ -326,7 +285,6 @@ ActiveRecord::Schema.define(version: 20151019145120) do
   add_index "threat_assessments", ["start_date"], :name => "index_threat_assessments_on_start_date"
 
   create_table "timelines", force: true do |t|
-    t.integer "sensor_id"
     t.integer "context_id"
     t.integer "parameter_id"
     t.integer "experiment_id"
@@ -338,7 +296,6 @@ ActiveRecord::Schema.define(version: 20151019145120) do
   add_index "timelines", ["experiment_id"], :name => "index_timelines_on_experiment_id"
   add_index "timelines", ["parameter_id"], :name => "index_timelines_on_parameter_id"
   add_index "timelines", ["scenario_id"], :name => "index_timelines_on_scenario_id"
-  add_index "timelines", ["sensor_id"], :name => "index_timelines_on_sensor_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

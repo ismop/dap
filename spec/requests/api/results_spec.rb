@@ -11,8 +11,6 @@ describe Api::V1::ResultsController do
       let!(:e1) { create(:threat_assessment) }
       let!(:p1) { create(:profile)}
       let!(:p2) { create(:profile)}
-      let!(:s1) { create(:sensor, profile: p1) } # Will automatically create 1 scenario
-      let!(:s2) { create(:sensor, profile: p2) } # Will automatically create 1 scenario
       let!(:r1) { create(:result, threat_assessment: e1)}
       let!(:r2) { create(:result, threat_assessment: e1)}
 

@@ -5,7 +5,7 @@ module Api
       respond_to :json
 
       def index
-        selected_profiles = @profiles.includes(:sensors).where(filter)
+        selected_profiles = @profiles.includes(:devices).where(filter)
         if !params['selection'].blank?
           # Parse the selection parameter into an RGeo feature
           begin
@@ -18,8 +18,8 @@ module Api
           if selection.blank?
             selected_profiles = [] # Or throw an exception instead? (400 Bad Request + message)
           else
-            sensors = selected_profiles.collect{|p| p.sensors}.flatten.select{|s| selection.contains? s.placement}
-            selected_profiles = sensors.collect{|s| s.profile}.uniq
+            devices = selected_profiles.collect{|p| p.devices}.flatten.select{|d| selection.contains? d.placement}
+            selected_profiles = devices.collect{|d| d.profile}.uniq
           end
         end
 

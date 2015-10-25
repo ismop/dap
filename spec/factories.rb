@@ -103,7 +103,6 @@ FactoryGirl.define do
     section { create(:section) }
     levee { create(:levee) }
     profile_type {  create(:profile_type) }
-    sensors {[]}
   end
 
   factory :ground_type do
@@ -120,37 +119,6 @@ FactoryGirl.define do
 
   end
 
-  factory :sensor do
-    custom_id { rand_str(10) }
-    placement { rand_point(true) }
-    x_orientation { rand(0.0..89.99) }
-    y_orientation { rand(0.0..89.99) }
-    z_orientation { rand(0.0..89.99) }
-    battery_state { rand(0..100) }
-    battery_capacity 100
-    manufacturer 'Siemens AG'
-    model { rand_str }
-    serial_number { rand_str(10) }
-    firmware_version { rand_str(10) }
-
-    manufacture_date { rand(21..100).days.ago }
-    purchase_date { rand(11..20).days.ago }
-    warranty_date { rand(1..100).days.from_now }
-    deployment_date { rand(3..10).days.ago }
-    last_state_change { rand(1..100).minutes.ago }
-
-    energy_consumption { rand(10) }
-    precision { rand(0.0..99.99) }
-
-    measurement_node
-    profile
-    activity_state
-    power_type
-    interface_type
-    measurement_type
-    timelines { [create(:timeline)] }
-  end
-
   factory :timeline do
     self.context { create(:context) }
   end
@@ -161,16 +129,15 @@ FactoryGirl.define do
   end
 
   factory :scenario do
-    file_name { Faker::Lorem.words(3).join(' ') }
-    payload { Faker::Lorem.words(10).join(' ') }
-    profile_type { create(:profile_type ) }
+    name { Faker::Lorem.words(3).join('_') }
+    description { Faker::Lorem.words(20).join(' ') }
   end
 
   factory :measurement do
     value { rand(-99.99..99.99) }
     timestamp { rand(1..24).hours.ago }
     source_address { rand_str(10) }
-    timeline { sensor.timelines.first }
+    timeline { parameter.timelines.first }
   end
 
   factory :device do
