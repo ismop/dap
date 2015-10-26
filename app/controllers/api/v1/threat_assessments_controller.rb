@@ -36,7 +36,7 @@ module Api
       private
 
       def threat_assessment_params
-        params.require(:threat_assessment).permit(:name, :status, :status_message, :selection, :start_date, :end_date, :profile_ids)
+        params.require(:threat_assessment).permit(:profile_ids)
       end
     end
     end

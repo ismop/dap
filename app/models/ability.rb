@@ -18,6 +18,7 @@ class Ability
       can [:read, :get_profile_for_selection], Profile
       can [:read], Section
       can [:read, :create, :update], Timeline
+      can [:create, :read, :update, :destroy], ThreatAssessmentRun
       can [:create, :read, :update, :destroy], ThreatAssessment
       can [:create, :read, :update, :destroy], Context
       can [:create, :read, :update], Experiment

@@ -16,20 +16,25 @@ FactoryGirl.define do
     name { rand_str }
   end
 
-  factory :threat_assessment do
+  factory :threat_assessment_run do
     name { rand_str }
     start_date { rand(2..5).hours.ago }
     end_date { rand(0..1).hours.ago }
     status { ["unknown", "started", "finished", "error"].sample }
-    selection { 'POLYGON ((49.981348 19.678777, 49.981665 19.678662, 49.981919 19.678856, 49.9815 19.678866, 49.981348 19.678777))' }
+  end
 
+  factory :threat_assessment do
+    #results { [create(:result), create(:result)] }
     profiles { [create(:profile), create(:profile)] }
+
+    threat_assessment_run
   end
 
   factory :result do
     similarity { rand(0.0..100.0) }
+    rank { rand(1..20) }
+    payload { Faker::Lorem.words(10).join(' ') }
 
-    profile
     threat_assessment
     scenario
   end
