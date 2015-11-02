@@ -12,6 +12,7 @@ module Importers
       @valid_devices = Set.new
       @invalid_devices = Set.new
       @cache = {}
+      @measurements = []
     end
 
     def import
@@ -22,9 +23,10 @@ module Importers
             puts 'Loading scenarios data...'
           else
             next unless valid_device?(custom_id(row))
-            import_measurement(row)
+            @measurements.push(*create_new_measurements(row))
           end
         end
+        Measurement.import(@measurements)
       end
 
       puts "Scenarios for following devices were imported #{@valid_devices.to_a}"
@@ -73,41 +75,41 @@ module Importers
       device_custom_id.start_with?("UT") || device_custom_id.start_with?("SV")
     end
 
-    def import_measurement(row)
+    def create_new_measurements(row)
       custom_id = custom_id(row)
       scenario = scenario(row)
 
       case custom_id
       when /UT\d+/
-        import_ut_measurement(scenario, custom_id, row)
+        new_ut_measurements(scenario, custom_id, row)
       when /SV\d+/
-        import_sv_measurement(scenario, custom_id, row)
+        new_sv_measurements(scenario, custom_id, row)
       end
     end
 
-    def import_ut_measurement(scenario, custom_id, row)
+    def new_ut_measurements(scenario, custom_id, row)
       temperature = temperature_timeline(custom_id, scenario)
       pore_preasure = pore_preasure_timeline(custom_id, scenario)
 
-      create_measurement(temperature, row, 'temp')
-      create_measurement(pore_preasure, row, 'ppres')
+      [new_measurement(temperature, row, 'temp'),
+       new_measurement(pore_preasure, row, 'ppres')]
     end
 
-    def import_sv_measurement(scenario, custom_id, row)
+    def new_sv_measurements(scenario, custom_id, row)
       temperature = temperature_timeline(custom_id, scenario)
       stress = stress_timeline(custom_id, scenario)
 
-      create_measurement(temperature, row, 'temp')
-      create_measurement(stress, row, 'ystr')
+      [new_measurement(temperature, row, 'temp'),
+       new_measurement(stress, row, 'ystr')]
     end
 
-    def create_measurement(timeline, row, value_column_name)
+    def new_measurement(timeline, row, value_column_name)
       timestamp = Time.at(TIME_0.to_f + row[columns['time_stamp']].to_i)
       value = row[columns[value_column_name]]
 
-      Measurement.create!(timeline: timeline,
-                          timestamp: timestamp,
-                          value: value)
+      Measurement.new(timeline: timeline,
+                      timestamp: timestamp,
+                      value: value)
     end
 
     def temperature_timeline(custom_id, scenario)
