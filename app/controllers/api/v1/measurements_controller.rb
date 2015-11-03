@@ -18,7 +18,7 @@ module Api
           time_from = Time.parse(params[:time_from]).utc.to_s
           params[:time_from] = nil
         else
-          time_from = '1980-01-01'
+          time_from = '1970-01-01'
         end
         if params.keys.include? "time_to"
           time_to = Time.parse(params[:time_to]).utc.to_s
