@@ -4,8 +4,8 @@ module Importers
   class ScenariosImporter
     TIME_0 = Time.at(0)
 
-    def initialize(experiment, context, csv_path)
-      @experiment = experiment
+    def initialize(levee, context, csv_path)
+      @levee = levee
       @context = context
       @csv_path = csv_path
 
@@ -36,11 +36,11 @@ module Importers
 
     private
 
-    attr_reader :experiment, :context, :csv_path, :columns
+    attr_reader :levee, :context, :csv_path, :columns
 
     def discover_columns(row)
       puts 'Discovering column meanings...'
-      missing_columns = ['ppres', 'temp', 'scen', 'sensor_type',
+      missing_columns = ['ppres', 'temp', 'scen', 'simul', 'sensor_type',
                          'sensor_symbol', 'time_stamp', 'ystr'].to_set
       @columns = {}
       row.each_with_index do |item, index|
@@ -164,12 +164,25 @@ module Importers
     end
 
     def scenario(row)
-      scenario_name = row[columns['scen']]
+      scenario_name = row[columns['simul']]
+      experiment = experiment(row)
       cache_fetch("scenario/#{scenario_name}-#{experiment.id}") do
         Scenario.joins(:experiments).
           find_by(experiments: { id: experiment.id }, name: scenario_name) ||
         Scenario.create!(experiments: [experiment], name: scenario_name)
       end
+    end
+
+    def experiment(row)
+      name = row[columns['scen']]
+      Experiment.find_by(name: name) || create_experiment(name)
+    end
+
+    def create_experiment(name)
+      puts "Creating experiment with following name: #{name}"
+      end_date = Time.now
+      Experiment.create!(levee: levee, name: name,
+                         end_date: end_date, start_date: end_date - 1.week)
     end
 
     def cache_fetch(key)
