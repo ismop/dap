@@ -7,7 +7,7 @@ module Api
       def index
 
         if params.keys.include? 'quantity'
-          sql = "SELECT m.* FROM (SELECT m.*, row_number() OVER(ORDER BY m.id ASC) AS row FROM measurements m JOIN timelines t ON m.timeline_id = t.id "
+          sql = "SELECT m.* FROM (SELECT m.*, row_number() OVER(ORDER BY m.timeline_id, m.timestamp ASC) AS row FROM measurements m JOIN timelines t ON m.timeline_id = t.id "
         else
           sql = "SELECT m.* FROM measurements m JOIN timelines t ON m.timeline_id = t.id "
         end
