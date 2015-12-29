@@ -1,5 +1,5 @@
 class ParameterSerializer < ActiveModel::Serializer
-  attributes :id, :custom_id, :parameter_name, :device_id
+  attributes :id, :custom_id, :parameter_name, :device_id, :monitored, :monitoring_status
   attributes :measurement_type_name, :measurement_type_unit, :measurement_type_label
 
   attributes :timeline_ids

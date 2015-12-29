@@ -77,6 +77,7 @@ Rails.application.routes.draw do
       resources :contexts, only: [:index, :show]
       resources :experiments, only: [:index, :show, :update, :create]
       resources :scenarios, only: [:index, :show, :update, :create]
+      resources :monitoring, only: [:index]
     end
   end
 

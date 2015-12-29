@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151024124347) do
+ActiveRecord::Schema.define(version: 20151228142059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -206,7 +206,12 @@ ActiveRecord::Schema.define(version: 20151024124347) do
     t.integer "device_id"
     t.integer "measurement_type_id"
     t.string  "custom_id",           default: "unknown ID",        null: false
+    t.boolean "monitored",           default: false
+    t.integer "monitoring_status",   default: 1
   end
+
+  add_index "parameters", ["monitored"], :name => "index_parameters_on_monitored"
+  add_index "parameters", ["monitoring_status"], :name => "index_parameters_on_monitoring_status"
 
   create_table "power_types", force: true do |t|
     t.string   "name",       default: "unnamed power type", null: false

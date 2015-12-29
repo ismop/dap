@@ -54,6 +54,20 @@ describe Api::V1::DevicesController do
         expect(ds[2]['metadata'].keys.length).to eq 6
         expect(ds[3]['metadata'].keys.length).to eq 4
       end
+
+      it 'returns information on nonfunctioning params for each device' do
+        p1 = create(:parameter, parameter_name: 'p1', monitored: false, monitoring_status: :down, device: device2)
+        p2 = create(:parameter, parameter_name: 'p2', monitored: true, monitoring_status: :up, device: device2)
+        p3 = create(:parameter, parameter_name: 'p3', monitored: true, monitoring_status: :down, device: device2)
+
+        p4 = create(:parameter, parameter_name: 'p4', monitored: true, monitoring_status: :down, device: device1)
+        p5 = create(:parameter, parameter_name: 'p5', monitored: true, monitoring_status: :down, device: device1)
+
+        get api("/devices", user)
+
+        expect((ds[0]['nonfunctioning_parameter_ids'] & [p4.id, p5.id]).length).to eq 2
+        expect(ds[1]['nonfunctioning_parameter_ids']).to eq [p3.id]
+      end
     end
 
     context 'get device by id' do

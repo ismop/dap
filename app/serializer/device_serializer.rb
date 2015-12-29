@@ -3,6 +3,7 @@ class DeviceSerializer < ActiveModel::Serializer
   attributes :profile_id, :section_id, :levee_id
   attributes :neosentio_sensor_id, :budokop_sensor_id, :pump_id, :weather_station_id
   attributes :parameter_ids
+  attributes :nonfunctioning_parameter_ids
   attributes :metadata
 
   def placement
@@ -46,6 +47,14 @@ class DeviceSerializer < ActiveModel::Serializer
       []
     else
       object.parameters.collect{|p| p.id}
+    end
+  end
+
+  def nonfunctioning_parameter_ids
+    if object.parameters.blank?
+      []
+    else
+      object.parameters.monitorable.down.collect{|p| p.id}
     end
   end
 
