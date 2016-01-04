@@ -16,7 +16,7 @@ module Api
 
         if params.keys.include? "time_from"
           if params[:time_from].blank?
-            render :nothing => true, :status => 400
+            render nothing: true, status: 400
             return
           end
           time_from = Time.parse(params[:time_from]).utc.to_s
@@ -26,7 +26,7 @@ module Api
         end
         if params.keys.include? "time_to"
           if params[:time_to].blank?
-            render :nothing => true, :status => 400
+            render nothing: true, status: 400
             return
           end
           time_to = Time.parse(params[:time_to]).utc.to_s
@@ -39,7 +39,7 @@ module Api
 
         if params.keys.include? "id"
           if params[:id].blank?
-            render :nothing => true, :status => 400
+            render nothing: true, status: 400
             return
           end
           sql += " AND m.id IN (#{params[:id].to_s})"
@@ -48,7 +48,7 @@ module Api
 
         if params.keys.include? "timeline_id"
           if params[:timeline_id].blank?
-            render :nothing => true, :status => 400
+            render nothing: true, status: 400
             return
           end
           sql += " AND m.timeline_id IN (#{params[:timeline_id].to_s})"
@@ -57,7 +57,7 @@ module Api
 
         if params.keys.include? "sensor_id"
           if params[:sensor_id].blank?
-            render :nothing => true, :status => 400
+            render nothing: true, status: 400
             return
           end
           sql += " AND t.sensor_id IN (#{params[:sensor_id].to_s})"
@@ -66,7 +66,7 @@ module Api
 
         if params.keys.include? "context_id"
           if params[:context_id].blank?
-            render :nothing => true, :status => 400
+            render nothing: true, status: 400
             return
           end
           sql += " AND t.context_id IN (#{params[:context_id].to_s})"
@@ -83,7 +83,7 @@ module Api
 
         if params.keys.include? 'quantity'
           if params[:quantity].blank?
-            render :nothing => true, :status => 400
+            render nothing: true, status: 400
             return
           end
 
