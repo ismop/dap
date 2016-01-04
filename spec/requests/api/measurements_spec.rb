@@ -36,6 +36,27 @@ describe Api::V1::MeasurementsController do
       end
     end
 
+    context 'handle bad requests gracefully' do
+      it 'responds with 400 to malformed requests' do
+        get api('/measurements?time_from=', user)
+        expect(response.status).to eq 400
+        get api('/measurements?time_to=', user)
+        expect(response.status).to eq 400
+        get api('/measurements?id=', user)
+        expect(response.status).to eq 400
+        get api('/measurements?timeline_id=', user)
+        expect(response.status).to eq 400
+        get api('/measurements?sensor_id=', user)
+        expect(response.status).to eq 400
+        get api('/measurements?context_id=', user)
+        expect(response.status).to eq 400
+        get api('/measurements?quantity=', user)
+        expect(response.status).to eq 400
+        get api('/measurements?timeline_id=&time_from=2015-12-01', user)
+        expect(response.status).to eq 400
+      end
+    end
+
     context 'filter measurements by id' do
       let!(:t) { create(:timeline) }
       let!(:m1) { create(:measurement, timeline: t, timestamp: Time.now-1.hour)}

@@ -15,12 +15,20 @@ module Api
         result = []
 
         if params.keys.include? "time_from"
+          if params[:time_from].blank?
+            render :nothing => true, :status => 400
+            return
+          end
           time_from = Time.parse(params[:time_from]).utc.to_s
           params[:time_from] = nil
         else
           time_from = '1970-01-01'
         end
         if params.keys.include? "time_to"
+          if params[:time_to].blank?
+            render :nothing => true, :status => 400
+            return
+          end
           time_to = Time.parse(params[:time_to]).utc.to_s
           params[:time_to] = nil
         else
@@ -30,21 +38,37 @@ module Api
         sql += "WHERE m.timestamp BETWEEN '#{time_from}' AND '#{time_to}' "
 
         if params.keys.include? "id"
+          if params[:id].blank?
+            render :nothing => true, :status => 400
+            return
+          end
           sql += " AND m.id IN (#{params[:id].to_s})"
           params[:id] = nil
         end
 
         if params.keys.include? "timeline_id"
+          if params[:timeline_id].blank?
+            render :nothing => true, :status => 400
+            return
+          end
           sql += " AND m.timeline_id IN (#{params[:timeline_id].to_s})"
           params[:timeline_id] = nil
         end
 
         if params.keys.include? "sensor_id"
+          if params[:sensor_id].blank?
+            render :nothing => true, :status => 400
+            return
+          end
           sql += " AND t.sensor_id IN (#{params[:sensor_id].to_s})"
           params[:sensor_id] = nil
         end
 
         if params.keys.include? "context_id"
+          if params[:context_id].blank?
+            render :nothing => true, :status => 400
+            return
+          end
           sql += " AND t.context_id IN (#{params[:context_id].to_s})"
           params[:context_id] = nil
         end
@@ -58,6 +82,10 @@ module Api
         end
 
         if params.keys.include? 'quantity'
+          if params[:quantity].blank?
+            render :nothing => true, :status => 400
+            return
+          end
 
           # Finalize inner SQL
           sql += ') m '
