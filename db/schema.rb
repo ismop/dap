@@ -207,7 +207,7 @@ ActiveRecord::Schema.define(version: 20151228142059) do
     t.integer "measurement_type_id"
     t.string  "custom_id",           default: "unknown ID",        null: false
     t.boolean "monitored",           default: false
-    t.integer "monitoring_status",   default: 1
+    t.integer "monitoring_status",   default: 0
   end
 
   add_index "parameters", ["monitored"], :name => "index_parameters_on_monitored"

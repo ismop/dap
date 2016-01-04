@@ -13,6 +13,7 @@ module Api
         end
 
         result = []
+        partition_clause = ''
 
         if params.keys.include? "time_from"
           if params[:time_from].blank?
@@ -52,6 +53,21 @@ module Api
             return
           end
           sql += " AND m.timeline_id IN (#{params[:timeline_id].to_s})"
+
+          # Render special WHERE clause for partitioner
+          # This looks very weird but it is necessary for PGSQL to optimize the query correctly
+          # (the pgsql partiotion manager does not perform 'smart' matching of CHECK constraints
+          # and instead requires the WHERE clause to contain a literal copy of the target constraint).
+          tl_ids = params[:timeline_id].split(',')
+          tl_remainders = []
+          partition_clause = ' AND m.timeline_id%1000 IN ('
+          tl_ids.each do |tl_id|
+            tl_id_i = tl_id.to_i
+            unless tl_id_i.blank?
+              tl_remainders << tl_id_i % 1000
+            end
+          end
+          partition_clause << tl_remainders.uniq.join(',') << ')'
           params[:timeline_id] = nil
         end
 
@@ -72,6 +88,8 @@ module Api
           sql += " AND t.context_id IN (#{params[:context_id].to_s})"
           params[:context_id] = nil
         end
+
+        sql+= partition_clause
 
         if params[:limit] == 'first'
           sql += ' ORDER BY m.timeline_id, m.timestamp ASC '
@@ -115,14 +133,14 @@ module Api
 
         if params.keys.include? 'limit'
           result = []
-          timelines = []
+          timeline_ids = []
 
           Measurement.find_by_sql(sql).each.each do |m|
-            if timelines.include? m.timeline
+            if timeline_ids.include? m.timeline_id
               # Do nothing
             else
               result << m
-              timelines << m.timeline
+              timeline_ids << m.timeline_id
             end
           end
         else
