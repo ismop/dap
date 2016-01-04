@@ -115,14 +115,14 @@ module Api
 
         if params.keys.include? 'limit'
           result = []
-          timelines = []
+          timeline_ids = []
 
           Measurement.find_by_sql(sql).each.each do |m|
-            if timelines.include? m.timeline
+            if timeline_ids.include? m.timeline_id
               # Do nothing
             else
               result << m
-              timelines << m.timeline
+              timeline_ids << m.timeline_id
             end
           end
         else
