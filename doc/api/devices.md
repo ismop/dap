@@ -23,6 +23,7 @@ No parameters are required, although it is possible to filter by selected attrib
         "budokop_sensor_id": identifier of a sensor representation of the device (if device is a budokop sensor) or null,
         "pump_id":  identifier of a pump representation of the device (if device is a pump) or null,
         "parameter_ids":  identifiers of parameters measured by the device,
+        "nonfunctioning_parameter_ids": if this device contains any monitored parameters, returns a list of monitored parameters which are currently recognized as being down (i.e. no measurements are being received from MOM),
         "metadata": a hash which contains additional metadata specific to the type of the device (i.e. its contents depend on the device_type field)
     }, {
       ...
@@ -56,6 +57,7 @@ Parameters:
         "budokop_sensor_id": identifier of a sensor representation of the device (if device is a budokop sensor) or null,
         "pump_id":  identifier of a pump representation of the device (if device is a pump) or null,
         "parameter_ids":  identifiers of parameters measured by the device,
+        "nonfunctioning_parameter_ids": if this device contains any monitored parameters, returns a list of monitored parameters which are currently recognized as being down (i.e. no measurements are being received from MOM),
         "metadata": a hash which contains additional metadata specific to the type of the device (i.e. its contents depend on the device_type field)
   }
 }

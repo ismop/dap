@@ -23,6 +23,7 @@ class Ability
       can [:create, :read, :update, :destroy], Context
       can [:create, :read, :update], Experiment
       can [:create, :read, :update], Scenario
+      can [:read], :monitoring
     end
   end
 end

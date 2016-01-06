@@ -26,5 +26,12 @@ module Dap
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+    # Poll monitored parameters for new data records this often:
+    config.sensor_data_polling_interval = 3600 # seconds
+    # Tag parameter as 'down' if no data received for this many seconds:
+    config.sensor_data_alert_trigger = 7200 # seconds
+    config.redis_url = ENV['REDIS_URL'].present? ? ENV['REDIS_URL'] : 'redis://localhost:6379/12'
+    config.redis_namespace = 'dap'
   end
 end

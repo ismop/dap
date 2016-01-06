@@ -1,0 +1,59 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+app_root=$(pwd)
+
+sidekiq_pidfile="$app_root/tmp/pids/sidekiq.pid"
+sidekiq_logfile="$app_root/log/worker-1.log"
+
+stop()
+{
+  bundle exec sidekiqctl stop $sidekiq_pidfile >> $sidekiq_logfile 2>&1
+}
+
+restart()
+{
+  if [ -f $sidekiq_pidfile ]; then
+    stop
+  fi
+  start
+}
+
+start()
+{
+  start_sidekiq --daemon --logfile $sidekiq_logfile
+}
+
+start_no_deamonize()
+{
+  start_sidekiq
+}
+
+start_sidekiq()
+{
+  bundle exec sidekiq --queue $DAP_QUEUE_NAME --pidfile $sidekiq_pidfile $@ >> $sidekiq_logfile 2>&1
+}
+
+source ${app_root}/bin/activate
+
+export DAP_ROOT_PATH=${app_root}
+export RAILS_ENV=production
+export DISABLE_SPRING=1
+export PATH=$app_root/ruby/bin:$PATH
+
+case "$1" in
+  stop)
+    stop
+    ;;
+  start)
+    restart
+    ;;
+  start_no_deamonize)
+    start_no_deamonize
+    ;;
+  restart)
+    restart
+    ;;
+  *)
+    echo "Usage: RAILS_ENV=your_env $0 {stop|start|start_no_deamonize|restart}"
+esac

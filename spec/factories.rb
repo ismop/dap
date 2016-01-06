@@ -170,6 +170,8 @@ FactoryGirl.define do
 
   factory :parameter do
     custom_id { rand_str(10) }
+    monitored { false }
+    monitoring_status { :unknown }
     measurement_type
   end
 

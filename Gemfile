@@ -75,6 +75,14 @@ gem 'proj4rb'
 # Influxdb for storage of measurement data
 gem 'influxdb'
 
+# Sidekiq async worker pool and clockwork scheduler for sensor data monitoring
+gem 'sidekiq'
+gem 'redis-namespace'
+gem 'clockwork'
+
+# Enumerize enables pretty enumerization of integer constants (e.g. in Parameter model)
+gem 'enumerize'
+
 group :development do
   # Avoid writing crap to logfiles in devmode
   gem 'quiet_assets'
