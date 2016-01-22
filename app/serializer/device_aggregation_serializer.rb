@@ -1,5 +1,6 @@
 class DeviceAggregationSerializer < ActiveModel::Serializer
   attributes :id, :custom_id, :shape, :profile_id, :section_id, :levee_id, :type, :children_ids, :parent_id
+  attributes :vendors
   attributes :device_ids
 
   def type
@@ -8,6 +9,10 @@ class DeviceAggregationSerializer < ActiveModel::Serializer
 
   def shape
     RGeo::GeoJSON.encode(object.shape).as_json
+  end
+
+  def vendors
+    object.devices.collect{|d| d.vendor}.uniq
   end
 
   def device_ids
