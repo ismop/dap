@@ -1,5 +1,5 @@
 class ProfileSerializer < ActiveModel::Serializer
-  attributes :id, :levee_id, :profile_shape, :device_ids, :device_aggregation_ids, :section_id
+  attributes :id, :levee_id, :profile_shape, :vendor, :device_ids, :device_aggregation_ids, :section_id
 
   def levee_id
     object.levee unless (object.levee.nil?)

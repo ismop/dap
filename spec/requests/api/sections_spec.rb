@@ -39,19 +39,19 @@ describe Api::V1::SectionsController do
         expect(ss_response.size).to eq 2
       end
 
-      it 'returns ground type info for sections' do
-        gt1 = create(:ground_type)
-        gt2 = create(:ground_type)
+      it 'returns soil type info for sections' do
+        st1 = SoilType.first
+        st2 = SoilType.second
 
-        s1.ground_type = gt1
-        s2.ground_type = gt2
+        s1.soil_type = st1
+        s2.soil_type = st2
         s1.save
         s2.save
 
         get api('/sections', user)
 
-        expect(ss_response.first['ground_type_label']).to eq gt1.label
-        expect(ss_response.second['ground_type_label']).to eq gt2.label
+        expect(ss_response.first['soil_type_label']).to eq st1.label
+        expect(ss_response.second['soil_type_label']).to eq st2.label
       end
     end
 
