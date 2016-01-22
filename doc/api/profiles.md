@@ -28,7 +28,7 @@ GET /profiles?selection=POLYGON%20((0%200,%200%2010,%2010%2010,%2010%200,%200%20
     {
       "id": a numerical unique id (e.g. 1),
       "profile_shape": the geometry of the profile,
-      "vendor": name of the vendor responsible for managing the profile,
+      "vendors": names of vendors responsible for managing devices which belong to the profile,
       "section_id": identifier of the section the profile belongs to,
       "levee_id": identifier of the levee the profile belongs to,
       "sensor_ids": identifiers of sensors which belong to the target profile,
@@ -59,7 +59,7 @@ Parameters:
   "profile": {
      "id": a numerical unique id (e.g. 1),
      "profile_shape": the geometry of the profile profile,
-     "vendor": name of the vendor responsible for managing the profile,
+     "vendors": names of vendors responsible for managing devices which belong to the profile,
      "section_id": identifier of the section the profile belongs to,
      "levee_id": identifier of the levee the profile belongs to,
      "sensor_ids": identifiers of sensors which belong to the target profile,

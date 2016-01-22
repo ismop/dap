@@ -233,7 +233,6 @@ ActiveRecord::Schema.define(version: 20160122113502) do
     t.integer  "profile_type_id"
     t.integer  "section_id"
     t.spatial  "shape",           limit: {:srid=>4326, :type=>"line_string", :geographic=>true}
-    t.string   "vendor"
   end
 
   add_index "profiles", ["profile_type_id"], :name => "index_profiles_on_profile_type_id"

@@ -108,7 +108,6 @@ FactoryGirl.define do
     section { create(:section) }
     levee { create(:levee) }
     profile_type {  create(:profile_type) }
-    vendor { Faker::Lorem.word }
   end
 
   factory :section do
