@@ -12,7 +12,7 @@ class DeviceAggregationSerializer < ActiveModel::Serializer
   end
 
   def vendors
-    object.devices.collect{|d| d.vendor}.uniq
+    object.devices.collect{|d| d.vendor}.uniq.compact
   end
 
   def device_ids
