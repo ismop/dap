@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160122113502) do
+ActiveRecord::Schema.define(version: 20160126141705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -307,11 +307,13 @@ ActiveRecord::Schema.define(version: 20160122113502) do
   end
 
   create_table "timelines", force: true do |t|
-    t.integer "context_id"
-    t.integer "parameter_id"
-    t.integer "experiment_id"
-    t.string  "label"
-    t.integer "scenario_id"
+    t.integer  "context_id"
+    t.integer  "parameter_id"
+    t.integer  "experiment_id"
+    t.string   "label"
+    t.integer  "scenario_id"
+    t.datetime "earliest_measurement_timestamp"
+    t.float    "earliest_measurement_value"
   end
 
   add_index "timelines", ["context_id"], :name => "index_timelines_on_context_id"
