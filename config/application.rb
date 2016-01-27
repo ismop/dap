@@ -31,6 +31,8 @@ module Dap
     config.sensor_data_polling_interval = 3600 # seconds
     # Tag parameter as 'down' if no data received for this many seconds:
     config.sensor_data_alert_trigger = 7200 # seconds
+    # Locate earliest measurements for timelines this often:
+    config.timeline_earliest_measurement_polling_interval = 86400 # seconds
     config.redis_url = ENV['REDIS_URL'].present? ? ENV['REDIS_URL'] : 'redis://localhost:6379/12'
     config.redis_namespace = 'dap'
   end

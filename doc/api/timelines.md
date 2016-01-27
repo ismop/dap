@@ -12,7 +12,9 @@ No parameters are required, although it is possible to filter by selected attrib
   "timelines": [
     {
       "id": numerically unique id (e.g. 1),
-      "label: textual label of the timeline (if any),
+      "label": textual label of the timeline (if any),
+      "earliest_measurement_timestamp": timestamp of the earliest existing measurement for this timeline (nil if no measurements present),
+      "earliest_measurement_value": value of the earliest existing measurement for this timeline (nil if no measurements present),
       "sensor_id": ID of the sensor represented by this timeline,
       "parameter_id": ID of the parameter represented by this timeline,
       "context_id": ID of the context the timeline is connected with,
@@ -38,7 +40,9 @@ Parameters:
 {
   "timeline": {
     "id": numerically unique id (e.g. 1),
-    "label: textual label of the timeline (if any),
+    "label": textual label of the timeline (if any),
+    "earliest_measurement_timestamp": timestamp of the earliest existing measurement for this timeline (nil if no measurements present),
+    "earliest_measurement_value": value of the earliest existing measurement for this timeline (nil if no measurements present),
     "sensor_id": ID of the sensor represented by this timeline,
     "parameter_id": ID of the parameter represented by this timeline,
     "context_id": ID of the context the timeline is connected with,
