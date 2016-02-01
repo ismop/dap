@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151228142059) do
+ActiveRecord::Schema.define(version: 20160126141705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20151228142059) do
     t.integer "section_id"
     t.integer "levee_id"
     t.string  "label"
+    t.string  "vendor"
   end
 
   add_index "devices", ["levee_id"], :name => "index_devices_on_levee_id"
@@ -114,11 +115,6 @@ ActiveRecord::Schema.define(version: 20151228142059) do
     t.date     "deployment_date"
     t.datetime "last_state_change"
     t.integer  "device_id"
-  end
-
-  create_table "ground_types", force: true do |t|
-    t.string "label",       default: "unknown ground type", null: false
-    t.string "description"
   end
 
   create_table "interface_types", force: true do |t|
@@ -268,13 +264,27 @@ ActiveRecord::Schema.define(version: 20151228142059) do
   end
 
   create_table "sections", force: true do |t|
-    t.spatial "shape",          limit: {:srid=>0, :type=>"geometry"}
+    t.spatial "shape",        limit: {:srid=>0, :type=>"geometry"}
     t.integer "levee_id"
-    t.integer "ground_type_id"
+    t.integer "soil_type_id"
   end
 
-  add_index "sections", ["ground_type_id"], :name => "index_sections_on_ground_type_id"
   add_index "sections", ["levee_id"], :name => "index_sections_on_levee_id"
+  add_index "sections", ["soil_type_id"], :name => "index_sections_on_soil_type_id"
+
+  create_table "soil_types", force: true do |t|
+    t.string "label"
+    t.string "name"
+    t.float  "bulk_density_min"
+    t.float  "bulk_density_max"
+    t.float  "bulk_density_avg"
+    t.float  "granular_density_min"
+    t.float  "granular_density_max"
+    t.float  "granular_density_avg"
+    t.float  "filtration_coefficient_min"
+    t.float  "filtration_coefficient_max"
+    t.float  "filtration_coefficient_avg"
+  end
 
   create_table "threat_assessment_runs", force: true do |t|
     t.string   "name",          default: "Unnamed threat assessment run", null: false
@@ -297,11 +307,13 @@ ActiveRecord::Schema.define(version: 20151228142059) do
   end
 
   create_table "timelines", force: true do |t|
-    t.integer "context_id"
-    t.integer "parameter_id"
-    t.integer "experiment_id"
-    t.string  "label"
-    t.integer "scenario_id"
+    t.integer  "context_id"
+    t.integer  "parameter_id"
+    t.integer  "experiment_id"
+    t.string   "label"
+    t.integer  "scenario_id"
+    t.datetime "earliest_measurement_timestamp"
+    t.float    "earliest_measurement_value"
   end
 
   add_index "timelines", ["context_id"], :name => "index_timelines_on_context_id"

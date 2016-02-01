@@ -57,8 +57,8 @@ describe Api::V1::DeviceAggregationsController do
 
     let(:sensor) { create(:neosentio_sensor) }
     let(:sensor2) { create(:budokop_sensor) }
-    let!(:device1) { create(:device, device_type: 'neosentio-sensor', neosentio_sensor: sensor, device_aggregation: device_aggregation) }
-    let!(:device2) { create(:device, device_type: 'budokop-sensor', budokop_sensor: sensor2, device_aggregation: device_aggregation) }
+    let!(:device1) { create(:device, device_type: 'neosentio-sensor', vendor: 'foo', neosentio_sensor: sensor, device_aggregation: device_aggregation) }
+    let!(:device2) { create(:device, device_type: 'budokop-sensor', vendor: 'bar', budokop_sensor: sensor2, device_aggregation: device_aggregation) }
 
     context 'get all device aggregations' do
 
@@ -75,6 +75,15 @@ describe Api::V1::DeviceAggregationsController do
         expect(da['shape']['type']).to eq 'MultiPoint'
         expect(da['shape']['coordinates']).to be_a Array
       end
+
+      it 'gets vendor info for device aggregations' do
+        create(:device, vendor: 'foo', device_aggregation: device_aggregation)
+        get api("/device_aggregations/#{device_aggregation.id}", user)
+        expect(da['vendors'].length).to eq 2
+        expect(da['vendors']).to include 'foo'
+        expect(da['vendors']).to include 'bar'
+      end
+
     end
 
   end
