@@ -21,9 +21,9 @@ describe EarliestMeasurementService do
 
     it 'updates status when measurements appear' do
       t = Time.now
-      create(:measurement, timeline: t1, timestamp: t, value: 2)
-      create(:measurement, timeline: t1, timestamp: t+1.second, value: 3)
-      create(:measurement, timeline: t2, timestamp: t+10.seconds, value: 5)
+      create(:measurement, timeline: t1, m_timestamp: t, value: 2)
+      create(:measurement, timeline: t1, m_timestamp: t+1.second, value: 3)
+      create(:measurement, timeline: t2, m_timestamp: t+10.seconds, value: 5)
 
       EarliestMeasurementService::find_earliest_measurements
       expect(t1.reload.earliest_measurement_timestamp-t).to be <= 0.001
@@ -36,13 +36,13 @@ describe EarliestMeasurementService do
 
     it 'does not further update status when earliest measurement is already known' do
       t = Time.now
-      create(:measurement, timeline: t1, timestamp: t, value: 2)
+      create(:measurement, timeline: t1, m_timestamp: t, value: 2)
 
       EarliestMeasurementService::find_earliest_measurements
       expect(t1.reload.earliest_measurement_timestamp-t).to be <= 0.001
       expect(t1.reload.earliest_measurement_value).to eq 2
 
-      create(:measurement, timeline: t1, timestamp: t-10.seconds, value: 1)
+      create(:measurement, timeline: t1, m_timestamp: t-10.seconds, value: 1)
       EarliestMeasurementService::find_earliest_measurements
       expect(t1.reload.earliest_measurement_timestamp-t).to be <= 0.001
       expect(t1.reload.earliest_measurement_value).to eq 2

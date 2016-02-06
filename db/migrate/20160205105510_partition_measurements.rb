@@ -27,6 +27,7 @@ class PartitionMeasurements < ActiveRecord::Migration
         CONSTRAINT ck_1970_01_01 CHECK ( m_timestamp >= '1970-01-01' AND m_timestamp < '2015-01-01' )
         ) INHERITS (measurements_new);
       CREATE INDEX idx_timestamp_1970_01_01 ON measurements_child_1970_01_01 (m_timestamp);
+      CREATE INDEX idx_timeline_1970_01_01 ON measurements_child_1970_01_01 (timeline_id);
     SQL
 
     base_date = Date.parse('2015-01-01')
@@ -41,6 +42,7 @@ class PartitionMeasurements < ActiveRecord::Migration
           CONSTRAINT ck_#{not_before_name} CHECK ( m_timestamp >= '#{not_before}' AND m_timestamp < '#{before}' )
         ) INHERITS (measurements_new);
         CREATE INDEX idx_timestamp_#{not_before_name} ON measurements_child_#{not_before_name} (m_timestamp);
+        CREATE INDEX idx_timeline_#{not_before_name} ON measurements_child_#{not_before_name} (timeline_id);
       SQL
       base_date+=1.month
     end

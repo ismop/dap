@@ -7,7 +7,7 @@ module Api
       def index
 
         if params.keys.include? 'quantity'
-          sql = "SELECT m.* FROM (SELECT m.*, row_number() OVER(ORDER BY m.timeline_id, m.timestamp ASC) AS row FROM measurements m JOIN timelines t ON m.timeline_id = t.id "
+          sql = "SELECT m.* FROM (SELECT m.*, row_number() OVER(ORDER BY m.timeline_id, m.m_timestamp ASC) AS row FROM measurements m JOIN timelines t ON m.timeline_id = t.id "
         else
           sql = "SELECT m.* FROM measurements m JOIN timelines t ON m.timeline_id = t.id "
         end
@@ -36,7 +36,7 @@ module Api
           time_to = '2100-01-01'
         end
 
-        sql += "WHERE m.timestamp BETWEEN '#{time_from}' AND '#{time_to}' "
+        sql += "WHERE m.m_timestamp BETWEEN '#{time_from}' AND '#{time_to}' "
 
         if params.keys.include? "id"
           if params[:id].blank?
@@ -107,11 +107,11 @@ module Api
         sql+= partition_clause
 
         if params[:limit] == 'first'
-          sql += ' ORDER BY m.timeline_id, m.timestamp ASC '
+          sql += ' ORDER BY m.timeline_id, m.m_timestamp ASC '
         elsif params[:limit] == 'last'
-          sql += ' ORDER BY m.timeline_id, m.timestamp DESC '
+          sql += ' ORDER BY m.timeline_id, m.m_timestamp DESC '
         else
-          sql += ' ORDER BY m.timeline_id, m.timestamp ASC '
+          sql += ' ORDER BY m.timeline_id, m.m_timestamp ASC '
         end
 
         if params.keys.include? 'quantity'
@@ -182,7 +182,7 @@ module Api
       private
 
       def measurement_params
-        params.require(:measurement).permit(:value, :timestamp, :source_address)
+        params.require(:measurement).permit(:value, :m_timestamp, :source_address)
       end
     end
   end

@@ -20,7 +20,7 @@ class MonitoringService
 
     # Get latest measurements for each TL.
     # Use SQL for speed
-    sql = "SELECT timeline_id, MAX(timestamp) FROM measurements "
+    sql = "SELECT timeline_id, MAX(m_timestamp) FROM measurements "
     sql << " WHERE timeline_id IN (#{timelines.collect(&:id).join(',')}) "
     sql << " GROUP BY timeline_id"
 

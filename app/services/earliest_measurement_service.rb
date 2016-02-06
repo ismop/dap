@@ -15,17 +15,17 @@ class EarliestMeasurementService
     timeline_ids = timelines.collect(&:id).join(',')
 
     sql = <<-SQL
-      SELECT DISTINCT ON (timeline_id) timeline_id, timestamp, value
+      SELECT DISTINCT ON (timeline_id) timeline_id, m_timestamp, value
       FROM measurements
       WHERE timeline_id IN (#{timeline_ids})
-      ORDER BY timeline_id, timestamp ASC
+      ORDER BY timeline_id, m_timestamp ASC
     SQL
 
     result = ActiveRecord::Base.connection.execute(sql).to_a
 
     result.each do |data|
       t = Timeline.find(data['timeline_id'])
-      t.earliest_measurement_timestamp = data['timestamp']
+      t.earliest_measurement_timestamp = data['m_timestamp']
       t.earliest_measurement_value = data['value']
       t.save
 

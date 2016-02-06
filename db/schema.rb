@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126141705) do
+ActiveRecord::Schema.define(version: 20160205105510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,15 +166,643 @@ ActiveRecord::Schema.define(version: 20160126141705) do
     t.string   "label"
   end
 
-  create_table "measurements", force: true do |t|
-    t.float    "value",          null: false
-    t.datetime "timestamp",      null: false
+  create_table "measurements", id: false, force: true do |t|
+    t.integer  "id",             default: "nextval('measurements_new_id_seq'::regclass)", null: false
+    t.float    "value",                                                                   null: false
+    t.datetime "m_timestamp",                                                             null: false
     t.string   "source_address"
     t.integer  "timeline_id"
   end
 
-  add_index "measurements", ["timeline_id"], :name => "index_measurements_on_timeline_id"
-  add_index "measurements", ["timestamp"], :name => "index_measurements_on_timestamp"
+  create_table "measurements_child_1970_01_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_1970_01_01", ["m_timestamp"], :name => "idx_timestamp_1970_01_01"
+  add_index "measurements_child_1970_01_01", ["timeline_id"], :name => "idx_timeline_1970_01_01"
+
+  create_table "measurements_child_2015_01_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_01_01", ["m_timestamp"], :name => "idx_timestamp_2015_01_01"
+  add_index "measurements_child_2015_01_01", ["timeline_id"], :name => "idx_timeline_2015_01_01"
+
+  create_table "measurements_child_2015_02_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_02_01", ["m_timestamp"], :name => "idx_timestamp_2015_02_01"
+  add_index "measurements_child_2015_02_01", ["timeline_id"], :name => "idx_timeline_2015_02_01"
+
+  create_table "measurements_child_2015_03_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_03_01", ["m_timestamp"], :name => "idx_timestamp_2015_03_01"
+  add_index "measurements_child_2015_03_01", ["timeline_id"], :name => "idx_timeline_2015_03_01"
+
+  create_table "measurements_child_2015_04_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_04_01", ["m_timestamp"], :name => "idx_timestamp_2015_04_01"
+  add_index "measurements_child_2015_04_01", ["timeline_id"], :name => "idx_timeline_2015_04_01"
+
+  create_table "measurements_child_2015_05_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_05_01", ["m_timestamp"], :name => "idx_timestamp_2015_05_01"
+  add_index "measurements_child_2015_05_01", ["timeline_id"], :name => "idx_timeline_2015_05_01"
+
+  create_table "measurements_child_2015_06_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_06_01", ["m_timestamp"], :name => "idx_timestamp_2015_06_01"
+  add_index "measurements_child_2015_06_01", ["timeline_id"], :name => "idx_timeline_2015_06_01"
+
+  create_table "measurements_child_2015_07_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_07_01", ["m_timestamp"], :name => "idx_timestamp_2015_07_01"
+  add_index "measurements_child_2015_07_01", ["timeline_id"], :name => "idx_timeline_2015_07_01"
+
+  create_table "measurements_child_2015_08_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_08_01", ["m_timestamp"], :name => "idx_timestamp_2015_08_01"
+  add_index "measurements_child_2015_08_01", ["timeline_id"], :name => "idx_timeline_2015_08_01"
+
+  create_table "measurements_child_2015_09_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_09_01", ["m_timestamp"], :name => "idx_timestamp_2015_09_01"
+  add_index "measurements_child_2015_09_01", ["timeline_id"], :name => "idx_timeline_2015_09_01"
+
+  create_table "measurements_child_2015_10_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_10_01", ["m_timestamp"], :name => "idx_timestamp_2015_10_01"
+  add_index "measurements_child_2015_10_01", ["timeline_id"], :name => "idx_timeline_2015_10_01"
+
+  create_table "measurements_child_2015_11_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_11_01", ["m_timestamp"], :name => "idx_timestamp_2015_11_01"
+  add_index "measurements_child_2015_11_01", ["timeline_id"], :name => "idx_timeline_2015_11_01"
+
+  create_table "measurements_child_2015_12_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2015_12_01", ["m_timestamp"], :name => "idx_timestamp_2015_12_01"
+  add_index "measurements_child_2015_12_01", ["timeline_id"], :name => "idx_timeline_2015_12_01"
+
+  create_table "measurements_child_2016_01_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_01_01", ["m_timestamp"], :name => "idx_timestamp_2016_01_01"
+  add_index "measurements_child_2016_01_01", ["timeline_id"], :name => "idx_timeline_2016_01_01"
+
+  create_table "measurements_child_2016_02_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_02_01", ["m_timestamp"], :name => "idx_timestamp_2016_02_01"
+  add_index "measurements_child_2016_02_01", ["timeline_id"], :name => "idx_timeline_2016_02_01"
+
+  create_table "measurements_child_2016_03_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_03_01", ["m_timestamp"], :name => "idx_timestamp_2016_03_01"
+  add_index "measurements_child_2016_03_01", ["timeline_id"], :name => "idx_timeline_2016_03_01"
+
+  create_table "measurements_child_2016_04_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_04_01", ["m_timestamp"], :name => "idx_timestamp_2016_04_01"
+  add_index "measurements_child_2016_04_01", ["timeline_id"], :name => "idx_timeline_2016_04_01"
+
+  create_table "measurements_child_2016_05_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_05_01", ["m_timestamp"], :name => "idx_timestamp_2016_05_01"
+  add_index "measurements_child_2016_05_01", ["timeline_id"], :name => "idx_timeline_2016_05_01"
+
+  create_table "measurements_child_2016_06_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_06_01", ["m_timestamp"], :name => "idx_timestamp_2016_06_01"
+  add_index "measurements_child_2016_06_01", ["timeline_id"], :name => "idx_timeline_2016_06_01"
+
+  create_table "measurements_child_2016_07_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_07_01", ["m_timestamp"], :name => "idx_timestamp_2016_07_01"
+  add_index "measurements_child_2016_07_01", ["timeline_id"], :name => "idx_timeline_2016_07_01"
+
+  create_table "measurements_child_2016_08_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_08_01", ["m_timestamp"], :name => "idx_timestamp_2016_08_01"
+  add_index "measurements_child_2016_08_01", ["timeline_id"], :name => "idx_timeline_2016_08_01"
+
+  create_table "measurements_child_2016_09_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_09_01", ["m_timestamp"], :name => "idx_timestamp_2016_09_01"
+  add_index "measurements_child_2016_09_01", ["timeline_id"], :name => "idx_timeline_2016_09_01"
+
+  create_table "measurements_child_2016_10_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_10_01", ["m_timestamp"], :name => "idx_timestamp_2016_10_01"
+  add_index "measurements_child_2016_10_01", ["timeline_id"], :name => "idx_timeline_2016_10_01"
+
+  create_table "measurements_child_2016_11_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_11_01", ["m_timestamp"], :name => "idx_timestamp_2016_11_01"
+  add_index "measurements_child_2016_11_01", ["timeline_id"], :name => "idx_timeline_2016_11_01"
+
+  create_table "measurements_child_2016_12_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2016_12_01", ["m_timestamp"], :name => "idx_timestamp_2016_12_01"
+  add_index "measurements_child_2016_12_01", ["timeline_id"], :name => "idx_timeline_2016_12_01"
+
+  create_table "measurements_child_2017_01_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_01_01", ["m_timestamp"], :name => "idx_timestamp_2017_01_01"
+  add_index "measurements_child_2017_01_01", ["timeline_id"], :name => "idx_timeline_2017_01_01"
+
+  create_table "measurements_child_2017_02_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_02_01", ["m_timestamp"], :name => "idx_timestamp_2017_02_01"
+  add_index "measurements_child_2017_02_01", ["timeline_id"], :name => "idx_timeline_2017_02_01"
+
+  create_table "measurements_child_2017_03_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_03_01", ["m_timestamp"], :name => "idx_timestamp_2017_03_01"
+  add_index "measurements_child_2017_03_01", ["timeline_id"], :name => "idx_timeline_2017_03_01"
+
+  create_table "measurements_child_2017_04_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_04_01", ["m_timestamp"], :name => "idx_timestamp_2017_04_01"
+  add_index "measurements_child_2017_04_01", ["timeline_id"], :name => "idx_timeline_2017_04_01"
+
+  create_table "measurements_child_2017_05_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_05_01", ["m_timestamp"], :name => "idx_timestamp_2017_05_01"
+  add_index "measurements_child_2017_05_01", ["timeline_id"], :name => "idx_timeline_2017_05_01"
+
+  create_table "measurements_child_2017_06_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_06_01", ["m_timestamp"], :name => "idx_timestamp_2017_06_01"
+  add_index "measurements_child_2017_06_01", ["timeline_id"], :name => "idx_timeline_2017_06_01"
+
+  create_table "measurements_child_2017_07_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_07_01", ["m_timestamp"], :name => "idx_timestamp_2017_07_01"
+  add_index "measurements_child_2017_07_01", ["timeline_id"], :name => "idx_timeline_2017_07_01"
+
+  create_table "measurements_child_2017_08_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_08_01", ["m_timestamp"], :name => "idx_timestamp_2017_08_01"
+  add_index "measurements_child_2017_08_01", ["timeline_id"], :name => "idx_timeline_2017_08_01"
+
+  create_table "measurements_child_2017_09_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_09_01", ["m_timestamp"], :name => "idx_timestamp_2017_09_01"
+  add_index "measurements_child_2017_09_01", ["timeline_id"], :name => "idx_timeline_2017_09_01"
+
+  create_table "measurements_child_2017_10_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_10_01", ["m_timestamp"], :name => "idx_timestamp_2017_10_01"
+  add_index "measurements_child_2017_10_01", ["timeline_id"], :name => "idx_timeline_2017_10_01"
+
+  create_table "measurements_child_2017_11_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_11_01", ["m_timestamp"], :name => "idx_timestamp_2017_11_01"
+  add_index "measurements_child_2017_11_01", ["timeline_id"], :name => "idx_timeline_2017_11_01"
+
+  create_table "measurements_child_2017_12_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2017_12_01", ["m_timestamp"], :name => "idx_timestamp_2017_12_01"
+  add_index "measurements_child_2017_12_01", ["timeline_id"], :name => "idx_timeline_2017_12_01"
+
+  create_table "measurements_child_2018_01_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_01_01", ["m_timestamp"], :name => "idx_timestamp_2018_01_01"
+  add_index "measurements_child_2018_01_01", ["timeline_id"], :name => "idx_timeline_2018_01_01"
+
+  create_table "measurements_child_2018_02_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_02_01", ["m_timestamp"], :name => "idx_timestamp_2018_02_01"
+  add_index "measurements_child_2018_02_01", ["timeline_id"], :name => "idx_timeline_2018_02_01"
+
+  create_table "measurements_child_2018_03_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_03_01", ["m_timestamp"], :name => "idx_timestamp_2018_03_01"
+  add_index "measurements_child_2018_03_01", ["timeline_id"], :name => "idx_timeline_2018_03_01"
+
+  create_table "measurements_child_2018_04_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_04_01", ["m_timestamp"], :name => "idx_timestamp_2018_04_01"
+  add_index "measurements_child_2018_04_01", ["timeline_id"], :name => "idx_timeline_2018_04_01"
+
+  create_table "measurements_child_2018_05_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_05_01", ["m_timestamp"], :name => "idx_timestamp_2018_05_01"
+  add_index "measurements_child_2018_05_01", ["timeline_id"], :name => "idx_timeline_2018_05_01"
+
+  create_table "measurements_child_2018_06_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_06_01", ["m_timestamp"], :name => "idx_timestamp_2018_06_01"
+  add_index "measurements_child_2018_06_01", ["timeline_id"], :name => "idx_timeline_2018_06_01"
+
+  create_table "measurements_child_2018_07_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_07_01", ["m_timestamp"], :name => "idx_timestamp_2018_07_01"
+  add_index "measurements_child_2018_07_01", ["timeline_id"], :name => "idx_timeline_2018_07_01"
+
+  create_table "measurements_child_2018_08_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_08_01", ["m_timestamp"], :name => "idx_timestamp_2018_08_01"
+  add_index "measurements_child_2018_08_01", ["timeline_id"], :name => "idx_timeline_2018_08_01"
+
+  create_table "measurements_child_2018_09_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_09_01", ["m_timestamp"], :name => "idx_timestamp_2018_09_01"
+  add_index "measurements_child_2018_09_01", ["timeline_id"], :name => "idx_timeline_2018_09_01"
+
+  create_table "measurements_child_2018_10_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_10_01", ["m_timestamp"], :name => "idx_timestamp_2018_10_01"
+  add_index "measurements_child_2018_10_01", ["timeline_id"], :name => "idx_timeline_2018_10_01"
+
+  create_table "measurements_child_2018_11_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_11_01", ["m_timestamp"], :name => "idx_timestamp_2018_11_01"
+  add_index "measurements_child_2018_11_01", ["timeline_id"], :name => "idx_timeline_2018_11_01"
+
+  create_table "measurements_child_2018_12_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2018_12_01", ["m_timestamp"], :name => "idx_timestamp_2018_12_01"
+  add_index "measurements_child_2018_12_01", ["timeline_id"], :name => "idx_timeline_2018_12_01"
+
+  create_table "measurements_child_2019_01_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_01_01", ["m_timestamp"], :name => "idx_timestamp_2019_01_01"
+  add_index "measurements_child_2019_01_01", ["timeline_id"], :name => "idx_timeline_2019_01_01"
+
+  create_table "measurements_child_2019_02_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_02_01", ["m_timestamp"], :name => "idx_timestamp_2019_02_01"
+  add_index "measurements_child_2019_02_01", ["timeline_id"], :name => "idx_timeline_2019_02_01"
+
+  create_table "measurements_child_2019_03_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_03_01", ["m_timestamp"], :name => "idx_timestamp_2019_03_01"
+  add_index "measurements_child_2019_03_01", ["timeline_id"], :name => "idx_timeline_2019_03_01"
+
+  create_table "measurements_child_2019_04_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_04_01", ["m_timestamp"], :name => "idx_timestamp_2019_04_01"
+  add_index "measurements_child_2019_04_01", ["timeline_id"], :name => "idx_timeline_2019_04_01"
+
+  create_table "measurements_child_2019_05_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_05_01", ["m_timestamp"], :name => "idx_timestamp_2019_05_01"
+  add_index "measurements_child_2019_05_01", ["timeline_id"], :name => "idx_timeline_2019_05_01"
+
+  create_table "measurements_child_2019_06_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_06_01", ["m_timestamp"], :name => "idx_timestamp_2019_06_01"
+  add_index "measurements_child_2019_06_01", ["timeline_id"], :name => "idx_timeline_2019_06_01"
+
+  create_table "measurements_child_2019_07_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_07_01", ["m_timestamp"], :name => "idx_timestamp_2019_07_01"
+  add_index "measurements_child_2019_07_01", ["timeline_id"], :name => "idx_timeline_2019_07_01"
+
+  create_table "measurements_child_2019_08_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_08_01", ["m_timestamp"], :name => "idx_timestamp_2019_08_01"
+  add_index "measurements_child_2019_08_01", ["timeline_id"], :name => "idx_timeline_2019_08_01"
+
+  create_table "measurements_child_2019_09_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_09_01", ["m_timestamp"], :name => "idx_timestamp_2019_09_01"
+  add_index "measurements_child_2019_09_01", ["timeline_id"], :name => "idx_timeline_2019_09_01"
+
+  create_table "measurements_child_2019_10_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_10_01", ["m_timestamp"], :name => "idx_timestamp_2019_10_01"
+  add_index "measurements_child_2019_10_01", ["timeline_id"], :name => "idx_timeline_2019_10_01"
+
+  create_table "measurements_child_2019_11_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_11_01", ["m_timestamp"], :name => "idx_timestamp_2019_11_01"
+  add_index "measurements_child_2019_11_01", ["timeline_id"], :name => "idx_timeline_2019_11_01"
+
+  create_table "measurements_child_2019_12_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2019_12_01", ["m_timestamp"], :name => "idx_timestamp_2019_12_01"
+  add_index "measurements_child_2019_12_01", ["timeline_id"], :name => "idx_timeline_2019_12_01"
+
+  create_table "measurements_child_2020_01_01", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_child_2020_01_01", ["m_timestamp"], :name => "idx_timestamp_2020_01_01"
+  add_index "measurements_child_2020_01_01", ["timeline_id"], :name => "idx_timeline_2020_01_01"
+
+  create_table "measurements_old", force: true do |t|
+    t.float    "value",          null: false
+    t.datetime "m_timestamp",    null: false
+    t.string   "source_address"
+    t.integer  "timeline_id"
+  end
+
+  add_index "measurements_old", ["m_timestamp"], :name => "index_measurements_on_timestamp"
+  add_index "measurements_old", ["timeline_id"], :name => "index_measurements_on_timeline_id"
 
   create_table "neosentio_sensors", force: true do |t|
     t.float    "x_orientation",       default: 0.0,                     null: false

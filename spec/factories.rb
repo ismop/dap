@@ -136,7 +136,7 @@ FactoryGirl.define do
 
   factory :measurement do
     value { rand(-99.99..99.99) }
-    timestamp { rand(1..24).hours.ago }
+    m_timestamp { rand(1..24).hours.ago }
     source_address { rand_str(10) }
     timeline { parameter.timelines.first }
   end

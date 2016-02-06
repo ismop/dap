@@ -59,10 +59,10 @@ describe Api::V1::MeasurementsController do
 
     context 'filter measurements by id' do
       let!(:t) { create(:timeline) }
-      let!(:m1) { create(:measurement, timeline: t, timestamp: Time.now-1.hour)}
-      let!(:m2) { create(:measurement, timeline: t, timestamp: Time.now-4.hours)}
-      let!(:m3) { create(:measurement, timeline: t, timestamp: Time.now-8.hours)}
-      let!(:m4) { create(:measurement, timeline: t, timestamp: Time.now-24.hours)}
+      let!(:m1) { create(:measurement, timeline: t, m_timestamp: Time.now-1.hour)}
+      let!(:m2) { create(:measurement, timeline: t, m_timestamp: Time.now-4.hours)}
+      let!(:m3) { create(:measurement, timeline: t, m_timestamp: Time.now-8.hours)}
+      let!(:m4) { create(:measurement, timeline: t, m_timestamp: Time.now-24.hours)}
 
       it 'returns measurements with selected ids' do
         get api("/measurements?id=#{m2.id},#{m4.id}", user)
@@ -75,14 +75,14 @@ describe Api::V1::MeasurementsController do
 
     context 'filter measurements by time' do
       let!(:t) { create(:timeline) }
-      let!(:m1) { create(:measurement, timeline: t, timestamp: Time.now-1.hour)}
-      let!(:m2) { create(:measurement, timeline: t, timestamp: Time.now-4.hours)}
-      let!(:m3) { create(:measurement, timeline: t, timestamp: Time.now-8.hours)}
-      let!(:m4) { create(:measurement, timeline: t, timestamp: Time.now-24.hours)}
-      let!(:m5) { create(:measurement, timeline: t, timestamp: Time.now-36.hours)}
-      let!(:m6) { create(:measurement, timeline: t, timestamp: Time.now-60.hours)}
+      let!(:m1) { create(:measurement, timeline: t, m_timestamp: Time.now-1.hour)}
+      let!(:m2) { create(:measurement, timeline: t, m_timestamp: Time.now-4.hours)}
+      let!(:m3) { create(:measurement, timeline: t, m_timestamp: Time.now-8.hours)}
+      let!(:m4) { create(:measurement, timeline: t, m_timestamp: Time.now-24.hours)}
+      let!(:m5) { create(:measurement, timeline: t, m_timestamp: Time.now-36.hours)}
+      let!(:m6) { create(:measurement, timeline: t, m_timestamp: Time.now-60.hours)}
 
-      it 'returns all measurements for wide range of dates' do
+      it 'returns all measurements for a wide range of dates' do
         get api("/measurements?time_from=#{URI::encode((Time.now-10.days).to_s)}&time_to=#{URI::encode(Time.now.to_s)}", user)
         expect(ms_response).to be_an Array
         expect(ms_response.length).to eq Measurement.all.length
@@ -149,9 +149,8 @@ describe Api::V1::MeasurementsController do
         time = Time.now
         ms = []
         for i in 1..10 do
-          ms << create(:measurement, timeline: t1, timestamp: time+i.seconds)
+          ms << create(:measurement, timeline: t1, m_timestamp: time+i.seconds)
         end
-
         get api("/measurements?limit=first", user)
         expect(ms_response.length).to eq 1
         expect(ms_response.collect{|r| r['id']}).to include ms.first.id
@@ -161,7 +160,7 @@ describe Api::V1::MeasurementsController do
         time = Time.now
         ms = []
         for i in 1..10 do
-          ms << create(:measurement, timeline: t1, timestamp: time+i.seconds)
+          ms << create(:measurement, timeline: t1, m_timestamp: time+i.seconds)
         end
 
         get api("/measurements?limit=last", user)
@@ -173,9 +172,9 @@ describe Api::V1::MeasurementsController do
         time = Time.now
         ms1, ms2, ms3 = [], [], []
         for i in 1..10 do
-          ms1 << create(:measurement, timeline: t1, timestamp: time+i.seconds)
-          ms2 << create(:measurement, timeline: t2, timestamp: time+(i*5).seconds)
-          ms3 << create(:measurement, timeline: t3, timestamp: time+(i*100).seconds)
+          ms1 << create(:measurement, timeline: t1, m_timestamp: time+i.seconds)
+          ms2 << create(:measurement, timeline: t2, m_timestamp: time+(i*5).seconds)
+          ms3 << create(:measurement, timeline: t3, m_timestamp: time+(i*100).seconds)
         end
 
         get api("/measurements?limit=first", user)
@@ -195,7 +194,7 @@ describe Api::V1::MeasurementsController do
         time = Time.now
         ms = []
         for i in 1..10 do
-          ms << create(:measurement, timeline: t1, timestamp: time+i.seconds)
+          ms << create(:measurement, timeline: t1, m_timestamp: time+i.seconds)
         end
 
         get api("/measurements?time_from=#{URI::encode((time+3.seconds).to_s)}&time_to=#{URI::encode((time+7.seconds).to_s)}&limit=first", user)
@@ -208,12 +207,13 @@ describe Api::V1::MeasurementsController do
         time = Time.now
         ms1, ms2, ms3 = [], [], []
         for i in 1..1000 do
-          ms1 << create(:measurement, timeline: t1, timestamp: time+i.seconds)
-          ms2 << create(:measurement, timeline: t2, timestamp: time+(i*5).seconds)
-          ms3 << create(:measurement, timeline: t3, timestamp: time+(i*100).seconds)
+          ms1 << create(:measurement, timeline: t1, m_timestamp: time+i.seconds)
+          ms2 << create(:measurement, timeline: t2, m_timestamp: time+(i*5).seconds)
+          ms3 << create(:measurement, timeline: t3, m_timestamp: time+(i*100).seconds)
         end
 
         get api("/measurements?quantity=27", user)
+
         expect(ms_response.length).to eq 81
         expect(ms_response.select{|m| m['timeline_id'] == t1.id}.length).to eq 27
         expect(ms_response.select{|m| m['timeline_id'] == t2.id}.length).to eq 27
@@ -224,7 +224,7 @@ describe Api::V1::MeasurementsController do
         time = Time.now
         ms = []
         for i in 1..10 do
-          ms << create(:measurement, timeline: t1, timestamp: time+i.seconds)
+          ms << create(:measurement, timeline: t1, m_timestamp: time+i.seconds)
         end
 
         get api("/measurements?time_from=#{URI::encode((time+20.seconds).to_s)}&time_to=#{URI::encode((time+30.seconds).to_s)}&limit=first", user)
