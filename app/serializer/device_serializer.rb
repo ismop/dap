@@ -54,7 +54,7 @@ class DeviceSerializer < ActiveModel::Serializer
     if object.parameters.blank?
       []
     else
-      object.parameters.monitorable.down.collect{|p| p.id}
+      object.parameters.select{|p| p.monitored and p.monitoring_status == :down}.collect{|p| p.id}
     end
   end
 
