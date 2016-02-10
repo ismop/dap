@@ -54,34 +54,34 @@ module Api
           end
           sql += " AND m.timeline_id IN (#{params[:timeline_id].to_s})"
 
-          # Render special WHERE clause for partitioner
-          # This looks very weird but it is necessary for PGSQL to optimize the query correctly
-          # (the pgsql partition manager does not perform 'smart' matching of CHECK constraints
-          # and instead requires the WHERE clause to contain a literal copy of the target constraint).
-
-          tl_ids = params[:timeline_id].split(',')
-          tl_remainders = []
-          tl_ids.each do |tl_id|
-            tl_id_i = tl_id.to_i
-            unless tl_id_i.blank?
-              tl_remainders << tl_id_i % 1000
-            end
-          end
-
-          # Update (2015-01-05): Amazingly, the optimizer fails when the IN clause contains more than 100 entries
-          # (yes, it fails on exactly the 101th entry and instead runs a scan on the entire data structure,
-          # which is super slow). This does not occur when the IN values are fed in batches of 100. Hence...
-
-          partition_clause = ' AND ('
-          tl_remainders_chunked = tl_remainders.each_slice(99).to_a
-          sql_chunks = []
-
-          tl_remainders_chunked.each do |chunk|
-            sql_chunks << "m.timeline_id%1000 IN (#{chunk.join(',')})"
-          end
-
-          partition_clause << sql_chunks.join(' OR ')
-          partition_clause << ')'
+          # # Render special WHERE clause for partitioner
+          # # This looks very weird but it is necessary for PGSQL to optimize the query correctly
+          # # (the pgsql partition manager does not perform 'smart' matching of CHECK constraints
+          # # and instead requires the WHERE clause to contain a literal copy of the target constraint).
+          #
+          # tl_ids = params[:timeline_id].split(',')
+          # tl_remainders = []
+          # tl_ids.each do |tl_id|
+          #   tl_id_i = tl_id.to_i
+          #   unless tl_id_i.blank?
+          #     tl_remainders << tl_id_i % 1000
+          #   end
+          # end
+          #
+          # # Update (2015-01-05): Amazingly, the optimizer fails when the IN clause contains more than 100 entries
+          # # (yes, it fails on exactly the 101th entry and instead runs a scan on the entire data structure,
+          # # which is super slow). This does not occur when the IN values are fed in batches of 100. Hence...
+          #
+          # partition_clause = ' AND ('
+          # tl_remainders_chunked = tl_remainders.each_slice(99).to_a
+          # sql_chunks = []
+          #
+          # tl_remainders_chunked.each do |chunk|
+          #   sql_chunks << "m.timeline_id%1000 IN (#{chunk.join(',')})"
+          # end
+          #
+          # partition_clause << sql_chunks.join(' OR ')
+          # partition_clause << ')'
 
           params[:timeline_id] = nil
         end
@@ -104,7 +104,7 @@ module Api
           params[:context_id] = nil
         end
 
-        sql+= partition_clause
+        # sql+= partition_clause
 
         if params[:limit] == 'first'
           sql += ' ORDER BY m.timeline_id, m.m_timestamp ASC '
