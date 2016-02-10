@@ -53,6 +53,13 @@ describe Api::V1::SectionsController do
         expect(ss_response.first['soil_type_label']).to eq st1.label
         expect(ss_response.second['soil_type_label']).to eq st2.label
       end
+
+      it 'returns levee id for sections' do
+        get api('/sections', user)
+
+        expect(ss_response.first['levee_id']).to eq levee.id
+        expect(ss_response.second['levee_id']).to eq levee2.id
+      end
     end
 
     context 'when getting defined section' do
