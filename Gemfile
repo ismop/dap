@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.2'
 
@@ -33,6 +32,9 @@ gem 'font-awesome-rails'
 # rendering documentation
 gem 'redcarpet'
 gem 'github-markup', require: 'github/markup'
+
+# Faster JSON serializer
+gem 'oj'
 
 # ActiveRecord stuff
 gem 'active_model_serializers', '0.10.0.rc3'

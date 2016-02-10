@@ -156,6 +156,7 @@ GEM
     notiffany (0.0.7)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oj (2.14.4)
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
       rack (~> 1.0)
@@ -308,6 +309,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   minitest
+  oj
   omniauth
   pg
   proj4rb
