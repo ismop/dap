@@ -1,5 +1,6 @@
 
 require 'rails_helper'
+require 'csv'
 
 describe Api::V1::ExperimentExporterController do
 
@@ -64,15 +65,15 @@ describe Api::V1::ExperimentExporterController do
 
     context 'when requesting export of an existing and fully featured experiment' do
       it 'exports experiment in a right way' do
+        # given
+        serializer = Exporters::ExperimentExporter::MeasurementSerializer.new
+        # when
         get api("/experiment_exporter/#{experiment.id}", user)
+        # then
         lines = response.body.lines
         expect(lines.size).to eq 2
         i = 0; [m2, m3].each do |m|
-          time = m.timestamp.to_i
-          xyz = m.timeline.parameter.device.placement
-          name = m.timeline.parameter.measurement_type.name
-          val = '%.8f' % m.value
-          expect(lines[i]).to eq "#{time},#{xyz.x},#{xyz.y},#{xyz.z},#{name},#{val}\n"
+          expect(lines[i]).to eq CSV.generate { |csv| csv << serializer.serialize(m) }
           i+=1;
         end
       end

@@ -9,7 +9,7 @@ module Exporters
       # implement this method
     end
 
-    def process_measurement(m)
+    def serializer
       # implement this method
     end
 
@@ -21,7 +21,7 @@ module Exporters
       @file = Tempfile.create('export_', temp_path)
       CSV.open(@file.path, "w+") do |csv|
         measurements.each do |m|
-          csv << process_measurement(m)
+          csv << serializer.serialize(m)
         end
       end
       @file

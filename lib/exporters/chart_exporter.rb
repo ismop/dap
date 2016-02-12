@@ -28,11 +28,17 @@ module Exporters
           .order(:timestamp)
     end
 
-    def process_measurement(m)
-      time = m.timestamp.to_i
-      id = m.timeline.parameter_id
-      value = '%.8f' % m.value
-      [time, id, value]
+    def serializer
+      MeasurementSerializer.new
+    end
+
+    class MeasurementSerializer
+      def serialize(m)
+        time = m.timestamp.to_i
+        id = m.timeline.parameter_id
+        value = '%.8f' % m.value
+        [time, id, value]
+      end
     end
 
   end

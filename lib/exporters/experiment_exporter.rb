@@ -30,12 +30,18 @@ module Exporters
           .order(:timestamp)
     end
 
-    def process_measurement(m)
-      time = m.timestamp.to_i
-      xyz = m.timeline.parameter.device.placement
-      name = m.timeline.parameter.measurement_type.name
-      val = '%.8f' % m.value
-      [time, xyz.x, xyz.y, xyz.z, name, val]
+    def serializer
+      MeasurementSerializer.new
+    end
+
+    class MeasurementSerializer
+      def serialize(m)
+        time = m.timestamp.to_i
+        xyz = m.timeline.parameter.device.placement
+        name = m.timeline.parameter.measurement_type.name
+        val = '%.8f' % m.value
+        [time, xyz.x, xyz.y, xyz.z, name, val]
+      end
     end
 
   end

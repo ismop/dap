@@ -50,11 +50,15 @@ describe Api::V1::ChartExporterController do
 
     context 'when given parameters as user' do
       it 'returns all measurements from param1' do
+        # given
+        serializer = Exporters::ChartExporter::MeasurementSerializer.new
+        # when
         get api("/chart_exporter?parameters=#{p1.id}", user)
-        expect(response.body.lines.size).to eq 3
-        i = 0
-        [m1, m2, m3].each do |m|
-          expect(response.body.lines[i]).to eq "#{m.timestamp.to_i},#{p1.id},#{'%.8f' % m.value}\n"
+        # then
+        lines = response.body.lines
+        expect(lines.size).to eq 3
+        i = 0; [m1, m2, m3].each do |m|
+          expect(lines[i]).to eq CSV.generate { |csv| csv << serializer.serialize(m) }
           i += 1
         end
       end
@@ -62,14 +66,18 @@ describe Api::V1::ChartExporterController do
 
     context 'when given parameters and time period' do
       it 'returns all measurements from param1 in given time period' do
+        # given
+        serializer = Exporters::ChartExporter::MeasurementSerializer.new
         from = "#{URI::encode(m2.timestamp.to_s)}"
         to = "#{URI::encode((m3.timestamp + 1.year).to_s)}"
+        # when
         get api("/chart_exporter?parameters=#{p1.id}&time_from=#{from}&time_to=#{to}", user)
-        expect(response.body.lines.size).to eq 2
-        i = 0;
-        [m2, m3].each do |m|
-          expect(response.body.lines[i]).to eq "#{m.timestamp.to_i},#{p1.id},#{'%.8f' % m.value}\n"
-          i += 1
+        # then
+        lines = response.body.lines
+        expect(lines.size).to eq 2
+        i = 0; [m2, m3].each do |m|
+          expect(lines[i]).to eq CSV.generate { |csv| csv << serializer.serialize(m) }
+          i+=1;
         end
       end
     end
