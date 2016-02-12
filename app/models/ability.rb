@@ -24,6 +24,8 @@ class Ability
       can [:create, :read, :update], Experiment
       can [:create, :read, :update], Scenario
       can [:read], :monitoring
+      can [:read], :chart_exporter
+      can [:read], :experiment_exporter
     end
   end
 end
