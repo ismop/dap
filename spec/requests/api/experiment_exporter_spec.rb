@@ -1,12 +1,21 @@
 
 require 'rails_helper'
 require 'csv'
+require 'fileutils'
 
 describe Api::V1::ExperimentExporterController do
 
   include ApiHelpers
 
   let(:user) { create(:user) }
+
+  before(:all) do
+    Exporters::CSVExporter.temp_dir = Dir.mktmpdir
+  end
+
+  after(:all) do
+    FileUtils.rm_rf(Exporters::CSVExporter.temp_dir)
+  end
 
   describe 'GET /experiment_exporter' do
 

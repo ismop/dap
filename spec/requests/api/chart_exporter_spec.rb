@@ -5,6 +5,14 @@ describe Api::V1::ChartExporterController do
 
   include ApiHelpers
 
+  before(:all) do
+    Exporters::CSVExporter.temp_dir = Dir.mktmpdir
+  end
+
+  after(:all) do
+    FileUtils.rm_rf(Exporters::CSVExporter.temp_dir)
+  end
+
   let(:user) { create(:user) }
 
   describe 'GET /chart_exporter' do

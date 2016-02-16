@@ -5,6 +5,9 @@ module Exporters
 
     attr_accessor :file
 
+    cattr_accessor :temp_dir
+    @@temp_dir ||=  Rails.application.config.csv_export_dir
+
     def measurements
       # implement this method
     end
@@ -14,23 +17,17 @@ module Exporters
     end
 
     # may be used several times once exported
-    def export(temp_path = nil)
+    def export(temp_dir = nil)
       unless @file.nil?
         return @file
       end
-      @file = Tempfile.create('export_', temp_path)
+      @file = Tempfile.create('export_', (temp_dir || @@temp_dir))
       CSV.open(@file.path, "w+") do |csv|
         measurements.each do |m|
           csv << serializer.serialize(m)
         end
       end
       @file
-    end
-
-    def cleanup
-      @file.close
-      File.delete(@file)
-      @file = nil
     end
 
   end

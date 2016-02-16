@@ -3,6 +3,14 @@ require './lib/exporters/chart_exporter.rb'
 
 describe Exporters::ChartExporter do
 
+  before(:all) do
+    @@tmp_dir = Dir.mktmpdir
+  end
+
+  after(:all) do
+    FileUtils.rm_rf(@@tmp_dir)
+  end
+
   let(:c1) { create(:context, context_type: 'measurements') }
 
   let!(:l1) { create(:levee) }
@@ -50,13 +58,16 @@ describe Exporters::ChartExporter do
 
   it 'should export appropriate number of lines' do
     exp = Exporters::ChartExporter.new([p1], (m1.timestamp+1.second), m3.timestamp)
-    file = exp.export
+    file = exp.export(@@tmp_dir)
     expect(File.exist?(file.path)).to be true
-    # puts "#{File.read(file.path)}"
-    lines = 0;
-    IO.foreach(file.path) { lines+=1 }
-    expect(lines).to eq 2
-    exp.cleanup
+    # puts "#{}"
+    serializer = Exporters::ChartExporter::MeasurementSerializer.new
+    lines = File.read(file.path).lines
+    expect(lines.size).to eq 2
+    i = 0; [m2, m3].each do |m|
+      expect(lines[i]).to eq CSV.generate { |csv| csv << serializer.serialize(m) }
+      i+=1;
+    end
   end
 
 end
