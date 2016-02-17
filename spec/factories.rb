@@ -120,13 +120,13 @@ FactoryGirl.define do
 
   end
 
-  factory :timeline do
-    self.context { create(:context) }
+  factory :context do
+    context_type { 'tests' }
+    name { Faker::Lorem.words(3).join(' ') }
   end
 
-  factory :context do
-    context_type 'tests'
-    name { Faker::Lorem.words(3).join(' ') }
+  factory :timeline do
+    context { create(:context) }
   end
 
   factory :scenario do
@@ -138,12 +138,13 @@ FactoryGirl.define do
     value { rand(-99.99..99.99) }
     m_timestamp { rand(1..24).hours.ago }
     source_address { rand_str(10) }
-    timeline { parameter.timelines.first }
+    timeline { }
   end
 
   factory :device do
     custom_id { rand_str(10) }
     vendor { Faker::Lorem.word }
+    placement { rand_point(true) }
   end
 
   factory :device_aggregation do

@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20160205105510) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
 
   create_table "activity_states", force: true do |t|
     t.string   "name",       default: "unnamed activity", null: false

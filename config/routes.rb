@@ -78,6 +78,8 @@ Rails.application.routes.draw do
       resources :experiments, only: [:index, :show, :update, :create]
       resources :scenarios, only: [:index, :show, :update, :create]
       resources :monitoring, only: [:index]
+      resources :chart_exporter, only: [:index]
+      resources :experiment_exporter, only: [:show]
     end
   end
 
