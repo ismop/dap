@@ -70,7 +70,6 @@ describe Api::V1::SectionsController do
     end
   end
 
-
   def ss_response
     json_response['sections']
   end
