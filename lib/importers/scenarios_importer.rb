@@ -108,7 +108,7 @@ module Importers
       value = row[columns[value_column_name]]
 
       Measurement.new(timeline: timeline,
-                      timestamp: timestamp,
+                      m_timestamp: timestamp,
                       value: value)
     end
 

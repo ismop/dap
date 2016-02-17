@@ -52,9 +52,9 @@ describe Api::V1::ChartExporterController do
 
     let!(:tt) { Time.now }
 
-    let!(:m1) { create(:measurement, timestamp: (tt - 1.day), timeline: t1) }
-    let!(:m2) { create(:measurement, timestamp: tt, timeline: t1) }
-    let!(:m3) { create(:measurement, timestamp: (tt + 1.day), timeline: t1) }
+    let!(:m1) { create(:measurement, m_timestamp: (tt - 1.day), timeline: t1) }
+    let!(:m2) { create(:measurement, m_timestamp: tt, timeline: t1) }
+    let!(:m3) { create(:measurement, m_timestamp: (tt + 1.day), timeline: t1) }
 
     context 'when given parameters as user' do
       it 'returns all measurements from param1' do
@@ -76,8 +76,8 @@ describe Api::V1::ChartExporterController do
       it 'returns all measurements from param1 in given time period' do
         # given
         serializer = Exporters::ChartExporter::MeasurementSerializer.new
-        from = "#{URI::encode(m2.timestamp.to_s)}"
-        to = "#{URI::encode((m3.timestamp + 1.year).to_s)}"
+        from = "#{URI::encode(m2.m_timestamp.to_s)}"
+        to = "#{URI::encode((m3.m_timestamp + 1.year).to_s)}"
         # when
         get api("/chart_exporter?parameters=#{p1.id}&time_from=#{from}&time_to=#{to}", user)
         # then

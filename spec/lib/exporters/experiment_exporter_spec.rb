@@ -20,9 +20,9 @@ describe Exporters::ExperimentExporter do
 
   let!(:tt) { Time.now }
 
-  let!(:m1) { create(:measurement, timestamp: (tt - 1.day), timeline: t1) }
-  let!(:m2) { create(:measurement, timestamp: tt, timeline: t1) }
-  let!(:m3) { create(:measurement, timestamp: (tt + 1.day), timeline: t1) }
+  let!(:m1) { create(:measurement, m_timestamp: (tt - 1.day), timeline: t1) }
+  let!(:m2) { create(:measurement, m_timestamp: tt, timeline: t1) }
+  let!(:m3) { create(:measurement, m_timestamp: (tt + 1.day), timeline: t1) }
 
   # c2 is not of type 'measurements' hence measurements from t2 should not be incuded in csv
 
@@ -38,7 +38,7 @@ describe Exporters::ExperimentExporter do
 
   let(:t3) { create(:timeline) }
 
-  let!(:experiment) { create(:experiment, levee: l1, start_date: (m1.timestamp + 1.second), end_date: (m3.timestamp + 1.year), timelines: [t1, t2, t3]) }
+  let!(:experiment) { create(:experiment, levee: l1, start_date: (m1.m_timestamp + 1.second), end_date: (m3.m_timestamp + 1.year), timelines: [t1, t2, t3]) }
 
   it 'should find appropriate timeline' do
     exp = Exporters::ExperimentExporter.new(experiment.id)

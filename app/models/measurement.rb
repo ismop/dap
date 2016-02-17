@@ -32,14 +32,15 @@ class Measurement < ActiveRecord::Base
   def restore_generic_name
     Measurement.table_name = 'measurements'
   end
+
   def self.after_date(time, inclusive = false)
     if time.blank?
       all
     else
       if inclusive
-        where('timestamp>=?', time)
+        where('m_timestamp>=?', time)
       else
-        where('timestamp>?', time)
+        where('m_timestamp>?', time)
       end
     end
   end
@@ -49,9 +50,9 @@ class Measurement < ActiveRecord::Base
       all
     else
       if inclusive
-        where('timestamp<=?', time)
+        where('m_timestamp<=?', time)
       else
-        where('timestamp<?', time)
+        where('m_timestamp<?', time)
       end
     end
   end

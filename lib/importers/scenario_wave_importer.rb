@@ -20,7 +20,7 @@ module Importers
         puts 'Importing water wave...'
         Measurement.import(@measurements)
         puts 'Updating experiment start date...'
-        update_start_date(@measurements.last.timestamp.to_i)
+        update_start_date(@measurements.last.m_timestamp.to_i)
       end
     end
 
@@ -33,7 +33,7 @@ module Importers
 
     def new_measurement(timestamp, value)
       Measurement.new(timeline: timeline,
-                      timestamp: Time.at(timestamp),
+                      m_timestamp: Time.at(timestamp),
                       value: value)
     end
 

@@ -25,7 +25,7 @@ module Exporters
       Measurement.where(timeline_id: tl.ids)
           .after_date(@time_from, true)
           .before_date(@time_to, true)
-          .order(:timestamp)
+          .order(:m_timestamp)
     end
 
     def serializer
@@ -34,7 +34,7 @@ module Exporters
 
     class MeasurementSerializer
       def serialize(m)
-        time = m.timestamp.to_i
+        time = m.m_timestamp.to_i
         id = m.timeline.parameter_id
         value = '%.8f' % m.value
         [time, id, value]

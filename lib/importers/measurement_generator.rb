@@ -65,7 +65,7 @@ class MeasurementGenerator
           profile.sensors.each do
             measurements << Measurement.new do |m|
               m.value = data_row[param_index].to_f
-              m.timestamp = start_time + (i*15).minutes
+              m.m_timestamp = start_time + (i*15).minutes
               m.timeline = timelines[param_index]
             end
             param_index += 1

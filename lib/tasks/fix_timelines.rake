@@ -29,7 +29,7 @@ namespace :data do
 
       tts.each do |t|
         mss = t.measurements
-        mss_s = mss.select {|m| m.timestamp > Date.parse("2015-11-01")}
+        mss_s = mss.select {|m| m.m_timestamp > Date.parse("2015-11-01")}
         if mss_s.length > 0
           puts "Reassigning #{mss_s.length} of #{mss.length} measurements from timeline #{t.id} to timeline #{tt.id}"
           mss_s.each do |m|
