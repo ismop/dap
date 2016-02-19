@@ -9,24 +9,17 @@ module Exporters
       @experiment_id = experiment_id
     end
 
-    # TODO optimize queries
-    def timelines
-      @experiment = Experiment.find(@experiment_id)
-      levee = @experiment.levee; return [] if levee.blank?
-      devices = levee.devices; return [] if devices.blank?
-      parameters = Parameter.where(device_id: devices.ids); return [] if parameters.blank?
+    def measurements(id = @experiment_id)
+      experiment = Experiment.find(id); return [] if experiment.blank?
+      levee = experiment.levee; return [] if levee.blank?
       context = Context.find_by(context_type: 'measurements'); return [] if context.blank?
-      Timeline.where(context_id: context.id)
-            .where(parameter_id: parameters.ids)
-    end
-
-    # TODO optimize queries
-    def measurements
-      tls = timelines
-      return [] if tls.blank?
-      Measurement.where(timeline_id: tls.ids)
-          .after_date(@experiment.start_date, true)
-          .before_date(@experiment.end_date, true)
+      devices = levee.devices.ids; return [] if devices.blank?
+      Measurement
+          .after_date(experiment.start_date, true)
+          .before_date(experiment.end_date, true)
+          .eager_load(timeline: { parameter: :device })
+          .where("timelines.context_id" => context.id)
+          .where("devices.id" => devices)
           .order(:m_timestamp)
     end
 
@@ -38,9 +31,17 @@ module Exporters
       def serialize(m)
         time = m.m_timestamp.to_i
         xyz = m.timeline.parameter.device.placement
+        if xyz.blank?
+          x = y = z = ''
+        else
+          x = xyz.x
+          y = xyz.y
+          z = xyz.z
+        end
         name = m.timeline.parameter.measurement_type.name
         val = '%.8f' % m.value
-        [time, xyz.x, xyz.y, xyz.z, name, val]
+        [time, x, y, z, name, val]
+
       end
     end
 
