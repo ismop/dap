@@ -128,6 +128,13 @@ module Api
           count_timelines = sql.sub('SELECT m.*', 'SELECT COUNT(DISTINCT m.timeline_id)')
 
           @connection = ActiveRecord::Base.connection
+
+          get_max_ids = sql.sub('(SELECT m.*', '(SELECT MAX(m.id)').
+              sub('ORDER BY m.timeline_id, m.timestamp ASC )', 'GROUP BY m.timeline_id )').
+              sub('OVER(ORDER BY m.timeline_id, m.timestamp ASC)', '').
+              sub(', row_number()  AS row', '')
+          max_ids = @connection.exec_query(get_max_ids).collect{|m| m['max'].to_i}
+
           m_r = @connection.exec_query(count_measurements)
           t_r = @connection.exec_query(count_timelines)
           m_qty = m_r.first['count'].to_i
@@ -139,11 +146,8 @@ module Api
               divisor = (divisor/t_qty).to_i
             end
           end
-          if divisor == 0
-            divisor = 1
-          end
-
-          sql += " WHERE m.row % #{divisor} = 0 "
+          divisor = divisor + 1
+          sql += " WHERE m.row % #{divisor} = 0 OR m.id IN (#{max_ids.join(',')}) "
         end
 
         if params.keys.include? 'limit'
@@ -166,6 +170,21 @@ module Api
             result = ms
           end
         end
+
+        # Purge excess measurements when quantity is requested
+        if params.keys.include? 'quantity'
+          # Grab all timeline ids
+          timelines = result.collect{|m| m.timeline_id}.uniq
+          timelines.each do |tl|
+            tl_m = result.select{|m| m.timeline_id == tl}
+            excess = tl_m.length - params[:quantity].to_i
+            excess.times do
+              result.delete(tl_m.first)
+            end
+          end
+
+        end
+
 
         respond_with result, root: 'measurements'
       end

@@ -218,6 +218,12 @@ describe Api::V1::MeasurementsController do
         expect(ms_response.select{|m| m['timeline_id'] == t1.id}.length).to eq 27
         expect(ms_response.select{|m| m['timeline_id'] == t2.id}.length).to eq 27
         expect(ms_response.select{|m| m['timeline_id'] == t3.id}.length).to eq 27
+
+        # Also check whether the final measurement is returned for each timeline
+        # This is done w/o a separate spec for performance reasons (populating the DB takes a long time)
+        expect(ms_response.collect{|m| m['id']}).to include t3.measurements.last.id
+        expect(ms_response.collect{|m| m['id']}).to include t2.measurements.last.id
+        expect(ms_response.collect{|m| m['id']}).to include t1.measurements.last.id
       end
 
       it 'returns an empty table when no results are found' do
