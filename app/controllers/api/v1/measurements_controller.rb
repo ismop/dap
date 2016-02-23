@@ -130,8 +130,8 @@ module Api
           @connection = ActiveRecord::Base.connection
 
           get_max_ids = sql.sub('(SELECT m.*', '(SELECT MAX(m.id)').
-              sub('ORDER BY m.timeline_id, m.timestamp ASC )', 'GROUP BY m.timeline_id )').
-              sub('OVER(ORDER BY m.timeline_id, m.timestamp ASC)', '').
+              sub('ORDER BY m.timeline_id, m.m_timestamp ASC )', 'GROUP BY m.timeline_id )').
+              sub('OVER(ORDER BY m.timeline_id, m.m_timestamp ASC)', '').
               sub(', row_number()  AS row', '')
           max_ids = @connection.exec_query(get_max_ids).collect{|m| m['max'].to_i}
 
