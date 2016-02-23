@@ -40,13 +40,6 @@ describe Exporters::ExperimentExporter do
 
   let!(:experiment) { create(:experiment, levee: l1, start_date: (m1.m_timestamp + 1.second), end_date: (m3.m_timestamp + 1.year), timelines: [t1, t2, t3]) }
 
-  it 'should find appropriate timeline' do
-    exp = Exporters::ExperimentExporter.new(experiment.id)
-    timelines = exp.timelines.ids
-    expect(timelines.size).to eq 1
-    expect(timelines[0]).to eq t1.id
-  end
-
   it 'should find appropriate measurements' do
     exp = Exporters::ExperimentExporter.new(experiment.id)
     measurements = exp.measurements
