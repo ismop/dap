@@ -69,7 +69,7 @@ describe Api::V1::ChartExporterController do
           expect(lines[i]).to eq CSV.generate { |csv| csv << serializer.serialize(m) }
           i += 1
         end
-      end
+      end 
     end
 
     context 'when given parameters and time period' do
