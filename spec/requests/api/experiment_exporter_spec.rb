@@ -74,8 +74,8 @@ describe Api::V1::ExperimentExporterController do
         get api("/experiment_exporter/#{experiment.id}", user)
         # then
         lines = response.body.lines
-        expect(lines.size).to eq 2
-        i = 0; [m2, m3].each do |m|
+        expect(lines.size).to eq 3
+        i = 1; [m2, m3].each do |m|
           expect(lines[i]).to eq CSV.generate { |csv| csv << serializer.serialize(m) }
           i+=1;
         end

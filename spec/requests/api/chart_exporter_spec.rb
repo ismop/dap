@@ -64,8 +64,8 @@ describe Api::V1::ChartExporterController do
         get api("/chart_exporter?parameters=#{p1.id}", user)
         # then
         lines = response.body.lines
-        expect(lines.size).to eq 3
-        i = 0; [m1, m2, m3].each do |m|
+        expect(lines.size).to eq 4
+        i = 1; [m1, m2, m3].each do |m|
           expect(lines[i]).to eq CSV.generate { |csv| csv << serializer.serialize(m) }
           i += 1
         end
@@ -82,8 +82,8 @@ describe Api::V1::ChartExporterController do
         get api("/chart_exporter?parameters=#{p1.id}&time_from=#{from}&time_to=#{to}", user)
         # then
         lines = response.body.lines
-        expect(lines.size).to eq 2
-        i = 0; [m2, m3].each do |m|
+        expect(lines.size).to eq 3
+        i = 1; [m2, m3].each do |m|
           expect(lines[i]).to eq CSV.generate { |csv| csv << serializer.serialize(m) }
           i+=1;
         end

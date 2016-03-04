@@ -53,7 +53,6 @@ describe Exporters::ExperimentExporter do
     exp = Exporters::ExperimentExporter.new(experiment.id)
     file = exp.export(@@tmp_dir)
     expect(File.exist?(file.path)).to be true
-    # puts "#{File.read(file.path)}"
     serializer = Exporters::ExperimentExporter::MeasurementSerializer.new
     lines = File.read(file.path).lines
     expect(lines.size).to eq 2

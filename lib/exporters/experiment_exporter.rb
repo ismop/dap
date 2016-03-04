@@ -35,9 +35,9 @@ module Exporters
       devices
     end
 
-    def export_slices(writer)
+    def export_slices(writer, slice_size = 30)
       device_ids = devices
-      device_ids.each_slice(30) do |devices_slice|
+      device_ids.each_slice(slice_size) do |devices_slice|
         measurements = measurements(devices_slice)
         csv_chunk = CSV.generate do |csv|
           measurements.each do |m|
@@ -46,6 +46,7 @@ module Exporters
         end
         writer.write(csv_chunk)
       end
+      writer.close
     end
 
     def serializer
