@@ -30,19 +30,6 @@ describe Api::V1::ExperimentExporterController do
 
   describe 'GET /experiment_exporter' do
 
-    let!(:experiment) { create(:experiment) }
-
-    context 'when authenticated as user' do
-      it 'returns 200' do
-        get api("/experiment_exporter/#{experiment.id}", user)
-        expect(response.status).to eq 200
-      end
-    end
-
-  end
-
-  describe 'GET /experiment_exporter' do
-
     let(:c1) { create(:context, context_type: 'measurements') }
 
     let!(:l1) { create(:levee) }
@@ -72,6 +59,13 @@ describe Api::V1::ExperimentExporterController do
 
     let!(:experiment) { create(:experiment, levee: l1, start_date: (m1.m_timestamp + 1.second), end_date: (m3.m_timestamp + 1.year), timelines: [t1, t2, t3]) }
 
+    context 'when authenticated as user' do
+      it 'returns 200' do
+        get api("/experiment_exporter/#{experiment.id}", user)
+        expect(response.status).to eq 200
+      end
+    end
+
     context 'when requesting export of an existing and fully featured experiment' do
       it 'exports experiment in a right way' do
         # given
@@ -80,8 +74,8 @@ describe Api::V1::ExperimentExporterController do
         get api("/experiment_exporter/#{experiment.id}", user)
         # then
         lines = response.body.lines
-        expect(lines.size).to eq 2
-        i = 0; [m2, m3].each do |m|
+        expect(lines.size).to eq 3
+        i = 1; [m2, m3].each do |m|
           expect(lines[i]).to eq CSV.generate { |csv| csv << serializer.serialize(m) }
           i+=1;
         end

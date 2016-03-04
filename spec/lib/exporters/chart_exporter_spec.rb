@@ -42,7 +42,7 @@ describe Exporters::ChartExporter do
 
   it 'should find appropriate timeline' do
     exp = Exporters::ChartExporter.new([p1])
-    timelines = exp.timelines.ids
+    timelines = exp.timelines
     expect(timelines.size).to eq 1
     expect(timelines[0]).to eq t1.id
   end
@@ -60,7 +60,6 @@ describe Exporters::ChartExporter do
     exp = Exporters::ChartExporter.new([p1], (m1.m_timestamp+1.second), m3.m_timestamp)
     file = exp.export(@@tmp_dir)
     expect(File.exist?(file.path)).to be true
-    # puts "#{}"
     serializer = Exporters::ChartExporter::MeasurementSerializer.new
     lines = File.read(file.path).lines
     expect(lines.size).to eq 2
