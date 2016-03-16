@@ -12,7 +12,7 @@ class PartitionMeasurements < ActiveRecord::Migration
       CREATE TABLE IF NOT EXISTS measurements_new(
         id SERIAL,
         "value" DOUBLE PRECISION NOT NULL,
-        m_timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
+        m_timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL,
         source_address CHARACTER VARYING(255),
         timeline_id INTEGER)
      SQL
