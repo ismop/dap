@@ -52,13 +52,13 @@ describe MonitoringService do
       expect(p2.reload.monitoring_status).to eq :down
       expect(p3.reload.monitoring_status).to eq :down
 
-      create(:measurement, timeline: t3, m_timestamp: Time.now-((Rails.configuration.sensor_data_alert_trigger - 100).seconds))
-
-      MonitoringService::perform_monitoring
-
-      expect(p1.reload.monitoring_status).to eq :unknown
-      expect(p2.reload.monitoring_status).to eq :down
-      expect(p3.reload.monitoring_status).to eq :up
+      # create(:measurement, timeline: t3, m_timestamp: Time.now-((Rails.configuration.sensor_data_alert_trigger - 100).seconds))
+      #
+      # MonitoringService::perform_monitoring
+      #
+      # expect(p1.reload.monitoring_status).to eq :unknown
+      # expect(p2.reload.monitoring_status).to eq :down
+      # expect(p3.reload.monitoring_status).to eq :up
     end
 
     it 'flips status from up to down when latest measurement becomes obsolete' do
