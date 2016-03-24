@@ -4,7 +4,10 @@ namespace :data do
     l = Levee.find_or_create_by(name: 'Obwałowanie eksperymentalne - Czernichów')
     c = Context.find(1)
 
-    da1 = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód górny - odczyty surowe', levee: l)
+    DA1_CUTOFF = 513
+
+    da1 = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód dolny - odczyty surowe', levee: l, device_aggregation_type: 'fiber')
+    da2 = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód górny - odczyty surowe', levee: l, device_aggregation_type: 'fiber')
 
     devices_created = []
 
@@ -32,10 +35,14 @@ namespace :data do
             custom_id: par_id,
             placement: "POINT(#{lon} #{lat} 211.0)",
             device_type: 'fiber_optic_node',
-            device_aggregation: da1,
             levee: l,
             label: par_id
           )
+          if met.to_i <= DA1_CUTOFF
+            d.device_aggregation = da1
+          else
+            d.device_aggregation = da2
+          end
           d.save
           d.reload
           # Assign d to correct section
@@ -51,7 +58,7 @@ namespace :data do
           d.save
           d.reload
           devices_created << d
-          fon = FiberOpticNode.new(
+          fon = FiberOpticNode.find_or_create_by(
             cable_distance_marker: met.to_f,
             levee_distance_marker: met.to_f,
             device: d
@@ -67,6 +74,38 @@ namespace :data do
         puts "Parameter #{par_id} not found in DB. Skipping."
       end
     end
+
+    # Recompute DA shape
+    shape = 'LINESTRING ('
+    origin = ''
+    da1.devices.each do |d|
+      component = "#{d.placement.x} #{d.placement.y}, "
+      if origin == ''
+        origin = component
+      end
+      shape += component
+    end
+    shape += origin
+    shape = shape.chomp(', ')
+    shape += ')'
+    da1.shape = shape
+    da1.save
+
+    shape = 'LINESTRING ('
+    origin = ''
+    da2.devices.each do |d|
+      component = "#{d.placement.x} #{d.placement.y}, "
+      if origin == ''
+        origin = component
+      end
+      shape += component
+    end
+    shape += origin
+    shape = shape.chomp(', ')
+    shape += ')'
+    da2.shape = shape
+    da2.save
+
     puts "All done."
   end
 end
