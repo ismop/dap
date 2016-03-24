@@ -3,6 +3,7 @@ namespace :data do
   task :import_fo => :environment do
     l = Levee.find_or_create_by(name: 'Obwałowanie eksperymentalne - Czernichów')
     c = Context.find(1)
+    mt = MeasurementType.find_by(name: 'Temperatura')
 
     DA1_CUTOFF = 513
 
@@ -69,6 +70,12 @@ namespace :data do
           par.save
         else
           puts "Parameter #{par_id} already belongs to a Device object of type fiber_optic_node. Skipping..."
+
+          # Adjust the MeasurementType of par...
+          if par.measurement_type != mt
+            par.measurement_type = mt
+            par.save
+          end
         end
       else
         puts "Parameter #{par_id} not found in DB. Skipping."
