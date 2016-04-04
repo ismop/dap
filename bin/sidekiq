@@ -31,7 +31,7 @@ start_no_deamonize()
 
 start_sidekiq()
 {
-  bundle exec sidekiq --queue $DAP_QUEUE_NAME --pidfile $sidekiq_pidfile $@ >> $sidekiq_logfile 2>&1
+  bundle exec sidekiq -c 10 --queue $DAP_QUEUE_NAME --pidfile $sidekiq_pidfile $@ >> $sidekiq_logfile 2>&1
 }
 
 source ${app_root}/bin/activate
