@@ -122,4 +122,8 @@ group :test do
   gem 'database_cleaner'
 end
 
+group :production do 
+  gem "sentry-raven"
+end
+
 gem 'puma'
