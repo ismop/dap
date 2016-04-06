@@ -179,6 +179,9 @@ namespace :data do
               target = source - 532
             end
             puts "Original distance marker for sensor #{s.custom_id} is #{source}; target is #{target}."
+            if target < 0
+              target = 0
+            end
             s.fiber_optic_node.levee_distance_marker = target
             s.fiber_optic_node.save
           end
