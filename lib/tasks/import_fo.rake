@@ -165,7 +165,7 @@ namespace :data do
             last_target = target
             puts "Original distance marker for sensor #{s.custom_id} is #{source}; target is #{target}."
             s.fiber_optic_node.levee_distance_marker = target
-            s.save
+            s.fiber_optic_node.save
           end
 
         # First UPPER sensor in this section is 550
@@ -180,7 +180,7 @@ namespace :data do
             end
             puts "Original distance marker for sensor #{s.custom_id} is #{source}; target is #{target}."
             s.fiber_optic_node.levee_distance_marker = target
-            s.save
+            s.fiber_optic_node.save
           end
 
         when 7
@@ -206,7 +206,7 @@ namespace :data do
             last_target = target
             puts "Original distance marker for sensor #{s.custom_id} is #{source}; target is #{target}."
             s.fiber_optic_node.levee_distance_marker = target
-            s.save
+            s.fiber_optic_node.save
           end
 
           upper_sensors_processed = 0
@@ -217,7 +217,7 @@ namespace :data do
             puts "Original distance marker for sensor #{s.custom_id} is #{source}; target is #{target}."
             upper_sensors_processed += 1
             s.fiber_optic_node.levee_distance_marker = target
-            s.save
+            s.fiber_optic_node.save
           end
 
         when 6
@@ -243,7 +243,7 @@ namespace :data do
             last_target = target
             puts "Original distance marker for sensor #{s.custom_id} is #{source}; target is #{target}."
             s.fiber_optic_node.levee_distance_marker = target
-            s.save
+            s.fiber_optic_node.save
           end
 
           upper_sensors_processed = 0
@@ -254,7 +254,7 @@ namespace :data do
             puts "Original distance marker for sensor #{s.custom_id} is #{source}; target is #{target}."
             upper_sensors_processed += 1
             s.fiber_optic_node.levee_distance_marker = target
-            s.save
+            s.fiber_optic_node.save
           end
 
         else
@@ -265,7 +265,7 @@ namespace :data do
             last_target = target
             puts "Original distance marker for sensor #{s.custom_id} is #{source}; target is #{target}."
             s.fiber_optic_node.levee_distance_marker = target
-            s.save
+            s.fiber_optic_node.save
           end
 
           upper_sensors.each do |s|
@@ -273,7 +273,7 @@ namespace :data do
             target = source - 539
             puts "Original distance marker for sensor #{s.custom_id} is #{source}; target is #{target}."
             s.fiber_optic_node.levee_distance_marker = target
-            s.save
+            s.fiber_optic_node.save
           end
 
       end
