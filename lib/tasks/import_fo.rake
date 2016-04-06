@@ -173,7 +173,7 @@ namespace :data do
           upper_sensors.each do |s|
             source = s.custom_id.split('.').last.to_i
             target = source
-            if source > 567
+            if source <= 567
               target = source - 548
             else
               target = source - 532
