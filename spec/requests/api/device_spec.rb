@@ -40,6 +40,13 @@ describe Api::V1::DevicesController do
         expect(ds[1]).to device_eq device2
       end
 
+      it 'returns visible devices only' do
+        create(:device, visible: true)
+        create(:device, visible: false)
+        get api("/devices?visible=true", user)
+        expect(ds.size).to eq 3
+      end
+
       it 'returns device metadata' do
         pump = create(:pump)
         node = create(:fiber_optic_node)

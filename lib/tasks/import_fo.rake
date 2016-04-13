@@ -283,6 +283,36 @@ namespace :data do
 
     end
 
+    # Flag only properly defined FO nodes as visible
+    puts "Flagging old FO nodes as invisible..."
+    visible_nodes = (da1.devices + da2.devices).flatten
+    puts "...#{visible_nodes.length} total nodes registered for raw FO DAs."
+    visible_nodes.reject! do |node|
+      [
+        '031',
+        '032',
+        '481',
+        '482',
+        '483',
+        '544',
+        '545',
+        '546',
+        '547',
+        '983',
+        '984'
+      ].include? node.custom_id.split('.').last
+    end
+    puts "...#{visible_nodes.length} meet inclusion criteria."
+    puts "...#{Device.where(device_type: 'fiber_optic_node').all.length} total FO nodes."
+    invisible_nodes = Device.where(device_type: 'fiber_optic_node').all.reject do |node|
+      visible_nodes.include? node
+    end
+    puts "...#{invisible_nodes.length} nodes to be tagged as invisible."
+    invisible_nodes.each do |node|
+      node.visible = false
+      node.save
+    end
+
     puts "All done."
   end
 end
