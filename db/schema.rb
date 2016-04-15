@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160205105510) do
+ActiveRecord::Schema.define(version: 20160413165521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 20160205105510) do
     t.integer "levee_id"
     t.string  "label"
     t.string  "vendor"
+    t.boolean "visible",                                                                                      default: true,         null: false
   end
 
   add_index "devices", ["levee_id"], :name => "index_devices_on_levee_id"
