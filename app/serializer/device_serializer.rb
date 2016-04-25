@@ -1,5 +1,5 @@
 class DeviceSerializer < ActiveModel::Serializer
-  attributes :id, :custom_id, :label, :placement, :device_type, :vendor, :device_aggregation_id
+  attributes :id, :custom_id, :label, :placement, :device_type, :vendor, :visible, :device_aggregation_id
   attributes :profile_id, :section_id, :levee_id
   attributes :neosentio_sensor_id, :budokop_sensor_id, :pump_id, :weather_station_id
   attributes :parameter_ids

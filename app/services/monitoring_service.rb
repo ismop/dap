@@ -27,7 +27,7 @@ class MonitoringService
     result = ActiveRecord::Base.connection.execute(sql).to_a
 
     result.each do |m|
-      time_elapsed = (Time.now - Time.parse(m['max'])).to_i
+      time_elapsed = (Time.now - Time.parse(m['max']+' UTC')).to_i
       parameter = Timeline.find_by(id: m['timeline_id'].to_i).parameter
       if time_elapsed > Rails.configuration.sensor_data_alert_trigger
         # Write a warning to log if changing status from up to down

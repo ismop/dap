@@ -145,6 +145,7 @@ FactoryGirl.define do
     custom_id { rand_str(10) }
     vendor { Faker::Lorem.word }
     placement { rand_point(true) }
+    visible { true }
   end
 
   factory :device_aggregation do
