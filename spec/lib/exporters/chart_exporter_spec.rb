@@ -8,7 +8,7 @@ describe Exporters::ChartExporter do
   end
 
   after(:all) do
-    FileUtils.rm_rf(@@tmp_dir)
+      FileUtils.rm_rf(@@tmp_dir)
   end
 
   let(:c1) { create(:context, context_type: 'measurements') }
@@ -61,6 +61,8 @@ describe Exporters::ChartExporter do
     file = exp.export(@@tmp_dir)
     expect(File.exist?(file.path)).to be true
     serializer = Exporters::ChartExporter::MeasurementSerializer.new
+
+    puts "#{file.path}"
     lines = File.read(file.path).lines
     expect(lines.size).to eq 2
     i = 0; [m2, m3].each do |m|

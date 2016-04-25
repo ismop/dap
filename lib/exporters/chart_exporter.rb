@@ -24,6 +24,10 @@ module Exporters
           .eager_load(:timeline)
           .after_date(@time_from, true)
           .before_date(@time_to, true)
+          .eager_load(timeline: { parameter: [:measurement_type ]})
+          .select('measurements.timeline_id, timelines.parameter_id, parameters.device_id, parameters.measurement_type_id, '\
+            'measurement_types.name, parameters.custom_id, '\
+            'measurements.value, measurements.m_timestamp')
           .order(:m_timestamp)
     end
 
@@ -47,9 +51,10 @@ module Exporters
     class MeasurementSerializer
       def serialize(m)
         time = m.m_timestamp.to_i
-        id = m.timeline.parameter_id
+        custom_id = m.timeline.parameter.custom_id
+        type_name = m.timeline.parameter.measurement_type.name
         value = '%.8f' % m.value
-        [time, id, value]
+        [time, custom_id, type_name, value]
       end
     end
 
