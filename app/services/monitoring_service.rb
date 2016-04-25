@@ -26,6 +26,8 @@ class MonitoringService
 
     result = ActiveRecord::Base.connection.execute(sql).to_a
 
+    params_down = []
+
     result.each do |m|
       time_elapsed = (Time.now - Time.parse(m['max']+' UTC')).to_i
       parameter = Timeline.find_by(id: m['timeline_id'].to_i).parameter
@@ -37,6 +39,7 @@ class MonitoringService
         # Regardless, set this parameter's status to down
         parameter.monitoring_status = :down
         parameter.save
+        params_down.push(parameter.custom_id)
       else
         if parameter.monitoring_status == :down
           # Write an info message to log if changing status from down to up
@@ -47,5 +50,6 @@ class MonitoringService
         parameter.save
       end
     end
+    SentryWorker.perform_async(params_down)
   end
 end
