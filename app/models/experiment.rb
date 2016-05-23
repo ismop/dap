@@ -4,7 +4,7 @@ class Experiment < ActiveRecord::Base
 
   has_and_belongs_to_many :scenarios
 
-  has_many :timelines
+  has_many :timelines, dependent: :destroy
 
   validates :start_date, presence: true
   validates :end_date, presence: true
