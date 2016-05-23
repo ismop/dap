@@ -46,9 +46,9 @@ namespace :experiment do
     end
   end
 
-  desc "Removes experiments Experiment 01 to 25"
+  desc "Removes experiments Experiment 01 to 99"
   task remove_test: :environment do
-    (1..1000).each do |n|
+    (1..99).each do |n|
       e = Experiment.find_by(name: "Eksperyment #{format('%02d', n)}")
       unless e.nil?
         e.destroy
