@@ -17,7 +17,7 @@ namespace :data do
 
       p = profiles[profile_id]
       if (p.nil?)
-        p = Profile.create(profile_type: ProfileType.first, section: d.section)
+        p = Profile.create(profile_type: ProfileType.find_or_create_by(id: 1), section: d.section)
         profiles[profile_id] = p
       end
 
@@ -32,16 +32,11 @@ namespace :data do
         device_aggregations_updated << da
       end
 
-      puts "Devices updated:"
-      devices_updated.each { |d| puts d }
-
-      puts "DeviceAggregations updated:"
-      device_aggregations_updated.each { |da| puts da }
-
-      puts "Profiles created:"
-      profiles.each { |p| puts p }
-
      end
+    
+    puts "Devices updated: #{devices_updated.map(&:id)}"
+    puts "DeviceAggregations updated: #{device_aggregations_updated.map(&:id)}"
+    puts "Profiles created: #{profiles.map { |k,v| v.id }}"
 
     puts "All done."
   end
