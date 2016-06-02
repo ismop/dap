@@ -11,12 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413165521) do
+ActiveRecord::Schema.define(version: 20160602115421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
-  enable_extension "postgis_topology"
 
   create_table "activity_states", force: true do |t|
     t.string   "name",       default: "unnamed activity", null: false
@@ -855,6 +854,7 @@ ActiveRecord::Schema.define(version: 20160413165521) do
   add_index "profile_selections", ["threat_assessment_id"], :name => "index_profile_selections_on_threat_assessment_id"
 
   create_table "profile_types", force: true do |t|
+    t.string "label", default: "unknown type", null: false
   end
 
   create_table "profiles", force: true do |t|
@@ -863,6 +863,7 @@ ActiveRecord::Schema.define(version: 20160413165521) do
     t.integer  "profile_type_id"
     t.integer  "section_id"
     t.spatial  "shape",           limit: {:srid=>4326, :type=>"line_string", :geographic=>true}
+    t.string   "custom_id",                                                                      default: "unknown ID", null: false
   end
 
   add_index "profiles", ["profile_type_id"], :name => "index_profiles_on_profile_type_id"
