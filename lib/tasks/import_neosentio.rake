@@ -148,7 +148,7 @@ namespace :data do
           left_y = da.shape.y
         end
         if da.shape.y > right_x
-          right_x = da.shape.y
+          right_x = da.shape.x
           right_y = da.shape.y
         end
       end
