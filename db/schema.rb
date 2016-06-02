@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160602115421) do
+ActiveRecord::Schema.define(version: 20160602150321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(version: 20160602115421) do
     t.string   "emergency_level",         default: "none",          null: false
     t.string   "threat_level",            default: "none",          null: false
     t.datetime "threat_level_updated_at", default: "now()",         null: false
+    t.float    "base_height",             default: 211.0
   end
 
   create_table "measurement_nodes", force: true do |t|

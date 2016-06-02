@@ -50,7 +50,7 @@ namespace :data do
       #profiles_touched << profile
 
       # Create device if it does not exist
-      d = Device.find_or_create_by(custom_id: uid) do |dev|
+      d = Device.find_or_create_by(custom_id: realid) do |dev|
         puts "Caution: a new device had to be created for #{placement}"
         devices_created << dev
       end
@@ -58,7 +58,7 @@ namespace :data do
       d.device_type = 'neosentio-sensor'
       d.device_aggregation = da
       d.levee = l
-      d.label = realid
+      d.label = uid
       d.vendor = 'Neosentio'
 
       # Make sure d has an assigned NeosentioSensor
@@ -104,9 +104,10 @@ namespace :data do
       linedata = line.split(',')
       profile_id=linedata[7][2..3].to_i.to_s
       uid = "neosentio.#{linedata[7][1].to_i.to_s}_#{profile_id}_#{linedata[7][4..5].to_i.to_s}_4"
+      realid = linedata[6].strip
 
       # attempt to find parameter
-      d = Device.find_by(custom_id: uid)
+      d = Device.find_by(custom_id: realid)
 
       p = profiles[profile_id]
       if (p.nil?)
