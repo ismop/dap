@@ -44,11 +44,10 @@ namespace :data do
       end
 
       # Create profile if it does not exist
-      profile = Profile.find_or_create_by(profile_type: pt, custom_id: profileid) do |prof|
-        puts "Caution: a new profile had to be created for #{profileid}"
-      end
-
-      profiles_touched << profile
+      #profile = Profile.find_or_create_by(profile_type: pt, custom_id: profileid) do |prof|
+      #  puts "Caution: a new profile had to be created for #{profileid}"
+      #end
+      #profiles_touched << profile
 
       # Create device if it does not exist
       d = Device.find_or_create_by(custom_id: uid) do |dev|
@@ -61,7 +60,6 @@ namespace :data do
       d.levee = l
       d.label = realid
       d.vendor = 'Neosentio'
-      d.profile = profile
 
       # Make sure d has an assigned NeosentioSensor
       if d.neosentio_sensor.blank?
@@ -96,6 +94,45 @@ namespace :data do
       end
     end
 
+    # Now assign profiles
+    devices_updated = []
+    device_aggregations_updated = []
+
+    profiles = {}
+
+    File.open('db/neosentio2.csv').each do |line|
+      linedata = line.split(',')
+      profile_id=linedata[7][2..3].to_i.to_s
+      uid = "neosentio.#{linedata[7][1].to_i.to_s}_#{profile_id}_#{linedata[7][4..5].to_i.to_s}_4"
+
+      # attempt to find parameter
+      d = Device.find_by(custom_id: uid)
+
+      p = profiles[profile_id]
+      if (p.nil?)
+        p = Profile.create(profile_type: pt, section: d.section, custom_id: "neosentio_profile_#{linedata[2].strip.to_s}")
+        profiles[profile_id] = p
+      end
+
+      profiles_touched << p
+
+      d.profile=p
+      d.save
+      devices_updated << d
+
+      da = d.device_aggregation
+      unless da.nil?
+        da.profile = p
+        da.save
+        device_aggregations_updated << da
+      end
+
+    end
+
+    puts "Profile assignment - Devices updated: #{devices_updated.map(&:id)}"
+    puts "Profile assignment - DeviceAggregations updated: #{device_aggregations_updated.map(&:id)}"
+    puts "Profile assignment - Profiles created: #{profiles.map { |k,v| v.id }}"
+
     # Purge all empty devices of type neosentio_sensor (could be leftovers from multiple import attempts)
     ds = Device.where(device_type: 'neosentio-sensor').all.select {|d| d.parameters.blank? }
     puts "#{ds.length} empty Device objects found - purging."
@@ -105,6 +142,11 @@ namespace :data do
     das = DeviceAggregation.all.select{|da| da.devices.blank? }
     puts "#{das.length} empty DeviceAggregation objects found - purging."
     das.each {|da| da.destroy}
+
+    # Purge all empty profiles
+    ps = Profile.all.select{|p| p.devices.blank? }
+    puts "#{ps.length} empty Profile objects found - purging."
+    ps.each {|p| p.destroy}
 
     # Assign devices to correct sections
     devices_created.each do |d|
