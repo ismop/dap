@@ -27,7 +27,7 @@ module Api
       end
 
       def show
-        respond_with profile
+        render json: @profile, serializer: ProfileSerializer
       end
 
       def update
