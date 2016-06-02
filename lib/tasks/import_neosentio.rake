@@ -198,6 +198,8 @@ namespace :data do
 
       profile.shape = "LINE (#{left_x} #{left_y}, #{right_x} #{right_y})"
 
+      puts "Determined profile shape: #{profile.shape}"
+
       # Try to assign the profile to the correct section
       Section.all.each do |s|
         if profile.devices
@@ -211,6 +213,10 @@ namespace :data do
       end
 
       profile.save
+
+      unless profile.errors.empty?
+        puts "PROFILE HAS ERRORS: #{profile.errors.inspect}"
+      end
     end
 
     puts "All done."
