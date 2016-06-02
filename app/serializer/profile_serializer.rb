@@ -10,11 +10,7 @@ class ProfileSerializer < ActiveModel::Serializer
   end
 
   def profile_shape
-    if object.profile_type.label == 'Neosentio profile'
-      RGeo::GeoJSON.encode(object.profile_shape).as_json
-    else
-      RGeo::GeoJSON.encode(object.shape).as_json
-    end
+    RGeo::GeoJSON.encode(object.profile_shape).as_json
   end
 
   def base_height
