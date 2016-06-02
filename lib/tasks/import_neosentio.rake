@@ -196,7 +196,7 @@ namespace :data do
         end
       end
 
-      profile.shape = "LINESTRING (#{left_x} #{left_y}, #{right_x} #{right_y})"
+      profile.shape = "LINE (#{left_x} #{left_y}, #{right_x} #{right_y})"
 
       # Try to assign the profile to the correct section
       Section.all.each do |s|
