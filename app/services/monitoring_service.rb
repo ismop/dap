@@ -25,8 +25,7 @@ class MonitoringService
     sql << " GROUP BY timeline_id"
 
     result = ActiveRecord::Base.connection.execute(sql).to_a
-
-    params_down = []
+    update = {up: [], down: []}
 
     result.each do |m|
       time_elapsed = (Time.now - Time.parse(m['max']+' UTC')).to_i
@@ -34,26 +33,23 @@ class MonitoringService
       if time_elapsed > Rails.configuration.sensor_data_alert_trigger
         # Write a warning to log if changing status from up to down
         if parameter.monitoring_status == :up
-          message = "Parameter #{parameter.id}: status flipping from up to down."
-          Rails.logger.warn(message)
-          SentryWorker.perform_async(message)
+          Rails.logger.warn("Parameter #{parameter.custom_id} (id: #{parameter.id}) - status flipping from up to down.")
+          update[:down].push({ id: parameter.id, custom_id: parameter.custom_id })
         end
         # Regardless, set this parameter's status to down
         parameter.monitoring_status = :down
         parameter.save
-        params_down.push(parameter.custom_id)
       else
         if parameter.monitoring_status == :down
           # Write an info message to log if changing status from down to up
-          message = "Parameter #{parameter.id}: status flipping from down to up."
-          Rails.logger.info(message)
-          SentryWorker.perform_async(message)
+          Rails.logger.info("Parameter #{parameter.custom_id} (id: #{parameter.id}) - status flipping from down to up.")
+          update[:up].push({ id: parameter.id, custom_id: parameter.custom_id })
         end
         # Regardless, set this parameter's status to up
         parameter.monitoring_status = :up
         parameter.save
       end
     end
-
+    SentryWorker.perform_async(update)
   end
 end
