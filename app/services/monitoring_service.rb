@@ -34,7 +34,9 @@ class MonitoringService
       if time_elapsed > Rails.configuration.sensor_data_alert_trigger
         # Write a warning to log if changing status from up to down
         if parameter.monitoring_status == :up
-          Rails.logger.warn("Parameter #{parameter.id}: status flipping from up to down.")
+          message = "Parameter #{parameter.id}: status flipping from up to down."
+          Rails.logger.warn(message)
+          SentryWorker.perform_async(message)
         end
         # Regardless, set this parameter's status to down
         parameter.monitoring_status = :down
@@ -43,13 +45,15 @@ class MonitoringService
       else
         if parameter.monitoring_status == :down
           # Write an info message to log if changing status from down to up
-          Rails.logger.info("Parameter #{parameter.id}: status flipping from down to up.")
+          message = "Parameter #{parameter.id}: status flipping from down to up."
+          Rails.logger.info(message)
+          SentryWorker.perform_async(message)
         end
         # Regardless, set this parameter's status to up
         parameter.monitoring_status = :up
         parameter.save
       end
     end
-    SentryWorker.perform_async(params_down)
+
   end
 end
