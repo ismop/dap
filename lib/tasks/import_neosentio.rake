@@ -13,7 +13,7 @@ namespace :data do
     device_aggregations_created = []
     profiles_touched = []
 
-    File.open('db/neosentio2.csv').each do |line|
+    File.open('db/neosentio3.csv').each do |line|
       linedata = line.split(',')
 
       # Parse linedata
@@ -59,7 +59,7 @@ namespace :data do
       d.device_aggregation = da
       d.levee = l
       d.label = uid
-      d.vendor = 'Neosentio'
+      d.vendor = 'neosentio'
 
       # Make sure d has an assigned NeosentioSensor
       if d.neosentio_sensor.blank?
@@ -100,7 +100,7 @@ namespace :data do
 
     profiles = {}
 
-    File.open('db/neosentio2.csv').each do |line|
+    File.open('db/neosentio3.csv').each do |line|
       linedata = line.split(',')
       profile_id=linedata[7][2..3].to_i.to_s
       uid = "neosentio.#{linedata[7][1].to_i.to_s}_#{profile_id}_#{linedata[7][4..5].to_i.to_s}_4"
@@ -196,7 +196,7 @@ namespace :data do
         end
       end
 
-      profile.shape = "LINE (#{left_x} #{left_y}, #{right_x} #{right_y})"
+      profile.shape = "LINESTRING (#{left_x} #{left_y}, #{right_x} #{right_y})"
 
       puts "Determined profile shape: #{profile.shape}"
 
@@ -217,6 +217,61 @@ namespace :data do
       unless profile.errors.empty?
         puts "PROFILE HAS ERRORS: #{profile.errors.inspect}"
       end
+    end
+
+    # Now do your best to adjust the width of Neosentio profiles...
+    s_8_east = 19.676834436224 + ((19.676855536861 - 19.676834436224)/2)
+    s_8_west = 19.676540371639 + ((19.676561496258 - 19.676540371639)/2)
+
+    s_1_east = 19.677287702201 + ((19.677290098686 - 19.677287702201)/2)
+    s_1_west = 19.676964697757 + ((19.676967093213 - 19.676964697757)/2)
+
+    s_2_east = 19.677285235243 + ((19.677287702201 - 19.677285235243)/2)
+    s_2_west = 19.676962231857 + ((19.676964697757 - 19.676962231857)/2)
+
+    s_3_east = 19.676957440998 + ((19.676962231857 - 19.676957440998)/2)
+    s_3_west = 19.677280442326 + ((19.677285235243 - 19.677280442326)/2)
+
+    s_4_east = 19.677277693466 + ((19.677280442326 - 19.677277693466)/2)
+    s_4_west = 19.676954693317 + ((19.676957440998 - 19.676954693317)/2)
+
+    s_5_east = 19.677268953591 + ((19.677277693466 - 19.677268953591)/2)
+    s_5_west = 19.676945924945 + ((19.676954693317 - 19.676945924945)/2)
+
+    ps = Profile.where("custom_id LIKE '%eosentio%'").all
+    ps.each do |p|
+
+      lon_east = 0
+      lon_west = 0
+
+      case p.section_id
+        when 8
+          lon_east = s_8_east
+          lon_west = s_8_west
+        when 1
+          lon_east = s_1_east
+          lon_west = s_1_west
+        when 2
+          lon_east = s_2_east
+          lon_west = s_2_west
+        when 3
+          lon_east = s_3_east
+          lon_west = s_3_west
+        when 4
+          lon_east = s_4_east
+          lon_west = s_4_west
+        when 5
+          lon_east = s_5_east
+          lon_west = s_5_west
+        else
+          puts "Profile #{p.custom_id} is not recognized as belonging to a straight section of the levee. Skipping."
+          next
+      end
+
+      lat = p.devices.first.device_aggregation.shape.y
+
+      p.shape = "LINESTRING (#{lon_west} #{lat}, #{lon_east} #{lat})"
+      p.save
     end
 
     puts "All done."
