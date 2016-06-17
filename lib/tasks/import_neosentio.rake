@@ -220,8 +220,8 @@ namespace :data do
     end
 
     # Now do your best to adjust the width of Neosentio profiles...
-    s_8_east = 19.676540371639 + ((19.656561496258 - 19.676540371639)/2)
-    s_8_west = 19.676834436244 + ((19.676855536861 - 19.676834436244)/2)
+    s_8_east = 19.676834436224 + ((19.676855536861 - 19.676834436224)/2)
+    s_8_west = 19.676540371639 + ((19.676561496258 - 19.676540371639)/2)
 
     s_1_east = 19.677287702201 + ((19.677290098686 - 19.677287702201)/2)
     s_1_west = 19.676964697757 + ((19.676967093213 - 19.676964697757)/2)
@@ -272,7 +272,6 @@ namespace :data do
 
       p.shape = "LINESTRING (#{lon_west} #{lat}, #{lon_east} #{lat})"
       p.save
-      puts p.errors.inspect
     end
 
     puts "All done."
