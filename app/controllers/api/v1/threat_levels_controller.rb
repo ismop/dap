@@ -8,7 +8,7 @@ module Api
 
 
       def index
-        respond_with []
+        render json: {threat_levels: []}
       end
     end
   end
