@@ -39,6 +39,51 @@ describe Api::V1::ThreatAssessmentRunsController do
         expect(runs_response).to be_an Array
         expect(runs_response.size).to eq 0
       end
+
+      it 'sorts results by start_date' do
+        t = Time.now
+        r.delete
+        runs = []
+        for i in 1..10 do
+          runs << create(:threat_assessment_run, start_date: t-(i.hours), end_date: t+((20-i).hours))
+        end
+        get api("/threat_assessment_runs?sort_by=start_date", user)
+        expect(runs_response.size).to eq 10
+        expect(runs_response.first['id']).to eq runs.last.id
+
+        get api("/threat_assessment_runs?sort_by=start_date&sort_order=desc", user)
+        expect(runs_response.size).to eq 10
+        expect(runs_response.first['id']).to eq runs.first.id
+      end
+
+      it 'sorts results by end_date' do
+        t = Time.now
+        r.delete
+        runs = []
+        for i in 1..10 do
+          runs << create(:threat_assessment_run, start_date: t-(i.hours), end_date: t+((20-i).hours))
+        end
+        get api("/threat_assessment_runs?sort_by=end_date", user)
+        expect(runs_response.size).to eq 10
+        expect(runs_response.first['id']).to eq runs.last.id
+
+        get api("/threat_assessment_runs?sort_by=end_date&sort_order=desc", user)
+        expect(runs_response.size).to eq 10
+        expect(runs_response.first['id']).to eq runs.first.id
+      end
+
+      it 'respects limit flag' do
+        r.delete
+        runs = []
+        for i in 1..10 do
+          runs << create(:threat_assessment_run)
+        end
+        get api("/threat_assessment_runs?limit=5", user)
+        expect(runs_response.size).to eq 5
+
+        get api("/threat_assessment_runs?limit=100", user)
+        expect(runs_response.size).to eq 10
+      end
     end
   end
 
