@@ -6,7 +6,6 @@ module Api
 
       respond_to :json
 
-
       def index
         set_limit
         render json: threat_levels_data
@@ -17,6 +16,7 @@ module Api
         @limit = params.fetch(:limit, 5).to_i
         @limit = @limit > 0 ? @limit : 5
       end
+
       def threat_levels_data
         {threat_levels: threat_levels_for_profiles}
       end

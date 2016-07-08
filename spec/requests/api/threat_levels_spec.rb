@@ -73,7 +73,6 @@ describe Api::V1::ThreatLevelsController do
         end
 
         context 'threat level assessment runs present in DB' do
-
           it 'includes assessment run data in response' do
             get api("/threat_levels", user)
             expect(assessment_runs_from_response).to eq expected_assessment_runs_data
@@ -81,9 +80,6 @@ describe Api::V1::ThreatLevelsController do
         end
       end
     end
-
-
-
   end
 
 end
