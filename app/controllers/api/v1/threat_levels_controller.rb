@@ -8,7 +8,49 @@ module Api
 
 
       def index
-        render json: {threat_levels: []}
+        set_limit
+        render json: threat_levels_data
+      end
+
+      private
+      def set_limit
+        @limit = params.fetch(:limit, 5).to_i
+        @limit = @limit > 0 ? @limit : 5
+      end
+      def threat_levels_data
+        {threat_levels: threat_levels_for_profiles}
+      end
+
+      def threat_levels_for_profiles
+        Profile.all.collect { |p| threat_levels_for_profile(p) }
+      end
+
+      def threat_levels_for_profile(profile)
+        {
+          profile_id: profile.id,
+          threat_assessments: threat_assessments_for_profile(profile),
+          threat_level_assessment_runs: ThreatLevel::AssessmentRunsDataBuilderService.get(profile)
+        }
+      end
+
+      def threat_assessments_for_profile(profile)
+        assessments = profile.threat_assessments.order(created_at: :desc).limit(@limit)
+        assessments.collect do |a|
+          {
+            date: a.created_at,
+            scenarios: scenarios_for_assessment(a)
+          }
+        end
+      end
+
+      def scenarios_for_assessment(assessment)
+        assessment.results.collect do |result|
+          {
+            similarity: result.similarity,
+            threat_level: ThreatLevel::CalculatorService.get(result),
+            scenario_id: result.scenario.id
+          }
+        end
       end
     end
   end
