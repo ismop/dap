@@ -25,10 +25,8 @@ module ThreatLevel
         running_status_and_explanation
       when warning?
         warning_status_and_explanation
-      when error?
-        error_status_and_explanation
       else
-          #unknown
+        error_status_and_explanation
       end
     end
 
@@ -87,11 +85,6 @@ module ThreatLevel
         status: :warning,
         explanation: 'Assessment run has not produced result in past two hours'
       }
-    end
-
-    def error?
-      @run.start_date < (Time.now - 5.hour) &&
-        (@newest_result.nil? || @newest_result.created_at < (Time.now - 5.hours))
     end
 
     def error_status_and_explanation
