@@ -49,3 +49,12 @@ Parameters:
     ]
 }
 ```
+Additional information for selected Threat Level fields:
+
++ `similarity` is set to a value between 0 and 1 if valuable result was produced by simulation software or -1 if simulation was unable to produce similarity.
++ `threat_level`: 0 OK, 1 WARNING, 2 CRITICAL
+
+Additional information for selected Threat Level Assessment Run fields:
+
++ `status` possible values: started, running, finished, warning, error.
++ `explanation` human readable explanation of the `status`.
