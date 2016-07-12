@@ -7,7 +7,10 @@ Each threat assessment run is launched for a set of threat assessments (see the 
 GET /threat_assessment_runs
 ```
 
-No parameters are required.
+No parameters are required, however three optional parameters are accepted. "sort_by" sorts the result set by one of two date parameters
+(allowed values are: "start_date" and "end_date"), while "sort_order" specifies whether this should be an ascending or descending sort
+(allowed values are: "asc" and "desc" respectively; default is "asc"). The "limit" flag, accompanied by a numerical value instructs DAP
+to return only a portion of the result set (the first n records, where "n" is the value of the "limit" flag).
 
 ```json
 {
