@@ -3,6 +3,11 @@ require 'rails_helper'
 describe MonitoringService do
 
   context 'standard levee setup' do
+
+    before do
+        allow(SentryWorker).to receive(:perform_async)
+    end
+
     let(:c) { create(:context, id: 1, context_type: 'measurements') }
     let(:l) { create(:levee) }
 
