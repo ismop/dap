@@ -28,7 +28,7 @@ module Exporters
           .select('measurements.timeline_id, timelines.parameter_id, parameters.device_id, parameters.measurement_type_id, '\
             'measurement_types.name, parameters.custom_id, '\
             'measurements.value, measurements.m_timestamp')
-          .order(:m_timestamp)
+          .order(:m_timestamp).uniq!
     end
 
     def export_slices(writer, slice_size = 30)

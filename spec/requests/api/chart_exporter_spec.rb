@@ -90,6 +90,25 @@ describe Api::V1::ChartExporterController do
       end
     end
 
+    context 'when readings are repeaded', :focus=>true do
+      let!(:m4) { create(:measurement, m_timestamp: tt, timeline: t1) }
+      it 'returns only unique values' do
+        # given
+        serializer = Exporters::ChartExporter::MeasurementSerializer.new
+        from = "#{URI::encode(m2.m_timestamp.to_s)}"
+        to = "#{URI::encode((m3.m_timestamp + 1.year).to_s)}"
+        # when
+        get api("/chart_exporter?parameters=#{p1.id}&time_from=#{from}&time_to=#{to}", user)
+        # then
+        lines = response.body.lines
+        expect(lines.size).to eq 3
+        i = 1; [m2, m3].each do |m|
+          expect(lines[i]).to eq CSV.generate { |csv| csv << serializer.serialize(m) }
+          i+=1;
+        end
+      end
+    end
+
   end
 
 end
