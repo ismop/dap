@@ -34,9 +34,9 @@ module Dap
     # Locate earliest measurements for timelines this often:
     config.timeline_earliest_measurement_polling_interval = 86400 # seconds
     # Prune duplicate measurements this often:
-    config.duplicate_measurement_pruning_interval = 86400 # seconds
+    config.duplicate_measurement_pruning_interval = 864000 # seconds
     # When pruning duplicate measurements, go back this many months (0 means current month only):
-    config.pruning_retroactivity = 3
+    config.pruning_retroactivity = 1
     config.redis_url = ENV['REDIS_URL'].present? ? ENV['REDIS_URL'] : 'redis://localhost:6379/12'
     config.redis_namespace = 'dap'
   end
