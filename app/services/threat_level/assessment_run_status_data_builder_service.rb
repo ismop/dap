@@ -42,7 +42,7 @@ module ThreatLevel
     end
 
     def started?
-      @run.start_date > (Time.now - 1.hour) && @newest_result.nil?
+      @run.start_date > (Time.now - Rails.configuration.assessment_run_startup_time.hour) && @newest_result.nil?
     end
 
     def results
@@ -58,7 +58,11 @@ module ThreatLevel
     end
 
     def running?
-      @newest_result ? @newest_result.created_at > (Time.now - 2.hours) : false
+      @newest_result ? @newest_result.created_at > (Time.now - (startup_time + 1).hours) : false
+    end
+
+    def startup_time
+      Rails.configuration.assessment_run_startup_time
     end
 
     def running_status_and_explanation
@@ -69,15 +73,19 @@ module ThreatLevel
     end
 
     def warning?
-      @run.start_date < (Time.now - 1.hour) &&
-        ((@newest_result.nil? && @run.start_date > (Time.now - 5.hour)) ||
-          newest_result_created_between_two_five_hours_ago)
+      @run.start_date < (Time.now - startup_time.hour) &&
+        ((@newest_result.nil? && @run.start_date > (Time.now - error_time.hour)) ||
+          newest_result_created_in_warning_period)
     end
 
-    def newest_result_created_between_two_five_hours_ago
+    def error_time
+      Rails.configuration.assessment_run_error_time
+    end
+
+    def newest_result_created_in_warning_period
       return false unless @newest_result
-      @newest_result.created_at < (Time.now - 2.hours) &&
-        @newest_result.created_at > (Time.now - 5.hours)
+      @newest_result.created_at < (Time.now - (startup_time + 1).hours) &&
+        @newest_result.created_at > (Time.now - error_time.hours)
     end
 
     def warning_status_and_explanation
