@@ -90,7 +90,7 @@ describe Api::V1::ChartExporterController do
       end
     end
 
-    context 'when readings are repeaded', :focus=>true do
+    context 'when readings are repeaded' do
       let!(:m4) { create(:measurement, value: m2.value, m_timestamp: m2.m_timestamp, timeline: m2.timeline, source_address: m2.source_address) }
       it 'returns only unique values' do
         # given
