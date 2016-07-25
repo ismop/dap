@@ -52,8 +52,8 @@ module ThreatLevel
     def started_status_and_explanation
       {
         status: :started,
-        explanation: 'Assessment run started less than hour ago'\
-                 'and did not produce any results'
+        explanation: 'Assessment run started less than one hour ago'\
+                 'and has not produced any results'
       }
     end
 
@@ -83,14 +83,14 @@ module ThreatLevel
     def warning_status_and_explanation
       {
         status: :warning,
-        explanation: 'Assessment run has not produced result in past two hours'
+        explanation: 'Assessment run has not produced result in the past two hours'
       }
     end
 
     def error_status_and_explanation
       {
         status: :error,
-        explanation: 'Assessment run has not produced result in past five hours'
+        explanation: 'Assessment run has not produced result in the past five hours'
       }
     end
   end

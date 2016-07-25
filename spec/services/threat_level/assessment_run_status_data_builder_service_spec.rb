@@ -38,7 +38,7 @@ describe ThreatLevel::AssessmentRunStatusDataBuilderService do
     end
   end
 
-  context 'run started more hour ago and less than five hours ago' do
+  context 'run started more than hour ago and less than five hours ago' do
     let(:run) do
       create(
         :threat_assessment_run,
@@ -142,8 +142,8 @@ def started_run_status_data
   {
     start_date: run.start_date,
     status: :started,
-    explanation: 'Assessment run started less than hour ago'\
-                 'and did not produce any results'
+    explanation: 'Assessment run started less than one hour ago'\
+                 'and has not produced any results'
   }
 end
 
@@ -159,7 +159,7 @@ def warning_run_status_data
   {
     start_date: run.start_date,
     status: :warning,
-    explanation: 'Assessment run has not produced result in past two hours'
+    explanation: 'Assessment run has not produced result in the past two hours'
   }
 end
 
@@ -167,6 +167,6 @@ def error_run_status_data
   {
     start_date: run.start_date,
     status: :error,
-    explanation: 'Assessment run has not produced result in past five hours'
+    explanation: 'Assessment run has not produced result in the past five hours'
   }
 end
