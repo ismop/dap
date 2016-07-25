@@ -28,15 +28,19 @@ module Exporters
           .select('measurements.timeline_id, timelines.parameter_id, parameters.device_id, parameters.measurement_type_id, '\
             'measurement_types.name, parameters.custom_id, '\
             'measurements.value, measurements.m_timestamp')
-          .order(:m_timestamp).uniq!
+          .order(:m_timestamp)
     end
 
     def export_slices(writer, slice_size = 30)
+      tmp_m=nil
       timelines.each_slice(slice_size) do |timelines_slice|
         measurements = measurements(timelines_slice)
         csv_chunk = CSV.generate do |csv|
           measurements.each do |m|
-            csv << serializer.serialize(m)
+            if (tmp_m == nil || tmp_m.m_timestamp != m.m_timestamp || tmp_m.value != m.value || tmp_m.timeline_id != m.timeline_id) 
+              csv << serializer.serialize(m)
+              tmp_m = m
+            end 
           end
         end
         writer.write(csv_chunk)
