@@ -1,12 +1,10 @@
 class PruningService
 
-  RETROACTIVITY = 4
-
   def self.prune_duplicates
     working_date = Date.today
     target_tables = []
 
-    for i in 0..RETROACTIVITY do
+    for i in 0..Rails.configuration.pruning_retroactivity do
       target_tables << "measurements_child_#{working_date.year.to_s.rjust(2, '0')}_#{working_date.month.to_s.rjust(2, '0')}_01"
       working_date = working_date.last_month
     end
