@@ -80,6 +80,7 @@ Rails.application.routes.draw do
       resources :monitoring, only: [:index]
       resources :chart_exporter, only: [:index]
       resources :experiment_exporter, only: [:show]
+      resources :threat_levels, only: [:index]
     end
   end
 

@@ -39,5 +39,15 @@ module Dap
     config.pruning_retroactivity = 1
     config.redis_url = ENV['REDIS_URL'].present? ? ENV['REDIS_URL'] : 'redis://localhost:6379/12'
     config.redis_namespace = 'dap'
+
+    # how long assessment run is being considered as starting
+    # if it has not produced any results
+    # (in hours)
+    config.assessment_run_startup_time = 1
+
+    # how long assessment run can work without producing results
+    # before it is considered to be in error state
+    # (in hours)
+    config.assessment_run_error_time = 5
   end
 end
