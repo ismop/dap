@@ -26,6 +26,7 @@ class Ability
       can [:read], :monitoring
       can [:read], :chart_exporter
       can [:read], :experiment_exporter
+      can [:read], :threat_level
     end
   end
 end
