@@ -43,8 +43,8 @@ describe Api::V1::ThreatLevelsController do
 
       context 'threat level data present in DB' do
         let!(:threat_assessment) { create(:threat_assessment, profiles: [profile]) }
-        let!(:scenario1) { create(:scenario) }
-        let!(:scenario2) { create(:scenario) }
+        let!(:scenario1) { create(:scenario, threat_level: 2) }
+        let!(:scenario2) { create(:scenario, threat_level: 1) }
         let!(:result1) { create(:result, threat_assessment: threat_assessment, similarity: 0.8, scenario: scenario1) }
         let!(:result2) { create(:result, threat_assessment: threat_assessment, similarity: 0.4, scenario: scenario2) }
 
@@ -118,12 +118,16 @@ def threat_levels_with_results
         {
           'similarity' => result1.similarity,
           'threat_level' => 2,
-          'scenario_id' => result1.scenario_id
+          'scenario_id' => result1.scenario_id,
+          'name' => result1.scenario.name,
+          'description' => result1.scenario.description
         },
         {
           'similarity' => result2.similarity,
           'threat_level' => 1,
-          'scenario_id' => result2.scenario_id
+          'scenario_id' => result2.scenario_id,
+          'name' => result2.scenario.name,
+          'description' => result2.scenario.description
         }
       ]
     }

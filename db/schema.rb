@@ -11,12 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160704120738) do
+ActiveRecord::Schema.define(version: 20160810181325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
-  enable_extension "postgis_topology"
 
   create_table "activity_states", force: true do |t|
     t.string   "name",       default: "unnamed activity", null: false
@@ -895,8 +894,9 @@ ActiveRecord::Schema.define(version: 20160704120738) do
   add_index "results", ["scenario_id"], :name => "index_results_on_scenario_id"
 
   create_table "scenarios", force: true do |t|
-    t.string "name"
-    t.text   "description"
+    t.string  "name"
+    t.text    "description"
+    t.integer "threat_level", default: 0, null: false
   end
 
   create_table "sections", force: true do |t|
