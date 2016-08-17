@@ -47,8 +47,10 @@ module Api
         assessment.results.collect do |result|
           {
             similarity: result.similarity,
-            threat_level: ThreatLevel::CalculatorService.get(result),
-            scenario_id: result.scenario.id
+            scenario_id: result.scenario.id,
+            threat_level: result.scenario.threat_level,
+            name: result.scenario.name,
+            description: result.scenario.description
           }
         end
       end

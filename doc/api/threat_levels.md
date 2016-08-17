@@ -27,12 +27,16 @@ Parameters:
                   {
                     "similarity": 0.8,
                     "threat_level": 2,
-                    "scenario_id": 2057
+                    "scenario_id": 2057,
+                    "name": "Scenario no. 1",
+                    "description": "Sample scenario"
                   },
                   {
                     "similarity": 0.4,
                     "threat_level": 1,
-                    "scenario_id": 2058
+                    "scenario_id": 2058,
+                    "name": "Scenario no. 2",
+                    "description: "Another sample scenario"
                   }
                 ]
             }
