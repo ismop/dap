@@ -17,6 +17,7 @@ No parameters are required.
     {
       "id": a numerical unique id (e.g. 1),
       "threat_assessment_run_id": identifier of the threat assessment run for which this threat assessment was launched,
+      "status": current status of this threat assessment (valid options are: 'running', 'finished', 'error'),
       "profile_ids": identifiers of profiles which are covered by this threat assessment,
       "results": all results registered for this threat assessment
     }, {
@@ -43,6 +44,7 @@ Parameters:
   "threat_assessment": {
     "id": a numerical unique id (e.g. 1),
     "threat_assessment_run_id": identifier of the threat assessment run for which this threat assessment was launched,
+    "status": current status of this threat assessment (valid options are: 'running', 'finished', 'error'),
     "profile_ids": identifiers of profiles which are covered by this threat assessment,
     "results": all results registered for this threat assessment
   }
@@ -77,6 +79,7 @@ Parameters:
 
 + `id` (required) - The ID of the threat assessment you are interested in, as returned by the GET /threat_assessments call
 + `threat_assessment_run_id` - the ID of the threat assessment run for which this threat assessment was launched
-+ `profile_ids` (optional): identifiers of profiles which are covered by this threat assessment.
++ `profile_ids` (optional): identifiers of profiles which are covered by this threat assessment
++ `status` (optional): updated status of this threat assessment (valid options are 'running', 'finished', 'error')
 
 The operation return the JSON representation of this threat assessment (much like the GET /threat_assessments/id operation), with the updated field values, or a suitable error code, when a problem occurs.
