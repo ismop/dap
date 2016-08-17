@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20160817113721) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
 
   create_table "activity_states", force: true do |t|
     t.string   "name",       default: "unnamed activity", null: false
@@ -125,10 +126,10 @@ ActiveRecord::Schema.define(version: 20160817113721) do
   end
 
   create_table "levees", force: true do |t|
-    t.string   "name",                    default: "unnamed levee", null: false
-    t.string   "emergency_level",         default: "none",          null: false
-    t.string   "threat_level",            default: "none",          null: false
-    t.datetime "threat_level_updated_at", default: "now()",         null: false
+    t.string   "name",                    default: "unnamed levee",       null: false
+    t.string   "emergency_level",         default: "none",                null: false
+    t.string   "threat_level",            default: "none",                null: false
+    t.datetime "threat_level_updated_at", default: '2016-08-17 12:24:50', null: false
     t.float    "base_height"
   end
 
