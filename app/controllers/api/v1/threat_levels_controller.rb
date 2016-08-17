@@ -49,6 +49,7 @@ module Api
             similarity: result.similarity,
             scenario_id: result.scenario.id,
             threat_level: result.scenario.threat_level,
+            offset: result.offset,
             name: result.scenario.name,
             description: result.scenario.description
           }
