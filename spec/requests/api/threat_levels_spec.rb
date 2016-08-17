@@ -119,6 +119,7 @@ def threat_levels_with_results
           'similarity' => result1.similarity,
           'threat_level' => 2,
           'scenario_id' => result1.scenario_id,
+          'offset' => result1.offset,
           'name' => result1.scenario.name,
           'description' => result1.scenario.description
         },
@@ -126,6 +127,7 @@ def threat_levels_with_results
           'similarity' => result2.similarity,
           'threat_level' => 1,
           'scenario_id' => result2.scenario_id,
+          'offset' => result2.offset,
           'name' => result2.scenario.name,
           'description' => result2.scenario.description
         }

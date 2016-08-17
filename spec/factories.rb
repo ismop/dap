@@ -33,6 +33,7 @@ FactoryGirl.define do
   factory :result do
     similarity { rand(0.0..100.0) }
     rank { rand(1..20) }
+    offset { rand(1..20) }
     payload { Faker::Lorem.words(10).join(' ') }
 
     threat_assessment

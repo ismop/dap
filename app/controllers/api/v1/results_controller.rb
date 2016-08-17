@@ -33,7 +33,7 @@ module Api
       private
 
       def result_params
-        params.require(:result).permit(:similarity, :threat_assessment_id, :scenario_id, :rank, :payload)
+        params.require(:result).permit(:similarity, :threat_assessment_id, :scenario_id, :rank, :offset, :payload)
       end
     end
   end

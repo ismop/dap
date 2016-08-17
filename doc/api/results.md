@@ -16,6 +16,7 @@ No parameters are required.
       "id": a numerical unique id (e.g. 1),
       "similarity": the smiliarity value which constitutes the payload of the result object (Float).
       "rank": subjective rank assigned to this result by the threat assessment run (Int).
+      "offset": offset of the result (Int),
       "payload": a string field containing result-specific details,
       "threat_assessment_id": identifier of the threat_assessment which generated this result,
       "scenario_id": identifier of the scenario to which this result applies.
@@ -44,6 +45,7 @@ Parameters:
     "id": a numerical unique id (e.g. 1),
     "similarity": the smiliarity value which constitutes the payload of the result object (Float).
     "rank": subjective rank assigned to this result by the threat assessment run (Int).
+    "offset": offset of the result (Int),
     "payload": a string field containing result-specific details,
     "threat_assessment_id": identifier of the threat_assessment which generated this result,
     "scenario_id": identifier of the scenario to which this result applies.
@@ -63,6 +65,7 @@ Parameters:
 
 + `similarity` (required) - the similarity value which constitutes the payload of the result object (Float),
 + `rank` (required) - the rank value assigned to this result by the threat assessment run (Int),
++ `offset` (optional) - the offset value for this result (Int),
 + `payload` (optional) - any further metadata concerning the result (String),
 + `threat_assessment_id` (required) - the ID of the threat_assessment which generated this result,
 + `scenario_id` (required) - the ID of the scenario to which this result applies.
