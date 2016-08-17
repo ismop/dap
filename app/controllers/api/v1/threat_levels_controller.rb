@@ -38,6 +38,7 @@ module Api
         assessments.collect do |a|
           {
             date: a.created_at,
+            status: a.status,
             scenarios: scenarios_for_assessment(a)
           }
         end

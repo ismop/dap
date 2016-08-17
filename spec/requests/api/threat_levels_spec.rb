@@ -114,6 +114,7 @@ def threat_levels_with_results
   threat_levels['threat_levels'][0]['threat_assessments'] = [
     {
       'date' => threat_assessment.created_at.as_json,
+      'status' => threat_assessment.status,
       'scenarios' => [
         {
           'similarity' => result1.similarity,
