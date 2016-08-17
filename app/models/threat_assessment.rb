@@ -6,4 +6,7 @@ class ThreatAssessment < ActiveRecord::Base
 
   has_many :results, dependent: :destroy
 
+  validates :status,
+            inclusion: { in: ['running', 'finished', 'error'] }
+
 end

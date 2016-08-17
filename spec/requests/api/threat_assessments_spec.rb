@@ -85,6 +85,26 @@ describe Api::V1::ThreatAssessmentsController do
     end
   end
 
+  describe 'PUT /threat_assessments' do
+    context 'when authenticated as user' do
+      let!(:p1) { create(:profile) }
+      let!(:p2) { create(:profile) }
+
+      let!(:ta) { create(:threat_assessment) }
+
+      let(:update_json) do {threat_assessment: {
+        status: 'finished'
+      }} end
+
+      it 'updates the status of an existing threat_assessment' do
+        ta1 = ThreatAssessment.first
+        expect(ta1.status).to eq 'running'
+        put api("/threat_assessments/#{ta1.id}", user), update_json
+        expect(ta1.reload.status).to eq 'finished'
+      end
+    end
+  end
+
   def tas_response
     json_response['threat_assessments']
   end
