@@ -1,4 +1,39 @@
 namespace :experiment do
+  task prepare_august_flooding: :environment do
+    d = Device.find_by(custom_id: 'Pomiar wysokości fali powodziowej')
+    ctx = Context.find_by(context_type: 'scenarios')
+
+    t = Timeline.create(label: 'Wysokość fali. Eksperyment - sierpień',
+                        parameter: d.parameters.first, context: ctx)
+
+    start = Time.new(2016, 8, 22, 9, 30)
+    Experiment.create(name: 'Eksperyment - sierpień',
+                      description: 'Zalewanie wału - sierpień 2016',
+                      start_date: start,
+                      end_date: start + 240.hours,
+                      levee: Levee.first, timelines: [t])
+
+    f = ->(x) { 4.0 / 48 * x }
+    (0..48).each do |x|
+      Measurement.create(value: f.call(x),
+                         m_timestamp: start + x.hours,
+                         timeline: t)
+    end
+
+    (49..95).each do |x|
+      Measurement.create(value: 4.0,
+                         m_timestamp: start + x.hours,
+                         timeline: t)
+    end
+
+    f = ->(x) { 4.0 / 144 * x }
+    144.downto(0).each do |x|
+      Measurement.create(value: f.call(x),
+                         m_timestamp: start + (96 + 144 - x).hours,
+                         timeline: t)
+    end
+  end
+
   desc "Creates   entities for first flooding registered in dap platform"
   task prepare_first_flooding: :environment do
 
