@@ -147,7 +147,10 @@ module Api
             end
           end
           divisor = divisor + 1
-          sql += " WHERE m.row % #{divisor} = 0 OR m.id IN (#{max_ids.join(',')}) "
+          sql += " WHERE m.row % #{divisor} = 0 "
+          if max_ids.present?
+            sql+= " OR m.id IN (#{max_ids.join(',')}) "
+          end
         end
 
         if params.keys.include? 'limit'
