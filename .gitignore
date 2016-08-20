@@ -13,7 +13,12 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
+/log/*.log.*.gz
 /tmp
+
+# Ignore generated asset files and downloaded gems
+/public/assets
+/vendor
 
 /config/database.yml
 /config/puma.rb
