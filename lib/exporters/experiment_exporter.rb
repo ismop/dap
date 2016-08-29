@@ -57,6 +57,7 @@ module Exporters
       def serialize(m)
         time = m.m_timestamp.to_i
         xyz = m.timeline.parameter.device.placement
+        param_id = m.timeline.parameter.custom_id
         if xyz.blank?
           x = y = z = ''
         else
@@ -64,9 +65,9 @@ module Exporters
           y = xyz.y
           z = xyz.z
         end
-        name = m.timeline.parameter.measurement_type.name
+        type_name = m.timeline.parameter.measurement_type.name
         val = '%.8f' % m.value
-        [time, x, y, z, name, val]
+        [time, x, y, z, param_id, type_name, val]
       end
     end
 
