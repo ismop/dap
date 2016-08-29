@@ -6,30 +6,24 @@ namespace :experiment do
     t = Timeline.create(label: 'Wysokość fali. Eksperyment - sierpień',
                         parameter: d.parameters.first, context: ctx)
 
-    start = Time.new(2016, 8, 22, 9, 30)
+    start = Time.new(2016, 8, 26, 9, 30)
     Experiment.create(name: 'Eksperyment - sierpień',
                       description: 'Zalewanie wału - sierpień 2016',
                       start_date: start,
-                      end_date: start + 240.hours,
+                      end_date: start + 60.hours,
                       levee: Levee.first, timelines: [t])
 
-    f = ->(x) { 4.0 / 48 * x }
-    (0..48).each do |x|
+    f = ->(x) { 2.0 / 24 * x }
+    (0..24).each do |x|
       Measurement.create(value: f.call(x),
                          m_timestamp: start + x.hours,
                          timeline: t)
     end
 
-    (49..95).each do |x|
-      Measurement.create(value: 4.0,
-                         m_timestamp: start + x.hours,
-                         timeline: t)
-    end
-
-    f = ->(x) { 4.0 / 144 * x }
-    144.downto(0).each do |x|
+    f = ->(x) { 2.0 / 36 * x }
+    35.downto(0).each do |x|
       Measurement.create(value: f.call(x),
-                         m_timestamp: start + (96 + 144 - x).hours,
+                         m_timestamp: start + (25 + 35 - x).hours,
                          timeline: t)
     end
   end
