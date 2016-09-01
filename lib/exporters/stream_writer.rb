@@ -1,29 +1,24 @@
 module Exporters
   class StreamWriter
-    include ActionController::Live
 
     def initialize(response, filename)
       @response = response
       @filename = filename
-      @sse = SSE.new(response.stream)
     end
 
     def init_stream(content_header = nil)
       @response.headers['Content-Type'] = 'text/event-stream'
       @response.headers['Content-Disposition'] = 'attachment; filename="' + @filename + '"'
       @response.headers['X-Accel-Buffering'] = 'no'
-      # @response.stream.write(content_header + "\n") unless content_header.blank?
-      @sse.write(content_header + "\n") unless content_header.blank?
+      @response.stream.write(content_header + "\n") unless content_header.blank?
     end
 
     def write(data)
-      # @response.stream.write data
-      @sse.write data
+      @response.stream.write data
     end
 
     def close
-      # @response.stream.close
-      @sse.close
+      @response.stream.close
     end
 
   end
