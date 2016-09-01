@@ -1,5 +1,6 @@
 module Exporters
   class StreamWriter
+    include ActionController::Live
 
     def initialize(response, filename)
       @response = response
