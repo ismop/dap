@@ -39,9 +39,15 @@ module Exporters
       device_ids = devices
       device_ids.each_slice(slice_size) do |devices_slice|
         measurements = measurements(devices_slice)
+        Rails.logger.debug("Retrieved #{measurements.length} measurements in this slice.")
         csv_chunk = CSV.generate do |csv|
+          m_counter = 0
           measurements.each do |m|
+            m_counter += 1
             csv << serializer.serialize(m)
+            if m_counter % 1000 == 0
+              Rails.logger.debug("#{m_counter} row pushed to CSV: #{serializer.serialize(m).inspect}")
+            end
           end
         end
         writer.write(csv_chunk)
