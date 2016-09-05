@@ -174,7 +174,8 @@ module Importers
     end
 
     def experiment(row)
-      name = row[columns['scen']]
+      experiment_num = row[columns['scen']]
+      name = "Eksperyment #{experiment_num}"
       Experiment.find_by(name: name) || create_experiment(name)
     end
 
