@@ -31,6 +31,7 @@ module Api
       def fill_threat_assessments_data(results_data)
         @threat_assessments.each do |ta|
           profile = ta.profiles.first
+          next unless profile
           if @assessments_data[profile.id].nil?
             @assessments_data[profile.id] = {
               profile_id: profile.id,
