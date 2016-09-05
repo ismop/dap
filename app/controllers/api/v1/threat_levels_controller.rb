@@ -71,7 +71,8 @@ module Api
       def results(threat_assessment_ids)
         Result.includes(threat_assessment:[:profiles]).includes(:scenario).
           joins(threat_assessment: :profiles).
-          where("threat_assessments.id IN (#{threat_assessment_ids.join(',')})")
+          where("threat_assessments.id IN (#{threat_assessment_ids.join(',')})").
+          references(:threat_assessment)
       end
 
       def result_entry(result)
