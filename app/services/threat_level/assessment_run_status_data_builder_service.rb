@@ -53,7 +53,7 @@ module ThreatLevel
       {
         status: :started,
         explanation: 'Assessment run started less than one hour ago'\
-                 'and has not produced any results'
+                 ' and has not produced any results'
       }
     end
 
