@@ -164,7 +164,8 @@ module Importers
     end
 
     def scenario(row)
-      scenario_name = row[columns['simul']]
+                      #experiment name            scenario name
+      scenario_name = row[columns['scen']] + '-' + row[columns['simul']]
       experiment = experiment(row)
       cache_fetch("scenario/#{scenario_name}-#{experiment.id}") do
         Scenario.joins(:experiments).
