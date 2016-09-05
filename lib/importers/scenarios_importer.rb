@@ -175,8 +175,10 @@ module Importers
 
     def experiment(row)
       experiment_num = row[columns['scen']]
-      name = "Eksperyment #{experiment_num}"
-      Experiment.find_by(name: name) || create_experiment(name)
+      experiment_name = "Eksperyment #{experiment_num}"
+      cache_fetch("experiment/#{experiment_name}") do
+        Experiment.find_by(name: experiment_name) || create_experiment(experiment_name)
+      end
     end
 
     def create_experiment(name)
