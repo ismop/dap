@@ -183,7 +183,6 @@ module Importers
     end
 
     def create_experiment(name)
-      puts "Creating experiment with following name: #{name}"
       end_date = Time.now
       Experiment.create!(levee: levee, name: name,
                          end_date: end_date, start_date: end_date - 1.week)
