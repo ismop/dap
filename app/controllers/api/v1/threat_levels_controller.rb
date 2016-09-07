@@ -19,8 +19,8 @@ module Api
 
       def threat_levels_for_profiles
         @assessments_data = {}
-        @threat_assessments = ThreatAssessment.find_by_sql(sql)
-        threat_assessment_ids = @threat_assessments.collect {|ta| ta.id}
+        @threat_assessments = []
+        threat_assessment_ids = ThreatAssessment.find_by_sql(sql).collect {|ta| ta.id}
         if threat_assessment_ids.present?
           results_data = build_results_data(threat_assessment_ids)
           fill_threat_assessments_data(results_data)
@@ -29,6 +29,7 @@ module Api
       end
 
       def fill_threat_assessments_data(results_data)
+        @threat_assessments.uniq!
         @threat_assessments.each do |ta|
           profile = ta.profiles.first
           next unless profile
@@ -51,6 +52,7 @@ module Api
         results_data = {}
         results(threat_assessment_ids).each do |result|
           ta = result.threat_assessment
+          @threat_assessments << ta
           results_data[ta.id] = [] if results_data[ta.id].nil?
           results_data[ta.id] << result_entry(result)
         end
