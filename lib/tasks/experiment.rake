@@ -1,4 +1,33 @@
 namespace :experiment do
+  task experiment4: :environment do
+    d = Device.find_by(custom_id: 'Pomiar wysokości fali powodziowej')
+    ctx = Context.find_by(context_type: 'scenarios')
+
+    t = Timeline.create(label: 'Wysokość fali. Eksperyment 4',
+                        parameter: d.parameters.first, context: ctx)
+
+    start = Time.new(2016, 9, 13, 11, 35)
+    Experiment.create(name: 'Eksperyment 4',
+                      description: 'Zalewanie wału - eksperyment 4',
+                      start_date: start,
+                      end_date: start + 216.hours,
+                      levee: Levee.first, timelines: [t])
+
+    f = ->(x) { 4.0 / 96 * x }
+    (0..96).each do |x|
+      Measurement.create(value: f.call(x),
+                         m_timestamp: start + x.hours,
+                         timeline: t)
+    end
+
+    f = ->(x) { 4.0 / 120 * x }
+    119.downto(0).each do |x|
+      Measurement.create(value: f.call(x),
+                         m_timestamp: start + (97 + 119 - x).hours,
+                         timeline: t)
+    end
+  end
+
   task prepare_august_flooding: :environment do
     d = Device.find_by(custom_id: 'Pomiar wysokości fali powodziowej')
     ctx = Context.find_by(context_type: 'scenarios')
