@@ -95,8 +95,10 @@ describe ThreatLevel::AssessmentRunStatusDataBuilderService do
 
     context 'results produced more than five hours ago' do
       before do
-        create(:result, threat_assessment: run.threat_assessments.first, created_at: Time.now - 6.hours)
-        create(:result, threat_assessment: run.threat_assessments.first, created_at: Time.now - 7.hours)
+        create(:result, threat_assessment: run.threat_assessments.first,
+               created_at: Time.now - 6.hours)
+        create(:result, threat_assessment: run.threat_assessments.first,
+               created_at: Time.now - 7.hours)
       end
       it 'return status "error" with explanation' do
         expect(ThreatLevel::AssessmentRunStatusDataBuilderService.get(run)).
