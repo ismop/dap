@@ -13,7 +13,7 @@ namespace :experiment do
                       end_date: start + 216.hours,
                       levee: Levee.first, timelines: [t])
 
-    f = ->(x) { 4.0 / 96 * x }
+    f = ->(x) { 3.88 / 96 * x + 0.12 }
     (0..96).each do |x|
       Measurement.create(value: f.call(x),
                          m_timestamp: start + x.hours,
