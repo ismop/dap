@@ -1,35 +1,63 @@
 namespace :experiment do
+  task experiment4: :environment do
+    d = Device.find_by(custom_id: 'Pomiar wysokości fali powodziowej')
+    ctx = Context.find_by(context_type: 'scenarios')
+
+    t = Timeline.find_or_create_by(label: 'Wysokość fali. Eksperyment 4',
+                        parameter: d.parameters.first, context: ctx)
+
+    # Purge existing measurements for this timeline (if any)
+    t.measurements.destroy_all
+
+    start = Time.new(2016, 9, 13, 11, 35)
+    e = Experiment.find_or_create_by(name: 'Eksperyment 4',
+                      description: 'Zalewanie wału - eksperyment 4')
+    e.start_date = start
+    e.end_date = start + 216.hours
+    e.levee = Levee.first
+    e.timelines = [t]
+    e.save
+
+    f = ->(x) { 3.88 / 96 * x + 0.12 }
+    (0..96).each do |x|
+      m = Measurement.create(value: f.call(x),
+                         m_timestamp: start + x.hours,
+                         timeline: t)
+    end
+
+    f = ->(x) { 4.0 / 120 * x }
+    119.downto(0).each do |x|
+      m = Measurement.create(value: f.call(x),
+                         m_timestamp: start + (97 + 119 - x).hours,
+                         timeline: t)
+    end
+  end
+
   task prepare_august_flooding: :environment do
     d = Device.find_by(custom_id: 'Pomiar wysokości fali powodziowej')
     ctx = Context.find_by(context_type: 'scenarios')
 
-    t = Timeline.create(label: 'Wysokość fali. Eksperyment - sierpień',
+    t = Timeline.find_or_create_by(label: 'Wysokość fali. Eksperyment - sierpień',
                         parameter: d.parameters.first, context: ctx)
 
-    start = Time.new(2016, 8, 22, 9, 30)
-    Experiment.create(name: 'Eksperyment - sierpień',
+    start = Time.new(2016, 8, 26, 9, 30)
+    Experiment.find_or_create_by(name: 'Eksperyment - sierpień',
                       description: 'Zalewanie wału - sierpień 2016',
                       start_date: start,
-                      end_date: start + 240.hours,
+                      end_date: start + 60.hours,
                       levee: Levee.first, timelines: [t])
 
-    f = ->(x) { 4.0 / 48 * x }
-    (0..48).each do |x|
-      Measurement.create(value: f.call(x),
+    f = ->(x) { 2.0 / 24 * x }
+    (0..24).each do |x|
+      Measurement.find_or_create_by(value: f.call(x),
                          m_timestamp: start + x.hours,
                          timeline: t)
     end
 
-    (49..95).each do |x|
-      Measurement.create(value: 4.0,
-                         m_timestamp: start + x.hours,
-                         timeline: t)
-    end
-
-    f = ->(x) { 4.0 / 144 * x }
-    144.downto(0).each do |x|
-      Measurement.create(value: f.call(x),
-                         m_timestamp: start + (96 + 144 - x).hours,
+    f = ->(x) { 2.0 / 36 * x }
+    35.downto(0).each do |x|
+      Measurement.find_or_create_by(value: f.call(x),
+                         m_timestamp: start + (25 + 35 - x).hours,
                          timeline: t)
     end
   end
@@ -58,7 +86,7 @@ namespace :experiment do
 
     t = Timeline.new(label: "wysokość fali. eksperyment zalewania - czerwiec", parameter: d.parameters.first, context: ctx)
 
-    e = Experiment.new(name: "Eksperyment zalewania - czerwiec", description: 'Zalewanie wału - czerwiec 2016',
+    e = Experiment.find_or_create_by(name: "Eksperyment zalewania - czerwiec", description: 'Zalewanie wału - czerwiec 2016',
                        start_date: Time.at(0), end_date: Time.at(0) + 84.hours, levee: Levee.first, timelines: [t])
     e.save
     d.parameters.first.timelines << t
@@ -75,8 +103,7 @@ namespace :experiment do
 
     m_timestamp = e.start_date
     measurements.each do |m|
-      ms = Measurement.new(value: m, m_timestamp: m_timestamp, timeline: t)
-      ms.save
+      ms = Measurement.find_or_create_by(value: m, m_timestamp: m_timestamp, timeline: t)
       m_timestamp += 1.hour
     end
   end
