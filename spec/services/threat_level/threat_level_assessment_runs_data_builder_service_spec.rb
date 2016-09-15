@@ -5,7 +5,7 @@ describe ThreatLevel::AssessmentRunsDataBuilderService do
 
   context 'no runs associated with profile' do
     it 'returns empty array' do
-      expect(ThreatLevel::AssessmentRunsDataBuilderService.get(profile)).to eq []
+      expect(ThreatLevel::AssessmentRunsDataBuilderService.get(profile.id)).to eq []
     end
   end
 
@@ -24,7 +24,7 @@ describe ThreatLevel::AssessmentRunsDataBuilderService do
       profile.reload
       run.reload
 
-      expect(ThreatLevel::AssessmentRunsDataBuilderService.get(profile)).
+      expect(ThreatLevel::AssessmentRunsDataBuilderService.get(profile.id)).
         to eq runs_data_array
     end
   end

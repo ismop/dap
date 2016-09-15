@@ -2,7 +2,7 @@
 
 Get a list of Threat Levels for all Profiles. You need to authorize yourself with an administrator account (a token).
 By default five latest Threat Assessments for a profile are returned in Threat Level data. This can be altered by providing
-an optional `limit` parameter.
+an optional `limit` parameter. The response contains at most five most recent threat assessment runs.
 
 ```
 GET /threat_levels[?limit=10]
