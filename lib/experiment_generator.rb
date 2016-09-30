@@ -12,7 +12,7 @@ class WaveFunction
   end
 end
 
-class ExperimentGenrator
+class ExperimentGenerator
   attr_writer :debug
 
   def initialize(name:, from:, to:, steps:)
@@ -46,13 +46,13 @@ class ExperimentGenrator
   def initialize_experiment
     d = Device.find_by(custom_id: 'Pomiar wysokości fali powodziowej')
     ctx = Context.find_by(context_type: 'scenarios')
-    t = Timeline.find_or_create_by(label: "Wysokość fali. #{name}",
+    t = Timeline.find_or_create_by(label: "Wysokość fali. #{@name}",
                                    parameter: d.parameters.first, context: ctx)
 
     t.measurements.destroy_all
 
-    e = Experiment.find_or_create_by(name: name)
-    e.update_attributes(description: "Zalewanie wału - #{name}",
+    e = Experiment.find_or_create_by(name: @name)
+    e.update_attributes(description: "Zalewanie wału - #{@name}",
                         start_date: @from, end_date: @to,
                         levee: Levee.first, timelines: [t])
 
