@@ -108,6 +108,7 @@ def threat_levels_with_results
     'threat_levels' => [
       {
         'profile_id' => profile.id,
+        'profile_custom_id' => profile.custom_id,
         'threat_assessments' => [
           {
             'date' => threat_assessment.created_at.as_json,
