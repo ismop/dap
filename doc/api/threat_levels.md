@@ -18,6 +18,7 @@ Parameters:
     [
       {
         "profile_id": 3923,
+        "profile_custom_id": "custom_id",
         "threat_assessments":
           [
             {
@@ -43,7 +44,7 @@ Parameters:
                 ]
             }
           ],
-        "threat_level_assessment_runs": 
+        "threat_level_assessment_runs":
           [
             {
               "start_date": "2016-07-11T06:02:24.446Z",
