@@ -37,6 +37,7 @@ module Api
             @assessments_data[profile.id] = {
               profile_id: profile.id,
               profile_custom_id: profile.custom_id,
+              section_id: profile.section_id,
               threat_assessments: []
             }
           end

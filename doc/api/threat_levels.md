@@ -19,6 +19,7 @@ Parameters:
       {
         "profile_id": 3923,
         "profile_custom_id": "custom_id",
+        "section_id": "section_id",
         "threat_assessments":
           [
             {
