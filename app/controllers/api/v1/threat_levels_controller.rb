@@ -3,11 +3,11 @@ module Api
     class ThreatLevelsController < Api::ApiController
       skip_authorization_check
       before_filter(only: [:index]) { authorize! :read, :threat_level }
+      before_filter(only: [:index]) { set_limit }
 
       respond_to :json
 
       def index
-        set_limit
         render json: {threat_levels: threat_levels_for_profiles}
       end
 
