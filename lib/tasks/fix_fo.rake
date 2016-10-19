@@ -46,7 +46,7 @@ namespace :data do
       new_placement = "POINT(#{lon} #{lat} 211.0)"
 
       fo_node.placement = new_placement
-      unless (name_id.to_i > 447) and (name_id.to_i < 528)
+      unless (name_id.to_i) > 489) and (name_id.to_i < 570)
         fo_node.visible = true
       end
 
