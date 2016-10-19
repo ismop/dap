@@ -46,7 +46,10 @@ namespace :data do
       new_placement = "POINT(#{lon} #{lat} 211.0)"
 
       fo_node.placement = new_placement
-      fo_node.visible = true
+      unless (name_id.to_i > 447) and (name_id.to_i < 528)
+        fo_node.visible = true
+      end
+
       fo_node.save
       fon = fo_node.fiber_optic_node
 
