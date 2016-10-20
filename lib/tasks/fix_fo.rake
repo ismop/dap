@@ -31,7 +31,7 @@ namespace :data do
 
       puts "Processing name_id: #{name_id}"
 
-      name_id = ((name_id.to_i)+42).to_s
+      #name_id = ((name_id.to_i)+42).to_s
 
       if name_id.length == 1
         name_id = '00'+name_id
@@ -46,7 +46,7 @@ namespace :data do
       new_placement = "POINT(#{lon} #{lat} 211.0)"
 
       fo_node.placement = new_placement
-      unless (name_id.to_i > 462) and (name_id.to_i < 570)
+      unless (name_id.to_i > 447) and (name_id.to_i < 528)
         fo_node.visible = true
       end
 
