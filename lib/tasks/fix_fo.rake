@@ -5,15 +5,15 @@ namespace :data do
     c = Context.find(1)
     mt = MeasurementType.find_by(name: 'Temperatura')
 
-    da1 = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód dolny - odczyty surowe', levee: l, device_aggregation_type: 'fiber')
-    da2 = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód górny - odczyty surowe', levee: l, device_aggregation_type: 'fiber')
+    da_lo = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód dolny - odczyty surowe', levee: l, device_aggregation_type: 'fiber')
+    da_hi = DeviceAggregation.find_or_create_by(custom_id: 'Światłowód górny - odczyty surowe', levee: l, device_aggregation_type: 'fiber')
 
     # Set all devices as invisible
-    da1.devices.each do |d|
+    da_lo.devices.each do |d|
       d.visible = false; d.save;
     end
 
-    da2.devices.each do |d|
+    da_hi.devices.each do |d|
       d.visible = false; d.save;
     end
 
@@ -28,6 +28,7 @@ namespace :data do
       marker = linedata[3].strip.to_f
 
       name_id = name.split('-')[1]
+      name_label = name.split('-')[0]
 
       puts "Processing name: #{name}"
       puts "Processing name_id: #{name_id}"
@@ -49,6 +50,14 @@ namespace :data do
       fo_node.placement = new_placement
       unless (name_id.to_i > 447) and (name_id.to_i < 528)
         fo_node.visible = true
+      end
+
+      if name_label == 'SW_UP'
+        fo_node.device_aggregation = da_hi
+      elsif name_label == 'SW_DOWN'
+        fo_node.device_aggregation = da_lo
+      else
+        puts "Unknown device label: #{name_label}"
       end
 
       fo_node.save
