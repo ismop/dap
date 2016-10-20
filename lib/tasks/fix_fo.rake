@@ -29,6 +29,7 @@ namespace :data do
 
       name_id = name.split('-')[1]
 
+      puts "Processing name: #{name}"
       puts "Processing name_id: #{name_id}"
 
       #name_id = ((name_id.to_i)+42).to_s
