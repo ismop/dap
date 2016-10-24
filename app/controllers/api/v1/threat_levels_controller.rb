@@ -4,6 +4,7 @@ module Api
       skip_authorization_check
       before_filter(only: [:index]) { authorize! :read, :threat_level }
       before_filter(only: [:index]) { set_limit }
+      before_filter(only: [:index]) { set_from_to }
 
       respond_to :json
 
@@ -12,6 +13,10 @@ module Api
       end
 
       private
+      def set_from_to
+        @from = params.fetch(:from, nil)
+        @to = params.fetch(:to, nil)
+      end
       def set_limit
         @limit = params.fetch(:limit, 5).to_i
         @limit = @limit > 0 ? @limit : 5
@@ -20,7 +25,9 @@ module Api
       def threat_levels_for_profiles
         @assessments_data = {}
         @threat_assessments = []
-        threat_assessment_ids = ThreatAssessment.find_by_sql(sql).collect {|ta| ta.id}
+        threat_assessment_ids = ThreatAssessment.find_by_sql(sql).collect do |ta|
+          ta.id
+        end
         if threat_assessment_ids.present?
           results_data = build_results_data(threat_assessment_ids)
           fill_threat_assessments_data(results_data)
@@ -63,11 +70,15 @@ module Api
 
       def sql
         <<-SQL
-          SELECT id, profile_id, created_at, status, rank
+          SELECT id, created_at, status, rank
             FROM (
-              SELECT id, profile_id, created_at, status, rank()
+              SELECT id, created_at, status, rank()
               OVER (PARTITION BY profile_id ORDER BY created_at DESC)
-              FROM threat_assessments) inq
+              FROM (
+                SELECT threat_assessments.id, threat_assessments.created_at, threat_assessments.status, profile_selections.profile_id
+                FROM threat_assessments JOIN profile_selections ON threat_assessments.id=profile_selections.threat_assessment_id
+                #{"WHERE threat_assessments.created_at BETWEEN '#{@from}' AND '#{@to}'" if @from && @to}) tpq
+            ) inq
           WHERE rank < #{@limit + 1}
         SQL
       end

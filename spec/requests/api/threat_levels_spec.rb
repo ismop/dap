@@ -75,6 +75,48 @@ describe Api::V1::ThreatLevelsController do
               get api("/threat_levels?limit=#{limit}", user)
               expect(assessments_from_response.size).to eq limit
             end
+
+            context 'from and to dates are specified' do
+              it 'returns assessments created within specified period' do
+                differentiate_assessments_created_at_date
+                assessments = ThreatAssessment.order :created_at
+                from = assessments[2].created_at - 1.second
+                to = assessments[-2].created_at + 1.second
+                from_param = URI::encode(from.to_s)
+                to_param = URI::encode(to.to_s)
+
+                get api("/threat_levels?limit=6&from=#{from_param}&to=#{to_param}", user)
+                assessments_created_at_dates = assessments_from_response.collect do |a|
+                  Time.parse a['date']
+                end
+
+                expect(dates_within_range(assessments_created_at_dates, from, to)).to be_truthy
+              end
+
+              context 'second profile with data present in DB' do
+                let!(:second_profile) { create(:profile) }
+                let!(:threat_assessment_2) { create(:threat_assessment, profiles: [second_profile]) }
+                let!(:scenario2_1) { create(:scenario, threat_level: 2) }
+                let!(:result2_1) do
+                  create(:result,
+                         threat_assessment: threat_assessment_2,
+                         similarity: 0.8, scenario: scenario2_1)
+                end
+
+                it 'returns data for every profile' do
+                  get api("/threat_levels?limit=1", user)
+                  tls = json_response['threat_levels']
+                  expect(tls.size).to eq Profile.count
+                end
+                it 'applies limit for every profile' do
+                  get api("/threat_levels?limit=2", user)
+                  json_response['threat_levels'].each do |tl|
+                    expect(tl['threat_assessments'].size).to be <= 2
+                  end
+                end
+              end
+            end
+
           end
 
           context 'threat level assessment runs present in DB' do
@@ -91,6 +133,20 @@ describe Api::V1::ThreatLevelsController do
 end
 
 private
+def differentiate_assessments_created_at_date
+  ThreatAssessment.all.each_with_index do |ta, i|
+    ta.created_at += i.day
+    ta.save!
+  end
+end
+
+def dates_within_range(dates, from, to)
+  dates.each { |date|
+    return false unless from <= date && date <= to
+  }
+  true
+end
+
 def contains_valid_assessment_run_data?
   json_response['threat_levels'].each do |threat_level|
     threat_level['threat_level_assessment_runs'].each do |run|
