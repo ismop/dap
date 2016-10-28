@@ -7,15 +7,19 @@ module Api
       def index
 
         if params.keys.include? 'quantity'
-          sql = "SELECT m.* FROM (SELECT m.*, row_number() OVER(ORDER BY m.timeline_id, m.m_timestamp ASC) AS row FROM measurements m JOIN timelines t ON m.timeline_id = t.id "
+          sql = 'SELECT m.* FROM (SELECT m.*, row_number() OVER(ORDER BY m.timeline_id, m.m_timestamp ASC) AS row FROM measurements m '
         else
-          sql = "SELECT m.* FROM measurements m JOIN timelines t ON m.timeline_id = t.id "
+          sql = 'SELECT m.* FROM measurements m '
+        end
+
+        if params.keys.include? 'sensor_id' or params.keys.include? 'context_id'
+          sql += 'JOIN timelines t ON m.timeline_id = t.id '
         end
 
         result = []
         partition_clause = ''
 
-        if params.keys.include? "time_from"
+        if params.keys.include? 'time_from'
           if params[:time_from].blank?
             render nothing: true, status: 400
             return
@@ -25,7 +29,7 @@ module Api
         else
           time_from = '1970-01-01'
         end
-        if params.keys.include? "time_to"
+        if params.keys.include? 'time_to'
           if params[:time_to].blank?
             render nothing: true, status: 400
             return
@@ -38,7 +42,7 @@ module Api
 
         sql += "WHERE m.m_timestamp BETWEEN '#{time_from}' AND '#{time_to}' "
 
-        if params.keys.include? "id"
+        if params.keys.include? 'id'
           if params[:id].blank?
             render nothing: true, status: 400
             return
@@ -47,7 +51,7 @@ module Api
           params[:id] = nil
         end
 
-        if params.keys.include? "timeline_id"
+        if params.keys.include? 'timeline_id'
           if params[:timeline_id].blank?
             render nothing: true, status: 400
             return
@@ -86,7 +90,7 @@ module Api
           params[:timeline_id] = nil
         end
 
-        if params.keys.include? "sensor_id"
+        if params.keys.include? 'sensor_id'
           if params[:sensor_id].blank?
             render nothing: true, status: 400
             return
@@ -95,7 +99,7 @@ module Api
           params[:sensor_id] = nil
         end
 
-        if params.keys.include? "context_id"
+        if params.keys.include? 'context_id'
           if params[:context_id].blank?
             render nothing: true, status: 400
             return
