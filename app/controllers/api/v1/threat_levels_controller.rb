@@ -16,6 +16,9 @@ module Api
       def set_from_to
         @from = params.fetch(:from, nil)
         @to = params.fetch(:to, nil)
+
+        @from = Time.parse(@from).to_s unless @from.blank?
+        @to = Time.parse(@to).to_s unless @to.blank?
       end
       def set_limit
         @limit = params.fetch(:limit, 5).to_i
