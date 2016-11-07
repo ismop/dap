@@ -6,7 +6,7 @@ class ProfileSerializer < ActiveModel::Serializer
   end
 
   def levee_id
-    object.levee unless (object.levee.nil?)
+    object.levee.id unless (object.levee.nil?)
   end
 
   def profile_shape
