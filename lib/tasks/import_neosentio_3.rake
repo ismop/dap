@@ -49,20 +49,20 @@ namespace :data do
       end
 
       # Create device if it does not exist
-      d = Device.find_by(custom_id: realid)
+      d = Device.find_by(custom_id: uid)
       if d.blank?
         puts "Caution: a new device needs to be created for #{placement}"
         d = Device.new
-        d.custom_id = realid
+        d.custom_id = uid
         d.levee = l
-        d.label = uid
+        d.label = realid
         d.vendor = 'neosentio'
         d.device_type = 'neosentio-sensor'
         d.placement = placement
         d.device_aggregation = da
         d.profile = profile
       else
-        puts "Device #{realid} already exists in DAP; its placement and profile will be updated."
+        puts "Device #{uid} already exists in DAP; its placement and profile will be updated."
         d.placement = placement
         d.device_aggregation = da
         d.profile = profile
