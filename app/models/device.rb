@@ -9,6 +9,7 @@ class Device < ActiveRecord::Base
                                             'weather_station',
                                             'fiber_optic_node',
                                             'deprecated',
+                                            'external_data_source',
                                             'unknown'] }
 
   belongs_to :device_aggregation
