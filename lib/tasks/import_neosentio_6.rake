@@ -14,7 +14,7 @@ namespace :data do
     device_aggregations_created = []
     profiles_touched = []
 
-    File.open('db/neosentio5.csv').each do |line|
+    File.open('db/neosentio6.csv').each do |line|
       linedata = line.split(',')
 
       # Parse linedata
@@ -116,8 +116,8 @@ namespace :data do
           p.measurement_type = mt
           p.parameter_name = 'Pomiar temperatury'
         elsif mtype == 'Pressure'
-          par.measurement_type = mp
-          par.parameter_name = 'Pomiar ciśnienia'
+          p.measurement_type = mp
+          p.parameter_name = 'Pomiar ciśnienia'
         end
         p.monitored = true
         p.device = d
