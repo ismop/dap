@@ -21,7 +21,12 @@ namespace :data do
       section = linedata[1].strip
       side = linedata[3].strip
       mtype = linedata[4].strip
-      uid = "neosentio.#{linedata[6][1].to_i.to_s}_#{linedata[6][2..3].to_i.to_s}_#{linedata[6][6..7].to_i.to_s}_4"
+      uid = "neosentio.#{linedata[6][1].to_i.to_s}_#{linedata[6][2..3].to_i.to_s}_#{linedata[6][6..7].to_i.to_s}"
+      if mtype == 'Temperature'
+        uid += '_4'
+      elsif mtype == 'Pressure'
+        uid += '_3'
+      end
       realid = linedata[7].strip
       placement = "POINT(#{linedata[9].strip} #{linedata[8].strip} #{linedata[10].strip})"
       borehole_placement = "POINT(#{linedata[9].strip} #{linedata[8].strip})"
