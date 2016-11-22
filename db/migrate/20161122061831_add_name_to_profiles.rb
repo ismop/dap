@@ -9,7 +9,7 @@ class AddNameToProfiles < ActiveRecord::Migration
         mfg = ''
       end
 
-      p_id = p.custom_id.split('_'),last
+      p_id = p.custom_id.split('_')[-1]
       if p_id == 'unknown ID'
         p_id = p.id.to_s
       end
