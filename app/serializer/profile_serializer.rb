@@ -1,5 +1,5 @@
 class ProfileSerializer < ActiveModel::Serializer
-  attributes :id, :levee_id, :profile_shape, :base_height, :vendors, :device_ids, :device_aggregation_ids, :section_id
+  attributes :id, :levee_id, :profile_shape, :name, :base_height, :vendors, :device_ids, :device_aggregation_ids, :section_id
 
   def vendors
     object.devices.collect{|d| d.vendor}.uniq.compact

@@ -28,6 +28,7 @@ GET /profiles?selection=POLYGON%20((0%200,%200%2010,%2010%2010,%2010%200,%200%20
     {
       "id": a numerical unique id (e.g. 1),
       "profile_shape": the geometry of the profile,
+      "name: human-readable name of the profile,
       "vendors": names of vendors responsible for managing devices which belong to the profile,
       "base_height": base height of the profile,
       "section_id": identifier of the section the profile belongs to,
@@ -60,6 +61,7 @@ Parameters:
   "profile": {
      "id": a numerical unique id (e.g. 1),
      "profile_shape": the geometry of the profile profile,
+     "name: human-readable name of the profile,
      "vendors": names of vendors responsible for managing devices which belong to the profile,
      "base_height": base height of the profile,
      "section_id": identifier of the section the profile belongs to,
