@@ -6,7 +6,7 @@ class Parameter < ActiveRecord::Base
 
   has_many :timelines, dependent: :destroy
 
-  validates :measurement_type_id, presence: true
+  validates :measurement_type, presence: true
   validates :custom_id, presence: true
   validates :custom_id, uniqueness: true
 

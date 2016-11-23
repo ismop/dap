@@ -24,32 +24,32 @@ class MonitoringService
     # Use SQL for speed
     sql = "SELECT timeline_id, MAX(m_timestamp) FROM measurements "
     sql << " WHERE timeline_id IN (#{timelines.collect(&:id).join(',')}) "
-    sql << " AND m_timestamp >= \'#{Time.now-4*alert_trigger.seconds}\'"
+    sql << " AND m_timestamp >= \'#{Time.now-alert_trigger.seconds}\'"
     sql << " GROUP BY timeline_id"
 
     result = ActiveRecord::Base.connection.execute(sql).to_a
     update = {up: [], down: []}
 
-    timelines_map = timelines.map { |t| [t.id, { timeline: t, measurement: nil}] }.to_h
+    timelines_and_measurements = timelines.map { |t| [t.id, { timeline: t, measurement: nil}] }.to_h
 
     result.each do |m|
-      timelines_map[m['timeline_id'].to_i][:measurement] = m
+      timelines_and_measurements[m['timeline_id'].to_i][:measurement] = m
     end
 
-    timelines_map.each_value do |tm_value|
+    timelines_and_measurements.each_value do |tm_value|
       t = tm_value[:timeline]
       m = tm_value[:measurement]
       parameter = t.parameter
-      if m.nil? || (Time.now - Time.parse(m['max']+' UTC')).to_i > alert_trigger
+      if m.nil?
         # Write a warning to log if changing status from up to down
-        if parameter.monitoring_status == :up
+        if parameter.monitoring_status == :up || parameter.monitoring_status == :unknown
           Rails.logger.warn("Parameter #{parameter.custom_id} (id: #{parameter.id}) - status flipping from up to down.")
           update[:down].push(parameter.custom_id)
           parameter.monitoring_status = :down
           parameter.save
         end
       else
-        if parameter.monitoring_status == :down
+        if parameter.monitoring_status == :down || parameter.monitoring_status == :unknown
           # Write an info message to log if changing status from down to up
           Rails.logger.info("Parameter #{parameter.custom_id} (id: #{parameter.id}) - status flipping from down to up.")
           update[:up].push(parameter.custom_id)
