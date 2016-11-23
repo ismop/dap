@@ -1,16 +1,16 @@
 class MonitoringService
 
   def self.perform_monitoring
-    Rails.logger.info("#{Parameter.count} parameters registered (#{Parameter.monitorable.count} monitorable)")
-
-    monitorable_ids = Parameter.monitorable.collect(&:id)
+    monitorable = Parameter.monitorable
+    Rails.logger.info("#{Parameter.count} parameters registered (#{monitorable.count} monitorable)")
+    monitorable_ids = monitorable.collect(&:id)
 
     # Quit if nothing to monitor
     if monitorable_ids.blank?
       return
     end
 
-    timelines = Timeline.where("parameter_id IN (?) AND context_id = 1", monitorable_ids)
+    timelines = Timeline.where("parameter_id IN (?) AND context_id = 1", monitorable_ids).includes(:parameter).references(:parameter)
 
     # Quit with warning if no suitable timelines present
     if timelines.blank?
@@ -18,36 +18,44 @@ class MonitoringService
       return
     end
 
+    alert_trigger = Rails.configuration.sensor_data_alert_trigger
+
     # Get latest measurements for each TL.
     # Use SQL for speed
     sql = "SELECT timeline_id, MAX(m_timestamp) FROM measurements "
     sql << " WHERE timeline_id IN (#{timelines.collect(&:id).join(',')}) "
+    sql << " AND m_timestamp >= \'#{Time.now-4*alert_trigger.seconds}\'"
     sql << " GROUP BY timeline_id"
 
     result = ActiveRecord::Base.connection.execute(sql).to_a
     update = {up: [], down: []}
 
+    timelines_map = timelines.map { |t| [t.id, { timeline: t, measurement: nil}] }.to_h
+
     result.each do |m|
-      time_elapsed = (Time.now - Time.parse(m['max']+' UTC')).to_i
-      parameter = Timeline.find_by(id: m['timeline_id'].to_i).parameter
-      if time_elapsed > Rails.configuration.sensor_data_alert_trigger
+      timelines_map[m['timeline_id'].to_i][:measurement] = m
+    end
+
+    timelines_map.each_value do |tm_value|
+      t = tm_value[:timeline]
+      m = tm_value[:measurement]
+      parameter = t.parameter
+      if m.nil? || (Time.now - Time.parse(m['max']+' UTC')).to_i > alert_trigger
         # Write a warning to log if changing status from up to down
         if parameter.monitoring_status == :up
           Rails.logger.warn("Parameter #{parameter.custom_id} (id: #{parameter.id}) - status flipping from up to down.")
-          update[:down].push({ id: parameter.id, custom_id: parameter.custom_id })
+          update[:down].push(parameter.custom_id)
+          parameter.monitoring_status = :down
+          parameter.save
         end
-        # Regardless, set this parameter's status to down
-        parameter.monitoring_status = :down
-        parameter.save
       else
         if parameter.monitoring_status == :down
           # Write an info message to log if changing status from down to up
           Rails.logger.info("Parameter #{parameter.custom_id} (id: #{parameter.id}) - status flipping from down to up.")
-          update[:up].push({ id: parameter.id, custom_id: parameter.custom_id })
+          update[:up].push(parameter.custom_id)
+          parameter.monitoring_status = :up
+          parameter.save
         end
-        # Regardless, set this parameter's status to up
-        parameter.monitoring_status = :up
-        parameter.save
       end
     end
     SentryWorker.perform_async(update)
