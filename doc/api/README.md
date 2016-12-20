@@ -17,13 +17,13 @@ API requests should be prefixed with `api` and the API version. Current API vers
 Example of a valid API request:
 
 ```
-GET http://example.com/api/v1/levees?private_token=FSGa2df2gSdfg
+GET https://example.com/api/v1/levees?private_token=FSGa2df2gSdfg
 ```
 
 Example for a valid API request using curl and authentication via header:
 
 ```
-curl --header "PRIVATE-TOKEN: QVy1PB7sTxfy4pqfZM1U" http://example.com/api/v1/levees
+curl --header "PRIVATE-TOKEN: QVy1PB7sTxfy4pqfZM1U" https://example.com/api/v1/levees
 ```
 
 ## Status codes
