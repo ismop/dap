@@ -81,6 +81,7 @@ Rails.application.routes.draw do
       resources :chart_exporter, only: [:index]
       resources :experiment_exporter, only: [:show]
       resources :threat_levels, only: [:index]
+      resources :anomaly_data, only: [:index]
     end
   end
 
