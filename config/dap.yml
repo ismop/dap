@@ -2,6 +2,97 @@ defaults: &defaults
   anomaly:
     avg_dev: 5
     epoch: 15
+    detector_class_name: 'Anomaly::SimpleDetector'
+    edges:
+      0:
+        section_ids:
+          - 8
+        lon1: 19.676855536861
+        lat1: 49.980662364241
+        lon2: 19.676834436224
+        lat2: 49.979313346071
+      1:
+        section_ids:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+        lon1: 19.676967093213
+        lat1: 49.980661636809
+        lon2: 19.676945924945
+        lat2: 49.979312619066
+    axises:
+      0:
+        h1: 211.5
+        h2: 212.5
+        dist1: 3
+        dist2: 4
+      1:
+        h1: 211.5
+        h2: 212.5
+        dist1: 7
+        dist2: 8
+      2:
+        h1: 212.5
+        h2: 213.5
+        dist1: 7
+        dist2: 8
+      3:
+        h1: 213.5
+        h2: 214.5
+        dist1: 7
+        dist2: 8
+      4:
+        h1: 211.5
+        h2: 212.5
+        dist1: 10.5
+        dist2: 11.5
+      5:
+        h1: 212.5
+        h2: 213.5
+        dist1: 10.5
+        dist2: 11.5
+      6:
+        h1: 213.5
+        h2: 214.5
+        dist1: 10.5
+        dist2: 11.5
+      7:
+        h1: 214.5
+        h2: 215.5
+        dist1: 10.5
+        dist2: 11.5
+      8:
+        h1: 211.5
+        h2: 212.5
+        dist1: 14
+        dist2: 15
+      9:
+        h1: 212.5
+        h2: 213.5
+        dist1: 14
+        dist2: 15
+      10:
+        h1: 213.5
+        h2: 214.5
+        dist1: 14
+        dist2: 15
+      11:
+        h1: 211.5
+        h2: 212.5
+        dist1: 17
+        dist2: 18
+      12:
+        h1: 212.5
+        h2: 213.5
+        dist1: 17
+        dist2: 18
+      13:
+        h1: 211.5
+        h2: 212.5
+        dist1: 19
+        dist2: 20
 
 development:
   <<: *defaults

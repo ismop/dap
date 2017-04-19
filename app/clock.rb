@@ -14,4 +14,8 @@ module Clockwork
   every(Rails.configuration.duplicate_measurement_pruning_interval.seconds, 'monitoring.prune_measurements') do
     PruningWorker.perform_async
   end
+
+  every(DapConfig['epoch'].minutes, 'anomaly_analysis') do
+    Anomaly::DetectorScheduler.perform_async
+  end
 end
