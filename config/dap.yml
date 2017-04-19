@@ -1,0 +1,13 @@
+defaults: &defaults
+  anomaly:
+    avg_dev: 5
+    epoch: 15
+
+development:
+  <<: *defaults
+
+production:
+  <<: *defaults
+
+test:
+  <<: *defaults
