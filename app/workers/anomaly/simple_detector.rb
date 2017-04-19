@@ -2,8 +2,8 @@ module Anomaly
   class SimpleDetector
     include Sidekiq::Worker
 
-    EPOCH = 15.minutes
-    AVG_DEV = 5
+    EPOCH = DapConfig['anomaly']['epoch'].minutes
+    AVG_DEV = DapConfig['anomaly']['dev']
 
     attr_reader :lon1, :lat1, :lon2, :lat2, :dist1, :dist2, :h1, :h2, :exp_id, :section_ids
 
