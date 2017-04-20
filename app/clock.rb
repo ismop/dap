@@ -15,7 +15,7 @@ module Clockwork
     PruningWorker.perform_async
   end
 
-  every(DapConfig['epoch'].minutes, 'anomaly_analysis') do
+  every(DapConfig['anomaly']['epoch'].minutes, 'anomaly_analysis') do
     Anomaly::DetectorScheduler.perform_async
   end
 end
