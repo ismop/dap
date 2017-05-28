@@ -14,12 +14,12 @@ module Anomaly
     private
 
     def schedule_analysis_for_exp(exp)
-      egdes = DapConfig['anomaly']['edges']
-      egdes.each { |_, e| schedule_analysis_for_edge(exp, e) }
+      edges = DapConfig['anomaly']['edges']
+      edges.each { |_, e| schedule_analysis_for_edge(exp, e) }
     end
 
     def schedule_analysis_for_edge(exp, edge)
-      axises = DapConfig['anomaly']['edges']
+      axises = DapConfig['anomaly']['axises']
       axises.each { |_, a| schedule_analysis_for_axis(exp, edge,a) }
     end
 
