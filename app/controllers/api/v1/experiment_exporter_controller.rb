@@ -10,8 +10,8 @@ module Api
       def show
         authorize! :read, :experiment_exporter
         experiment_id = params[:id]
-        start_date = params[:start_date]
-        end_date = params[:end_date]
+        start_date = Date.parse(params[:start_date])
+        end_date = Date.parse(params[:end_date])
         writer = Exporters::StreamWriter.new(response, "experiment_#{experiment_id}.csv")
         writer.init_stream("Experiment #{experiment_id} #{Time.now}")
         Exporters::ExperimentExporter.new(experiment_id, start_date, end_date).export_slices(writer)
