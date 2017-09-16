@@ -6,8 +6,10 @@ module Exporters
 
     attr_accessor :file
 
-    def initialize(experiment_id)
+    def initialize(experiment_id, start_date = nil, end_date = nil)
       @experiment_id = experiment_id
+      @start_date = start_date
+      @end_date = end_date
     end
 
     def measurements(device_ids = nil)
@@ -15,8 +17,8 @@ module Exporters
         device_ids = devices
       end
       Measurement
-          .after_date(@experiment.start_date, true)
-          .before_date(@experiment.end_date, true)
+          .after_date(@start_date.present? ? @start_date : @experiment.start_date, true)
+          .before_date(@end_date.present? ? @end_date : @experiment.end_date, true)
           .eager_load(timeline: { parameter: [:device, :measurement_type ]})
           .where("timelines.context_id" => @context.id)
           .where("devices.id" => device_ids)
