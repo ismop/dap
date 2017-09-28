@@ -40,13 +40,26 @@ describe Exporters::ExperimentExporter do
 
   let!(:experiment) { create(:experiment, levee: l1, start_date: (m1.m_timestamp + 1.second), end_date: (m3.m_timestamp + 1.year), timelines: [t1, t2, t3]) }
 
-  it 'should find appropriate measurements' do
+  it 'should find appropriate measurements for experiment' do
     exp = Exporters::ExperimentExporter.new(experiment.id)
     measurements = exp.measurements
     expect(measurements.size).to eq 2
     expect(measurements).not_to include m1 # m1 timestamp is before experiment start_date
     expect(measurements).to include m2
     expect(measurements).to include m3
+  end
+
+  it 'should find appropriate measurements for levee' do
+    l7 = FactoryGirl.create(:levee)
+    d7 = FactoryGirl.create(:device, levee: l7)
+    p7 = FactoryGirl.create(:parameter, device: d7)
+    t7 = FactoryGirl.create(:timeline, parameter: p7, context: c1)
+    ms = FactoryGirl.create_list(:measurement, 9, timeline: t7, value: 5)
+
+    exp = Exporters::ExperimentExporter.new(experiment.id, l7.id)
+    measurements = exp.measurements
+    expect(measurements.size).to eq 9
+    expect(measurements).to match_array(ms)
   end
 
   it 'should export appropriate number of lines' do
