@@ -6,17 +6,30 @@ module Exporters
 
     attr_accessor :file
 
-    def initialize(experiment_id)
+    def initialize(experiment_id, levee_id = nil, start_date = nil, end_date = nil)
       @experiment_id = experiment_id
+      @levee_id = levee_id
+      @start_date = start_date
+      @end_date = end_date
     end
 
     def measurements(device_ids = nil)
       if device_ids.nil?
         device_ids = devices
       end
+      if @start_date
+        start_date = @start_date
+      elsif @experiment
+        start_date = @experiment.start_date
+      end
+      if @end_date
+        end_date = @end_date
+      elsif @experiment
+        end_date = @experiment.end_date
+      end
       Measurement
-          .after_date(@experiment.start_date, true)
-          .before_date(@experiment.end_date, true)
+          .after_date(start_date, true)
+          .before_date(end_date, true)
           .eager_load(timeline: { parameter: [:device, :measurement_type ]})
           .where("timelines.context_id" => @context.id)
           .where("devices.id" => device_ids)
@@ -28,8 +41,13 @@ module Exporters
     end
 
     def devices
-      @experiment = Experiment.find(@experiment_id); return [] if @experiment.blank?
-      @levee = @experiment.levee; return [] if @levee.blank?
+      if @levee_id.present?
+        @levee = Levee.find(@levee_id)
+      elsif @experiment_id.present?
+        @experiment = Experiment.find(@experiment_id)
+        @levee = @experiment.levee
+      end
+      return [] if @levee.blank?
       @context = Context.find_by(context_type: 'measurements'); return [] if @context.blank?
       devices = @levee.devices.ids; return [] if devices.blank?
       devices
