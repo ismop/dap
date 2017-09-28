@@ -29,7 +29,7 @@ module Api
         stream_name = "Levee #{levee_id} #{Time.now}"
         writer = Exporters::StreamWriter.new(response, writer_name)
         writer.init_stream(stream_name)
-        Exporters::ExperimentExporter.new(experiment_id, levee_id, start_date, end_date).export_slices(writer)
+        Exporters::ExperimentExporter.new(nil, levee_id, start_date, end_date).export_slices(writer)
       end
     end
   end
